@@ -22,7 +22,7 @@ namespace Interfaces
 
     }
 
-    class Line : Segment
+    public class Line : Segment
     {
         public Point Beg {set; get;}
         public Point End {set; get;}
@@ -34,7 +34,7 @@ namespace Interfaces
         }
     }
 
-    class Arc : Segment
+    public class Arc : Segment
     {
         public Point Center {set; get;}
         public double Rad {set; get;}
@@ -64,7 +64,6 @@ namespace Interfaces
 
     public struct Point
     {
-        public Point() { }
         public Point(double x, double y)
         { X = x; Y = y; }
 
@@ -86,7 +85,7 @@ namespace Interfaces
         public IPathScaled(IPath path);
     }
 
-    class Triangle
+    public class Triangle
     {
         public Point A { get; set; }
         public Point B { get; set; }
@@ -103,13 +102,12 @@ namespace Interfaces
 
     interface IFigure
     {
-        public List<IPath> paths;
-        public List<Triangle> Triangulation;
-        public bool Colored;
-        public Color FillColor;
-        public int dimensional;
+        List<IPath> paths{get;set;}
+        List<Triangle> triangulation {get;set;}
+       `Color color {   get;   set;}
+        int dimensional {   get;   set;}
 
-        public IFigure Clone(Point shift);
+        public IFigure Clone(Point shift);//??
     }
 
     interface IFigureScaled
@@ -154,25 +152,25 @@ namespace Geometry
     using Interfaces;
     interface ILogic
     {
-        public IFigure makeRectangle(Point topLeft, Point botRight, bool colored, Color lineColor, Color fillColor);
+        IFigure makeRectangle(Point topLeft, Point botRight, bool colored, Color lineColor, Color fillColor);
 
-        public IFigure makePoligon(IEnumerable<Point> points, bool colored, Color lineColor, Color fillColor);
+        IFigure makePoligon(IEnumerable<Point> points, bool colored, Color lineColor, Color fillColor);
 
-        public IFigure makeCircle(Point center, double rad, bool colored, Color lineColor, Color fillColor);
+        IFigure makeCircle(Point center, double rad, bool colored, Color lineColor, Color fillColor);
 
-        public IFigure makeLine(Point a, Point b, Color lineColor);
+        IFigure makeLine(Point a, Point b, Color lineColor);
 
-        public IFigure makeArc(Point center, double rad, double beg, double end, Color lineColor);
+        IFigure makeArc(Point center, double rad, double beg, double end, Color lineColor);
 
-        public bool isInScreen(IFigure figure, Point t, Point botRight);
+        bool isInScreen(IFigure figure, Point t, Point botRight);
 
-        public IFigureScaled Scale(IFigure figure, Point topLeft, Point botRight);
+        IFigureScaled Scale(IFigure figure, Point topLeft, Point botRight);
 
-        public IFigure Transform(IFigure ffigure, Parameter transform);
+        IFigure Transform(IFigure ffigure, Parameter transform);
 
-        public IFigure Intersection(IFigure first, IFigure second);
-        public IFigure Union(IFigure first, IFigure second);
-        public IFigure Subtraction(IFigure first, IFigure second);
+        IFigure Intersection(IFigure first, IFigure second);
+        IFigure Union(IFigure first, IFigure second);
+        IFigure Subtraction(IFigure first, IFigure second);
     }
 }
 
