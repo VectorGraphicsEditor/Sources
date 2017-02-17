@@ -22,7 +22,7 @@ namespace Interfaces
 
     }
 
-    class Line : Segment
+    public class Line : Segment
     {
         public Point Beg {set; get;}
         public Point End {set; get;}
@@ -34,7 +34,7 @@ namespace Interfaces
         }
     }
 
-    class Arc : Segment
+    public class Arc : Segment
     {
         public Point Center {set; get;}
         public double Rad {set; get;}
@@ -64,7 +64,6 @@ namespace Interfaces
 
     public struct Point
     {
-        public Point() { }
         public Point(double x, double y)
         { X = x; Y = y; }
 
@@ -86,7 +85,7 @@ namespace Interfaces
         public IPathScaled(IPath path);
     }
 
-    class Triangle
+    public class Triangle
     {
         public Point A { get; set; }
         public Point B { get; set; }
