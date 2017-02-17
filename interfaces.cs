@@ -102,13 +102,12 @@ namespace Interfaces
 
     interface IFigure
     {
-        public List<IPath> paths;
-        public List<Triangle> Triangulation;
-        public bool Colored;
-        public Color FillColor;
-        public int dimensional;
+        List<IPath> paths{get;set;}
+        List<Triangle> triangulation {get;set;}
+       `Color color {   get;   set;}
+        int dimensional {   get;   set;}
 
-        public IFigure Clone(Point shift);
+        public IFigure Clone(Point shift);//??
     }
 
     interface IFigureScaled
