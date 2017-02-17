@@ -154,25 +154,25 @@ namespace Geometry
     using Interfaces;
     interface ILogic
     {
-        public IFigure makeRectangle(Point topLeft, Point botRight, bool colored, Color lineColor, Color fillColor);
+        IFigure makeRectangle(Point topLeft, Point botRight, bool colored, Color lineColor, Color fillColor);
 
-        public IFigure makePoligon(IEnumerable<Point> points, bool colored, Color lineColor, Color fillColor);
+        IFigure makePoligon(IEnumerable<Point> points, bool colored, Color lineColor, Color fillColor);
 
-        public IFigure makeCircle(Point center, double rad, bool colored, Color lineColor, Color fillColor);
+        IFigure makeCircle(Point center, double rad, bool colored, Color lineColor, Color fillColor);
 
-        public IFigure makeLine(Point a, Point b, Color lineColor);
+        IFigure makeLine(Point a, Point b, Color lineColor);
 
-        public IFigure makeArc(Point center, double rad, double beg, double end, Color lineColor);
+        IFigure makeArc(Point center, double rad, double beg, double end, Color lineColor);
 
-        public bool isInScreen(IFigure figure, Point t, Point botRight);
+        bool isInScreen(IFigure figure, Point t, Point botRight);
 
-        public IFigureScaled Scale(IFigure figure, Point topLeft, Point botRight);
+        IFigureScaled Scale(IFigure figure, Point topLeft, Point botRight);
 
-        public IFigure Transform(IFigure ffigure, Parameter transform);
+        IFigure Transform(IFigure ffigure, Parameter transform);
 
-        public IFigure Intersection(IFigure first, IFigure second);
-        public IFigure Union(IFigure first, IFigure second);
-        public IFigure Subtraction(IFigure first, IFigure second);
+        IFigure Intersection(IFigure first, IFigure second);
+        IFigure Union(IFigure first, IFigure second);
+        IFigure Subtraction(IFigure first, IFigure second);
     }
 }
 
