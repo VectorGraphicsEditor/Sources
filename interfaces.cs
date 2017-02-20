@@ -8,33 +8,32 @@ using System.Threading.Tasks;
 
 namespace Interfaces
 {
-
-    struct Parameter
+    public struct Parameter
     {
-        string Name { get; set; }
-        object Value { get; set; }
+        public string Name { get; set; }
+        public object Value { get; set; }
     }
 
-    abstract class Segment
+    public abstract class Segment
     {
-        public string name { get; protected set; }
+        public string Name { get; protected set; }
 
 
     }
 
-    class Line : Segment
+    public class Line : Segment
     {
         public Point Beg {set; get;}
         public Point End {set; get;}
         public Line(Point beg, Point end)
         {
-            name = "Line";
+            Name = "Line";
             Beg = beg;
             End = end;
         }
     }
 
-    class Arc : Segment
+    public class Arc : Segment
     {
         public Point Center {set; get;}
         public double Rad {set; get;}
@@ -42,7 +41,7 @@ namespace Interfaces
         public double End {set; get;}
         public Arc(Point center, double rad, double beg, double end)
         {
-            name = "Arc";
+            Name = "Arc";
             Center = center;
             Rad = rad;
             Beg = beg;
@@ -64,29 +63,27 @@ namespace Interfaces
 
     public struct Point
     {
-        public Point() { }
+//        public Point() { }
         public Point(double x, double y)
         { X = x; Y = y; }
 
-        public double X { get; set; }
-        public double Y { get; set; }
+        public double X { get; private set; }
+        public double Y { get; private set; }
     }
-    interface IPath
+    public interface IPath
     {
-        public List<Segment> path = new List<Segment>();
+        IEnumerable<Segment> Path { get; }
 
-        public Color color { get; set; }
-        public IPath() { }
+        Color Color { get; set; }
     }
 
-    interface IPathScaled : IPath
+    public interface ILineContainer
     {
-        public List<Line> path = new List<Line>();
-        public Color color { get; set; }
-        public IPathScaled(IPath path);
+        IEnumerable<Line> Path { get; }
+        Color Color { get; set; }
     }
 
-    class Triangle
+    public class Triangle
     {
         public Point A { get; set; }
         public Point B { get; set; }
@@ -98,38 +95,30 @@ namespace Interfaces
             B = b;
             C = c;
         }
-
     }
-
-    interface IFigure
+    public interface ITransformation
     {
-        public List<IPath> paths;
-        public List<Triangle> Triangulation;
-        public bool Colored;
-        public Color FillColor;
-        public int dimensional;
-
-        public IFigure Clone(Point shift);
+        Point TransformPoint(Point p);
     }
-
-    interface IFigureScaled
+    public interface IFigure
     {
-        public List<IPathScaled> paths;
-        public List<Triangle> Triangulation;
-        public bool Colored;
-        public Color FillColor;
-
-        public IFigureScaled(IFigure figure, Point topLeft, Point botRight); 
+        IPath Paths { get; }
+        Tuple<IEnumerable<Triangle>, ILineContainer> AsTriangulation(double eps);
+        bool Colored { get; set; }
+        Color FillColor { get; set; }
+        bool Is1D { get; }
+        IFigure Clone();
+        IFigure Transform(ITransformation transform);
     }
-
 }
 
 namespace Logic
 {
     using Interfaces;
-    interface IGUI
+    public interface ILogicForGUI
     {
-        IEnumerable<IFigureScaled> getToDraw();
+        IEnumerable<IFigure> Figures { get; }
+        System.Drawing.Point ToScreen(Point xy);
 
         void executeCommand(Parameter p);
         /* Не знаю, что лучше: внутри через case,или для каждой команды свою функцию.
@@ -152,27 +141,27 @@ namespace Logic
 namespace Geometry
 {
     using Interfaces;
-    interface ILogic
+    interface IGeometry
     {
-        public IFigure makeRectangle(Point topLeft, Point botRight, bool colored, Color lineColor, Color fillColor);
+        //public IFigure makeRectangle(Point topLeft, Point botRight, bool colored, Color lineColor, Color fillColor);
 
-        public IFigure makePoligon(IEnumerable<Point> points, bool colored, Color lineColor, Color fillColor);
+        //public IFigure makePoligon(IEnumerable<Point> points, bool colored, Color lineColor, Color fillColor);
 
-        public IFigure makeCircle(Point center, double rad, bool colored, Color lineColor, Color fillColor);
+        //public IFigure makeCircle(Point center, double rad, bool colored, Color lineColor, Color fillColor);
 
-        public IFigure makeLine(Point a, Point b, Color lineColor);
+        //public IFigure makeLine(Point a, Point b, Color lineColor);
 
-        public IFigure makeArc(Point center, double rad, double beg, double end, Color lineColor);
+        //public IFigure makeArc(Point center, double rad, double beg, double end, Color lineColor);
 
-        public bool isInScreen(IFigure figure, Point t, Point botRight);
+        //public bool isInScreen(IFigure figure, Point t, Point botRight);
 
-        public IFigureScaled Scale(IFigure figure, Point topLeft, Point botRight);
+        //public IFigureScaled Scale(IFigure figure, Point topLeft, Point botRight);
 
-        public IFigure Transform(IFigure ffigure, Parameter transform);
+ //       public IFigure Transform(IFigure ffigure, Parameter transform);
 
-        public IFigure Intersection(IFigure first, IFigure second);
-        public IFigure Union(IFigure first, IFigure second);
-        public IFigure Subtraction(IFigure first, IFigure second);
+        IFigure Intersection(IFigure first, IFigure second);
+        IFigure Union(IFigure first, IFigure second);
+        IFigure Subtraction(IFigure first, IFigure second);
     }
 }
 
@@ -181,8 +170,8 @@ namespace IO
     using Interfaces;
     interface ILogic
     {
-        public bool ToSVN(string path, IEnumerable<IFigure> figures);
-        public IEnumerable<IFigure> FromSVN(string path);
+        public bool ToSVG(string path, IEnumerable<IFigure> figures);
+        public IEnumerable<IFigure> FromSVG(string path);
         public bool SaveSettings(string path, Parameter parametr /*запомненные новые фигуры, на пример*/);
         public Parameter /*те же настройки */ LoadSettings(string path);
 
