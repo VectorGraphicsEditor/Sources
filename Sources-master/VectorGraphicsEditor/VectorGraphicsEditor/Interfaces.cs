@@ -115,18 +115,15 @@ namespace Interfaces
     }
     public interface IFigure
     {
-        /* заметим, что Paths хранит отрезки и дуги, так что может хранить несколько кривых,
-         * а Lines - точки, так что для представления разных кривых понадобится массив контейнеров точек.*/
-        string type { get; set; }
 
-        IEnumerable<Point> pointsForAndrew { get; set; }
-        IPath Paths { get; }//geometries
+               
+        IPath Paths { get; }
         IEnumerable<Triangle> Triangles { get; }
         IEnumerable<ILineContainer> Lines { get; }
 
         bool IsPointInner(Point point);
-        void FillPaths();
-        void NewTriangulation(double eps);
+
+
         bool Colored { get; set; }
         Color FillColor { get; set; }
         Color LineColor { get; set; }
