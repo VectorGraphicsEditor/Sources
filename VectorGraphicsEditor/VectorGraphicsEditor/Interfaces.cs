@@ -63,10 +63,22 @@ namespace Interfaces
         public int B { get; private set; }
         public int A { get; private set; }
     }
-
-    public class Point : IEquatable<Point>
+    public class PointComparer : IEqualityComparer<Point>
     {
-        //        public Point() { }
+
+        public bool Equals(Point x, Point y)
+        {
+            return (x.X == y.X && x.Y == y.Y);
+        }
+
+        public int GetHashCode(Point obj)
+        {
+            return Math.Pow(obj.X, obj.Y).GetHashCode();
+        }
+    }
+    public class Point
+    {
+        public Point() { X = 0;Y = 0; }
         public Point(double x, double y)
         {
             X = x; Y = y;
@@ -80,11 +92,7 @@ namespace Interfaces
         public double X { get; private set; }
         public double Y { get; private set; }
 
-        public bool Equals(Point other)
-        {
-            return (X == other.X && Y == other.Y);
         }
-    }
     public interface IPath
     {
         IEnumerable<Segment> Path { get; }
@@ -101,7 +109,10 @@ namespace Interfaces
         public Point A { get; set; }
         public Point B { get; set; }
         public Point C { get; set; }
-
+        public Point GetCenter()
+        {
+            return( new Point((A.X + B.X + C.X) / 3, (A.Y + B.Y + C.Y) / 3));
+        }
         public Triangle(Point a, Point b, Point c)
         {
             A = a;
