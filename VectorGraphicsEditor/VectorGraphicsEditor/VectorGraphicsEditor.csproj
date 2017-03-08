@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Container.cs" />
+    <Compile Include="FigureFactory.cs" />
     <Compile Include="Geometry.cs" />
     <Compile Include="Interfaces.cs" />
     <Compile Include="logic.cs" />

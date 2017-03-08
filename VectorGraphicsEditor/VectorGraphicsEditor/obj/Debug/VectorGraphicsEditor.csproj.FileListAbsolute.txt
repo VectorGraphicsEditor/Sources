@@ -16,3 +16,6 @@ C:\Users\pmi-b3310\Downloads\Sources-master (1)\Sources-master\VectorGraphicsEdi
 C:\Users\pmi-b3310\Downloads\Sources-master (1)\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\obj\Debug\VectorGraphicsEditor.csproj.GenerateResource.Cache
 C:\Users\pmi-b3310\Downloads\Sources-master (1)\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\obj\Debug\VectorGraphicsEditor.exe
 C:\Users\pmi-b3310\Downloads\Sources-master (1)\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\obj\Debug\VectorGraphicsEditor.pdb
+C:\Users\Zortnag\Desktop\GitHubProject\Sources\VectorGraphicsEditor\VectorGraphicsEditor\bin\Debug\VectorGraphicsEditor.exe.config
+C:\Users\Zortnag\Desktop\GitHubProject\Sources\VectorGraphicsEditor\VectorGraphicsEditor\obj\Debug\VectorGraphicsEditor.exe
+C:\Users\Zortnag\Desktop\GitHubProject\Sources\VectorGraphicsEditor\VectorGraphicsEditor\obj\Debug\VectorGraphicsEditor.pdb

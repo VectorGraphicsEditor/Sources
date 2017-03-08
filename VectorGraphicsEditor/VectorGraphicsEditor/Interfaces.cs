@@ -144,9 +144,26 @@ namespace Logic
         IEnumerable<IFigure> Figures { get; }
         Interfaces.Point ToScreen(Interfaces.Point xy);
 
-        void executeCommand(ICommand p);
         /* Рояк немного переубедил меня по поводу моего начального представления о коммандах.
          * нужно обсудить устно с ГУИ и логикой то, что будет тут. */
+        
+        void CreateFigure(string FigureType, List<Parameter> Parameters);
+        void EditFigure(List<Parameter> Parameters);
+        void Transform(Parameter type);
+        void LogicOperation(string name);
+        void PickFigure(bool IsAdd, Point point);
+
+        void Save(string Filename, string Format);
+        void Load(string Filename);
+        void SaveSettings(string Filename);
+        void LoadSettings(string Filename);
+
+         
+        void UnDo();
+        void ReDo();
+        void Copy();
+        void Paste();
+        void AddPrototipe(string name);
     }
 }
 
