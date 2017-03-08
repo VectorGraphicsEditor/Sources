@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,33 +8,18 @@ using Interfaces;
 namespace test_editor
 {
 
-    /*
-public class Triangle
-{
-public Triangle(double A, double B, double C)
-{ a = A; b = B; c = C; }
-
-public double a { get; set; }
-public double b { get; set; }
-public double c { get; set; }
-}
-class Figure
-{   
-
-List<Triangle> Triangulation;
-
-static void Main(string[] args)
-{
-}
-
-
-}*/
     using Interfaces;
     using NGeometry;
+    
 
-
-    class Figure : IFigure
+    public class Figure : IFigure
     {
+        const double ClosenessMeasure = 1e-12;//определяет меру лежания точки на прямой (через пс.скаляр. произв.)
+        static int ClosenessCount = 12;//определяет число разрядов точности представления числа с плав.зпт.
+
+        string _type { get; set; }//тип фигуры (если понадобится)
+        List <Point> _pointsFromGUI { get; set; } //точки, приходящии от ГУИ, если и использовать, то с типом фигуры)
+
         bool _colored;
         bool _is1d;
         Color _currentColor;
@@ -42,8 +27,23 @@ static void Main(string[] args)
         IPath _paths;
         List<Triangle> _triangles;
 
-        Point[] _convexHull;
-        Point[] _figureBorder;
+        List <Point> _convexHull;
+        List <Point> _figureBorder;
+
+        public Figure(string type, ref List<Point> guiPoints )
+        {
+            _pointsFromGUI = guiPoints;
+            _type = type;
+            _is1d = false;
+            _triangles = new List<Triangle>();
+            _figureBorder = new List<Point>() {
+new Point (2, 2),new Point(4, 5), new Point(5, 28.0/5), new Point (6, 2), new Point(7, 4), new Point(9, 4), new Point(7, 8), new Point(3, 8),  new Point(1, 5)};
+            //
+            //CreatePaths();
+            //Настя, сюда запихай выпуклую оболочку вместо следующей строки
+            _convexHull = _pointsFromGUI;
+            if (!_is1d)CreateTriangulation();
+        }
 
         private bool lineIntersection(Point A, Point B, Point C, Point D)
         {//SLAE coeffs
@@ -65,7 +65,7 @@ static void Main(string[] args)
                 intersectionY < 1 && intersectionY > 0);
         }
 
-        private string IsPointInTriagle(Point point, Triangle triangle, out Point[] edgeWithPoint)
+        private string IsPointInTriagle(Point point, Triangle triangle, ref Point[] edgeWithPoint)
         {
             double x1 = triangle.A.X;
             double y1 = triangle.A.Y;
@@ -81,12 +81,36 @@ static void Main(string[] args)
             double third = (x3 - x0) * (y1 - y3) - (x1 - x3) * (y3 - y0);
 
             double[] scalarProduct = new double[3] { first, second, third };
-            IEnumerable<int> signs = scalarProduct.Select(x => Math.Sign(x));
-            if (signs.Any(x => x == 0))
+            List<int> signs = scalarProduct.Select(x => Math.Sign(Math.Round(x, ClosenessCount))).ToList();
+
+            int EdgeNumb = signs.FindIndex(x => Math.Abs(x) < ClosenessMeasure);
+            if (EdgeNumb != -1)
             {
-                edgeWithPoint = new Point[2];
-                //edgeWithPoint[0] =;
-                //edgeWithPoint[1] =;
+                
+                Point beg = new Point(), end = new Point();
+                switch (EdgeNumb)
+                {
+                    case 0:
+                    {
+                        beg =  new Point(x2, y2);
+                        end = new Point(x1, y1);
+                        break;
+                    }
+                    case 1:
+                    {
+                        beg = new Point(x3, y3);
+                        end = new Point(x2, y2);
+                        break;
+                    }
+                    case 2:
+                    {
+                        beg = new Point(x3, y3);
+                        end = new Point(x1, y1);
+                        break;
+                    }
+                }
+                edgeWithPoint[0] = beg;
+                edgeWithPoint[1] = end;
 
                 return "On the border";
             }
@@ -94,33 +118,41 @@ static void Main(string[] args)
             else
             if (signs.All(x => x < 0) || signs.All(x => x > 0))
             {
-                edgeWithPoint = null;
+                
                 return "Inner";
             }
 
             else
             {
-                edgeWithPoint = null;
+                
                 return "External";
             }
         }
         public bool IsPointInner(Point point)
         {
+            //метод трассирующего луча
             if (_figureBorder.Contains(point)) return true;
 
             else
             {
                 Point A = point;
                 Point B = new Point(_convexHull[0].X + 1, A.Y);
+                Point C = new Point();
+                Point D = new Point();
 
                 int intersections = 0;
-                for (int i = 0; i < _figureBorder.Length; i++)
+                for (int i = 0; i < _figureBorder.Count - 1; i++)
                 {
-                    Point C = _figureBorder[i];
-                    Point D = new Point(_figureBorder[i + 1].X + 1e-10, _figureBorder[i + 1].Y + 1e-10);
+                    C = _figureBorder[i];
+                    D = new Point(_figureBorder[i + 1].X + ClosenessMeasure, _figureBorder[i + 1].Y + ClosenessMeasure);
                     if (lineIntersection(A, B, C, D)) intersections++;
                 }
-                return (intersections % 2 == 1);
+                //проверим последнее ребро
+                C = _figureBorder[_figureBorder.Count - 1];
+                D = _figureBorder[0];
+                if (lineIntersection(A, B, C, D)) intersections++;
+
+                return (intersections % 2 != 1);
             }
         }
 
@@ -230,13 +262,18 @@ static void Main(string[] args)
 
         private bool IsPointAtLine(Point purpose, Point A, Point B)
         {
-            throw new NotImplementedException();
+            //y=kx+b
+            double k = (A.Y - B.Y) / (A.X - B.X);
+            double b = B.Y - k * B.X;
+            return (Math.Abs(purpose.Y - k * purpose.X - b) < ClosenessMeasure);
         }
 
-        public void NewTriangulation(double eps)
-        {
+        private void CreateTriangulation()
+        {   //просто одно ребро, потом понадобится
+            Point[] edge;
+
             //начальная триангуляция с исползованием выпуклой оболочки
-            for (int i = 0; i < _convexHull.Length - 2; i++)
+            for (int i = 0; i < _convexHull.Count - 2; i++)
             {
                 Point A = _convexHull[0];
                 Point B = _convexHull[i + 1];
@@ -244,76 +281,131 @@ static void Main(string[] args)
                 //Point center = new Point((A.X + B.X + C.X) / 3, (A.Y + B.Y + C.Y) / 3);
                 _triangles.Add(new Triangle(_convexHull[0], _convexHull[i + 1], _convexHull[i + 2]));
             }
-
+                #region подготовка к корректированию триангуляции
             //выбираем вершины, не попавшие в выпуклую оболочку
-            List<Point> InnerOrBoundary = _figureBorder.Except(_convexHull).ToList();
-
-            //для каждой (не из выпуклой оболочки) вершине ставим в соответсиве два треугольника, которые содержат на своей границе эту вершину.
-            List<List<Triangle>> boundaryTriangles = new List<List<Triangle>>();
-            //в соответствие этим треугольникам поставим ребро, которое содержит на себе точку.
-            List<Point[]> edgesWithPoint = new List<Point[]>();
-            var edge = new Point[2];
-
-            //вершины, которые собственно и лежат на границе
-            List<Point> boundaryPoints = new List<Point>();
-
-            //вершины внутри выпуклой оболочки и не на границе
-            List<Point> innerPoints = new List<Point>();
-
-            for (int i = 0; i < InnerOrBoundary.Count; i++)
+            List<Point> InnerOrBoundary = _figureBorder.Except(_convexHull, new PointComparer()).ToList();
+            if (InnerOrBoundary.Count != 0)
             {
+                //для каждой (не из выпуклой оболочки) вершине ставим в соответсиве два треугольника, которые содержат на своей границе эту вершину.
+                List<List<Triangle>> boundaryTriangles = new List<List<Triangle>>();
+                //в соответствие этим треугольникам поставим ребро, которое содержит на себе точку.
+                List<Point[]> edgesWithPoint = new List<Point[]>();
+                edge = new Point[2];
 
-                var twoTriangles = _triangles.Where(x => IsPointInTriagle(InnerOrBoundary[i], x, out edge) == "On the border").ToList();
+                //вершины, которые собственно и лежат на границе
+                List<Point> boundaryPoints = new List<Point>();
 
-                if (twoTriangles != null)
+                //вершины внутри выпуклой оболочки и не на границе
+                List<Point> innerPoints = new List<Point>();
+
+                for (int i = 0; i < InnerOrBoundary.Count; i++)
                 {
-                    boundaryTriangles.Add(twoTriangles);
-                    edgesWithPoint.Add(edge);
-                    boundaryPoints.Add(InnerOrBoundary[i]);
-                }
-                else
-                {
-                    innerPoints.Add(InnerOrBoundary[i]);
-                }
-            }
-            //теперь у нас есть соответствие (вершина на ребре - ребро - треугольники, для которых это ребро смежное)
-            //+ вершины не на ребрах
 
-            //Вместо двух треугольников запихаем четыре.
-            while (boundaryTriangles.Count != 0)
-            {
-                foreach (Triangle triangle in boundaryTriangles.First())
-                {
-                    List<Point> trianglePoints = new List<Point> { triangle.A, triangle.B, triangle.C };
-                    var outerPoint = trianglePoints.Except(edgesWithPoint.First());
-                    var firstAdding = new Triangle(outerPoint.First(), edgesWithPoint.First()[0], boundaryPoints.First());
-                    var secondAdding = new Triangle(outerPoint.First(), edgesWithPoint.First()[1], boundaryPoints.First());
+                    var twoTriangles = _triangles.Where(x => IsPointInTriagle(InnerOrBoundary[i], x, ref edge) == "On the border").ToList();
 
-                    _triangles.Add(firstAdding);
-                    _triangles.Add(secondAdding);
-
-                    //убираем использованный
-                    _triangles.Remove(triangle);
-
-                    //теперь, если вдруг после добавления тех двух треугольников внутренняя точка перешла в разряд точек на границе
-                    //мы ее добавим в конец в граничные, а так же два треугольникак как смежные и тд.
-                    foreach (Point point in innerPoints)
+                    if (twoTriangles.Count != 0)
                     {
-                        if (IsPointAtLine(point, edgesWithPoint.First()[0], edgesWithPoint.First()[1]))
-                        {
-                            boundaryTriangles.Add(new List<Triangle>() { firstAdding, secondAdding });
-                            edgesWithPoint.Add(edgesWithPoint.First());
-                            boundaryPoints.Add(point);
-                        }
+                        boundaryTriangles.Add(twoTriangles);
+                        edgesWithPoint.Add(edge);
+                        boundaryPoints.Add(InnerOrBoundary[i]);
+                    }
+                    else
+                    {
+                        innerPoints.Add(InnerOrBoundary[i]);
                     }
                 }
-                //обработали первую граничную точку, убрали все с ней связанное, и по новой
-                boundaryTriangles.RemoveAt(0);
-                edgesWithPoint.RemoveAt(0);
-                boundaryPoints.RemoveAt(0);
+                #endregion
+                //теперь у нас есть соответствие (вершина на ребре - ребро - треугольники, для которых это ребро смежное)
+                //+ вершины не на ребрах
 
+                DeleteBoundaryPoints:
+                #region нейтрализация вершин на границах
+                //Вместо двух треугольников запихаем четыре.
+                while (boundaryTriangles.Count != 0)
+                {
+                    foreach (Triangle triangle in boundaryTriangles.First())
+                    {
+                        List<Point> trianglePoints = new List<Point> { triangle.A, triangle.B, triangle.C };
+                        IEnumerable<Point> outerPoint =  trianglePoints.Except(edgesWithPoint.First(), new PointComparer()) ;
+                        var firstAdding = new Triangle(outerPoint.First(), edgesWithPoint.First()[0], boundaryPoints.First());
+                        var secondAdding = new Triangle(outerPoint.First(), edgesWithPoint.First()[1], boundaryPoints.First());
+
+                        _triangles.Add(firstAdding);
+                        _triangles.Add(secondAdding);
+
+                        //убираем использованный
+                        _triangles.Remove(triangle);
+
+                        //теперь, если вдруг после добавления тех двух треугольников внутренняя точка перешла в разряд точек на границе
+                        //мы ее добавим в конец в граничные, а так же два треугольникак как смежные и тд.
+                        foreach (Point point in innerPoints)
+                        {
+                            
+                            if (IsPointAtLine(point, edgesWithPoint.First()[0], edgesWithPoint.First()[1]))
+                            {
+                                boundaryTriangles.Add(new List<Triangle>() { firstAdding, secondAdding });
+                                edgesWithPoint.Add(edgesWithPoint.First());
+                                boundaryPoints.Add(point);
+                            }
+                        }
+                    }
+                    //обработали первую граничную точку, убрали все с ней связанное, и по новой
+                    boundaryTriangles.RemoveAt(0);
+                    edgesWithPoint.RemoveAt(0);
+                    boundaryPoints.RemoveAt(0);
+
+                }
+                #endregion
+
+                edge = new Point[2];
+
+                #region обработка внутренних точек
+                //работаем с тупо внутренними точками
+                while (innerPoints.Count != 0)
+                {
+                    Point considered = innerPoints.First();
+
+                    //найдем внешний для точки треугольник
+                    int indexExtTriangle = _triangles.FindIndex(x => IsPointInTriagle(considered, x, ref edge) == "Inner");
+                    Triangle externalTriangle = _triangles[indexExtTriangle];
+
+                    //создадим три новых треугольника вместо старого
+                    Triangle first = new Triangle(externalTriangle.A, externalTriangle.B, considered);
+                    Triangle second = new Triangle(externalTriangle.B, externalTriangle.C, considered);
+                    Triangle third = new Triangle(externalTriangle.A, externalTriangle.C, considered);
+
+                    _triangles.Add(first);
+                    _triangles.Add(second);
+                    _triangles.Add(third);
+
+                    //точку и старый треугольник удалим
+                    _triangles.RemoveAt(indexExtTriangle);
+                    innerPoints.RemoveAt(0);
+
+                    //определим точки, которые не были на ребрах, а теперь стали
+                    boundaryPoints.AddRange(innerPoints.FindAll(x => IsPointAtLine(x, externalTriangle.A, considered)));
+                    boundaryPoints.AddRange(innerPoints.FindAll(x => IsPointAtLine(x, externalTriangle.B, considered)));
+                    boundaryPoints.AddRange(innerPoints.FindAll(x => IsPointAtLine(x, externalTriangle.C, considered)));
+
+                    //если в итоге такие точки есть, то по новой их удалять
+                    if (boundaryPoints.Count != 0) goto DeleteBoundaryPoints;
+                }
+                #endregion
+                //
             }
 
+            //выкинем те треугольники, которые не лежат в фигуре
+            //(триангулировалась выпуклая оболочка с точками внутри)
+            List<int> ExtraTriangles = new List<int>();
+            foreach (var item in _triangles.Select((value, i) => new { i, value }))
+            {
+                if (!IsPointInner(item.value.GetCenter()))
+                    ExtraTriangles.Add(item.i);
+            }
+            foreach (int index in ExtraTriangles)
+            {
+                _triangles.RemoveAt(index);
+            }
         }
 
         public IFigure Transform(ITransformation transform)
@@ -321,7 +413,7 @@ static void Main(string[] args)
             throw new NotImplementedException();
         }
 
-        public void FillPaths()
+        private void CreatePaths()
         {
             throw new NotImplementedException();
         }
