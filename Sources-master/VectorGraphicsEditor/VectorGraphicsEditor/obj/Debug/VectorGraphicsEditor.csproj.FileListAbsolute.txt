@@ -34,3 +34,10 @@ C:\Users\pmi-b3310\Downloads\Sources-master\Sources-master\Sources-master\Vector
 C:\Users\pmi-b3310\Downloads\Sources-master\Sources-master\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\obj\Debug\VectorGraphicsEditor.MainForm.resources
 C:\Users\pmi-b3310\Downloads\Sources-master\Sources-master\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\obj\Debug\VectorGraphicsEditor.Properties.Resources.resources
 C:\Users\pmi-b3310\Downloads\Sources-master\Sources-master\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\obj\Debug\VectorGraphicsEditor.csproj.GenerateResource.Cache
+C:\Users\Павел\Source\EditorLastVersion\Sources\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\bin\Debug\VectorGraphicsEditor.exe.config
+C:\Users\Павел\Source\EditorLastVersion\Sources\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\obj\Debug\VectorGraphicsEditor.exe
+C:\Users\Павел\Source\EditorLastVersion\Sources\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\obj\Debug\VectorGraphicsEditor.pdb
+C:\Users\Павел\Source\EditorLastVersion\Sources\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\obj\Debug\VectorGraphicsEditor.csprojResolveAssemblyReference.cache
+C:\Users\Павел\Source\EditorLastVersion\Sources\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\obj\Debug\VectorGraphicsEditor.MainForm.resources
+C:\Users\Павел\Source\EditorLastVersion\Sources\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\obj\Debug\VectorGraphicsEditor.Properties.Resources.resources
+C:\Users\Павел\Source\EditorLastVersion\Sources\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\obj\Debug\VectorGraphicsEditor.csproj.GenerateResource.Cache
