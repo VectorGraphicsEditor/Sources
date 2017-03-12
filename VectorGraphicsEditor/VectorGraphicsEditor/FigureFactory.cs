@@ -28,10 +28,10 @@ namespace VectorGraphicsEditor
             //                                  );
             
         }
-        //static IFigure Create(string type, Dictionary<string, object> parms)
-        //{
-        //    return prototypes[type].Create(parms);
-        //}
+        static IFigure Create(string type, Dictionary<string, object> parms)
+        {
+            return prototypes[type].Create(parms);
+        }
         static IEnumerable<string> ShapeTypes
         {
             get
@@ -39,17 +39,6 @@ namespace VectorGraphicsEditor
                 return prototypes.Keys;
             }
         }
-
-        //static IEnumerable<string> Parameters(string type)
-        //{
-        //    return prototypes[type].Parameters();
-        //}
-
-        //хз чо
-        //static object GetParameterPrototype(string type, string parname)
-        //{
-        //    return prototypes[type].GetParameter(par);
-        //}
         
 
     }
