@@ -1,0 +1,36 @@
+C:\Users\pmi-b3310\Downloads\Sources-master (1)\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\bin\Debug\VectorGraphicsEditor.exe.config
+C:\Users\pmi-b3310\Downloads\Sources-master (1)\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\bin\Debug\VectorGraphicsEditor.exe
+C:\Users\pmi-b3310\Downloads\Sources-master (1)\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\bin\Debug\VectorGraphicsEditor.pdb
+C:\Users\pmi-b3310\Downloads\Sources-master (1)\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\bin\Debug\SharpGL.dll
+C:\Users\pmi-b3310\Downloads\Sources-master (1)\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\bin\Debug\SharpGL.SceneGraph.dll
+C:\Users\pmi-b3310\Downloads\Sources-master (1)\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\bin\Debug\SharpGL.WinForms.dll
+C:\Users\pmi-b3310\Downloads\Sources-master (1)\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\bin\Debug\SharpGL.pdb
+C:\Users\pmi-b3310\Downloads\Sources-master (1)\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\bin\Debug\SharpGL.xml
+C:\Users\pmi-b3310\Downloads\Sources-master (1)\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\bin\Debug\SharpGL.SceneGraph.pdb
+C:\Users\pmi-b3310\Downloads\Sources-master (1)\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\bin\Debug\SharpGL.SceneGraph.xml
+C:\Users\pmi-b3310\Downloads\Sources-master (1)\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\bin\Debug\SharpGL.WinForms.pdb
+C:\Users\pmi-b3310\Downloads\Sources-master (1)\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\bin\Debug\SharpGL.WinForms.xml
+C:\Users\pmi-b3310\Downloads\Sources-master (1)\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\obj\Debug\VectorGraphicsEditor.csprojResolveAssemblyReference.cache
+C:\Users\pmi-b3310\Downloads\Sources-master (1)\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\obj\Debug\VectorGraphicsEditor.MainForm.resources
+C:\Users\pmi-b3310\Downloads\Sources-master (1)\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\obj\Debug\VectorGraphicsEditor.Properties.Resources.resources
+C:\Users\pmi-b3310\Downloads\Sources-master (1)\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\obj\Debug\VectorGraphicsEditor.csproj.GenerateResource.Cache
+C:\Users\pmi-b3310\Downloads\Sources-master (1)\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\obj\Debug\VectorGraphicsEditor.exe
+C:\Users\pmi-b3310\Downloads\Sources-master (1)\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\obj\Debug\VectorGraphicsEditor.pdb
+C:\Users\pmi-b3310\Downloads\Sources-master\Sources-master\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\bin\Debug\VectorGraphicsEditor.exe.config
+C:\Users\pmi-b3310\Downloads\Sources-master\Sources-master\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\obj\Debug\VectorGraphicsEditor.exe
+C:\Users\pmi-b3310\Downloads\Sources-master\Sources-master\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\obj\Debug\VectorGraphicsEditor.pdb
+C:\Users\pmi-b3310\Downloads\Sources-master\Sources-master\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\bin\Debug\VectorGraphicsEditor.exe
+C:\Users\pmi-b3310\Downloads\Sources-master\Sources-master\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\bin\Debug\VectorGraphicsEditor.pdb
+C:\Users\pmi-b3310\Downloads\Sources-master\Sources-master\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\bin\Debug\SharpGL.dll
+C:\Users\pmi-b3310\Downloads\Sources-master\Sources-master\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\bin\Debug\SharpGL.SceneGraph.dll
+C:\Users\pmi-b3310\Downloads\Sources-master\Sources-master\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\bin\Debug\SharpGL.WinForms.dll
+C:\Users\pmi-b3310\Downloads\Sources-master\Sources-master\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\bin\Debug\SharpGL.pdb
+C:\Users\pmi-b3310\Downloads\Sources-master\Sources-master\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\bin\Debug\SharpGL.xml
+C:\Users\pmi-b3310\Downloads\Sources-master\Sources-master\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\bin\Debug\SharpGL.SceneGraph.pdb
+C:\Users\pmi-b3310\Downloads\Sources-master\Sources-master\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\bin\Debug\SharpGL.SceneGraph.xml
+C:\Users\pmi-b3310\Downloads\Sources-master\Sources-master\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\bin\Debug\SharpGL.WinForms.pdb
+C:\Users\pmi-b3310\Downloads\Sources-master\Sources-master\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\bin\Debug\SharpGL.WinForms.xml
+C:\Users\pmi-b3310\Downloads\Sources-master\Sources-master\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\obj\Debug\VectorGraphicsEditor.csprojResolveAssemblyReference.cache
+C:\Users\pmi-b3310\Downloads\Sources-master\Sources-master\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\obj\Debug\VectorGraphicsEditor.MainForm.resources
+C:\Users\pmi-b3310\Downloads\Sources-master\Sources-master\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\obj\Debug\VectorGraphicsEditor.Properties.Resources.resources
+C:\Users\pmi-b3310\Downloads\Sources-master\Sources-master\Sources-master\VectorGraphicsEditor\VectorGraphicsEditor\obj\Debug\VectorGraphicsEditor.csproj.GenerateResource.Cache
