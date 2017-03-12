@@ -128,22 +128,31 @@ namespace Interfaces
     {
         /* заметим, что Paths хранит отрезки и дуги, так что может хранить несколько кривых,
          * а Lines - точки, так что для представления разных кривых понадобится массив контейнеров точек.*/
-        string type { get; set; }
+        string type { get; private set; }
 
-        IEnumerable<Point> pointsForAndrew { get; set; }
+        Dictionary<string, object> Parameters
+        {
+            get;
+            private set;
+        }
+        // тип параметры фигуры. для прямоугольника две точки, для окружности точка и радиус...
+
         IPath Paths { get; }//geometries
-        IEnumerable<Triangle> Triangles { get; }
-        IEnumerable<ILineContainer> Lines { get; }
 
         bool IsPointInner(Point point);
-        void FillPaths();
-        void NewTriangulation(double eps);
+        void FillPaths(); // это чо вообще??
+        Tuple<IEnumerable<Triangle>,IEnumerable<ILineContainer>> NewTriangulation(double eps);
+        // стоит хранить предыдущий результат, что бы не перещитывать его, если функция вызывается с тем же eps
+
         bool Colored { get; set; }
         Color FillColor { get; set; }
         Color LineColor { get; set; }
         bool Is1D { get; }
-        IFigure Clone();
+        IFigure Clone(); // создать такую же фигуру с такими же параметрами
+        IFigure Create(Dictionary<string, object> parms); //создать фигуру того же типа с этими параметрами
         IFigure Transform(ITransformation transform);
+        /*Трансформация возвращает новую фигуру, трансформированную. однако очевидно что после этого
+          фигура может сменить свой тип.*/
     }
 }
 
@@ -155,26 +164,8 @@ namespace Logic
         IEnumerable<IFigure> Figures { get; }
         Interfaces.Point ToScreen(Interfaces.Point xy);
 
-        /* Рояк немного переубедил меня по поводу моего начального представления о коммандах.
-         * нужно обсудить устно с ГУИ и логикой то, что будет тут. */
-        
-        void CreateFigure(string FigureType, List<Parameter> Parameters);
-        void EditFigure(List<Parameter> Parameters);
-        void Transform(Parameter type);
-        void LogicOperation(string name);
-        void PickFigure(bool IsAdd, Point point);
-
-        void Save(string Filename, string Format);
-        void Load(string Filename);
-        void SaveSettings(string Filename);
-        void LoadSettings(string Filename);
-
-         
-        void UnDo();
-        void ReDo();
-        void Copy();
-        void Paste();
-        void AddPrototipe(string name);
+        /*Тут будут функции заказа команды у фабрики и все такое*/
+ 
     }
 }
 
@@ -183,24 +174,7 @@ namespace NGeometry
     using Interfaces;
     interface IGeometryForLogic
     {
-        //public IFigure makeRectangle(Point topLeft, Point botRight, bool colored, Color lineColor, Color fillColor);
-
-        //public IFigure makePoligon(IEnumerable<Point> points, bool colored, Color lineColor, Color fillColor);
-
-        //public IFigure makeCircle(Point center, double rad, bool colored, Color lineColor, Color fillColor);
-
-        //public IFigure makeLine(Point a, Point b, Color lineColor);
-
-        //public IFigure makeArc(Point center, double rad, double beg, double end, Color lineColor);
-
-        //public bool isInScreen(IFigure figure, Point t, Point botRight);
-
-        //public IFigureScaled Scale(IFigure figure, Point topLeft, Point botRight);
-
-        //       public IFigure Transform(IFigure ffigure, Parameter transform);
-
-        /* Тут реально имеет смысл завести фабрику. я подумаю о том, как это будет лучше сделать.
-         * Не плохо было бы поговорить об этом с логикой и геометрией.*/
+        /*допилить фабрику*/
 
         IFigure Intersection(IFigure first, IFigure second);
         IFigure Union(IFigure first, IFigure second);
