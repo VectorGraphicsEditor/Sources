@@ -27,8 +27,52 @@ namespace test_editor
         IPath _paths;
         List<Triangle> _triangles;
 
-        List <Point> _convexHull;
-        List <Point> _figureBorder;
+        List<Point> _convexHull;
+        List<Point> _figureBorder;
+
+
+        public double PolarAngle(Point p0, Point p1)
+        {
+            double angle = Math.Atan((p1.Y - p0.Y) / (p1.X - p0.X));
+            if (angle < 0) return Math.PI + angle;
+            else return angle;
+        }
+
+        public bool ConvexHull()
+        {
+            List<Point> _CopyFigureBody = _figureBorder;
+
+            _CopyFigureBody.OrderByDescending(point => point.X).ThenBy(point => point.Y).ToList();
+            Point p0 = _CopyFigureBody[0];
+            _CopyFigureBody.Remove(p0);
+
+            _CopyFigureBody.OrderBy(point => PolarAngle(p0, point)).ThenBy(point => Math.Sqrt(Math.Pow(p0.X - point.X, 2) + Math.Pow(p0.Y - point.Y, 2))).ToList();
+            var S = new Stack<Point>();
+            S.Push(p0);
+            S.Push(_CopyFigureBody[0]);
+            Point Top = S.Peek();
+            Point NextToTop = p0;
+
+            int m = _CopyFigureBody.Count();
+            for(int i = 1; i < m; i++)
+            {
+                Point u = new Point(Top.X - NextToTop.X, Top.Y - NextToTop.Y);
+                Point v = new Point(_CopyFigureBody[i].X - Top.X, _CopyFigureBody[i].Y - Top.Y);
+                while (u.X * v.Y - u.Y * v.X < 0)
+                {
+                    S.Pop();
+                    Top = S.Pop();
+                    NextToTop = S.Peek();
+                    S.Push(Top);
+                }
+                NextToTop = S.Peek();
+                S.Push(_CopyFigureBody[i]);
+                Top = S.Peek();
+            }
+            _convexHull = S.ToList();
+            //ты хотел bool - держи
+            return true;
+        }
 
         public Figure(string type, ref List<Point> guiPoints )
         {
