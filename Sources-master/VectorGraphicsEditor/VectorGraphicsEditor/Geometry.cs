@@ -31,14 +31,14 @@ namespace test_editor
         List<Point> _figureBorder;
 
 
-        public double PolarAngle(Point p0, Point p1)
+        private double PolarAngle(Point p0, Point p1)
         {
             double angle = Math.Atan((p1.Y - p0.Y) / (p1.X - p0.X));
             if (angle < 0) return Math.PI + angle;
             else return angle;
         }
 
-        public bool ConvexHull()
+        private bool ConvexHull()
         {
             List<Point> _CopyFigureBody = _figureBorder;
 
