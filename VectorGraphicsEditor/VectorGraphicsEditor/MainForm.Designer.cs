@@ -28,10 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.openGLControlView = new SharpGL.OpenGLControl();
-            this.buttonLine = new System.Windows.Forms.Button();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.файлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.открытьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.открытьToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.сохранитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.справкаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.buttonRect = new System.Windows.Forms.Button();
+            this.buttonLine = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.openGLControlView)).BeginInit();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // openGLControlView
@@ -51,25 +59,70 @@
             this.openGLControlView.MouseUp += new System.Windows.Forms.MouseEventHandler(this.openGLControlView_MouseUp);
             this.openGLControlView.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.openGLControlView_MouseWheel);
             // 
-            // buttonLine
+            // menuStrip1
             // 
-            this.buttonLine.Location = new System.Drawing.Point(33, 24);
-            this.buttonLine.Name = "buttonLine";
-            this.buttonLine.Size = new System.Drawing.Size(120, 38);
-            this.buttonLine.TabIndex = 1;
-            this.buttonLine.Text = "Линия";
-            this.buttonLine.UseVisualStyleBackColor = true;
-            this.buttonLine.Click += new System.EventHandler(this.buttonLine_Click);
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.файлToolStripMenuItem,
+            this.справкаToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(1137, 24);
+            this.menuStrip1.TabIndex = 3;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // файлToolStripMenuItem
+            // 
+            this.файлToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.открытьToolStripMenuItem,
+            this.открытьToolStripMenuItem1,
+            this.сохранитьToolStripMenuItem});
+            this.файлToolStripMenuItem.Name = "файлToolStripMenuItem";
+            this.файлToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
+            this.файлToolStripMenuItem.Text = "Файл";
+            // 
+            // открытьToolStripMenuItem
+            // 
+            this.открытьToolStripMenuItem.Name = "открытьToolStripMenuItem";
+            this.открытьToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.открытьToolStripMenuItem.Text = "Создать";
+            // 
+            // открытьToolStripMenuItem1
+            // 
+            this.открытьToolStripMenuItem1.Name = "открытьToolStripMenuItem1";
+            this.открытьToolStripMenuItem1.Size = new System.Drawing.Size(132, 22);
+            this.открытьToolStripMenuItem1.Text = "Открыть";
+            // 
+            // сохранитьToolStripMenuItem
+            // 
+            this.сохранитьToolStripMenuItem.Name = "сохранитьToolStripMenuItem";
+            this.сохранитьToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.сохранитьToolStripMenuItem.Text = "Сохранить";
+            // 
+            // справкаToolStripMenuItem
+            // 
+            this.справкаToolStripMenuItem.Name = "справкаToolStripMenuItem";
+            this.справкаToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
+            this.справкаToolStripMenuItem.Text = "Справка";
             // 
             // buttonRect
             // 
-            this.buttonRect.Location = new System.Drawing.Point(191, 24);
+            this.buttonRect.Image = global::VectorGraphicsEditor.Properties.Resources.квадрат_второй;
+            this.buttonRect.Location = new System.Drawing.Point(68, 27);
             this.buttonRect.Name = "buttonRect";
-            this.buttonRect.Size = new System.Drawing.Size(120, 38);
+            this.buttonRect.Size = new System.Drawing.Size(50, 50);
             this.buttonRect.TabIndex = 2;
-            this.buttonRect.Text = "Прямоугольник";
             this.buttonRect.UseVisualStyleBackColor = true;
             this.buttonRect.Click += new System.EventHandler(this.buttonRect_Click);
+            // 
+            // buttonLine
+            // 
+            this.buttonLine.Image = global::VectorGraphicsEditor.Properties.Resources.Линия;
+            this.buttonLine.Location = new System.Drawing.Point(12, 27);
+            this.buttonLine.Name = "buttonLine";
+            this.buttonLine.Size = new System.Drawing.Size(50, 50);
+            this.buttonLine.TabIndex = 1;
+            this.buttonLine.UseVisualStyleBackColor = true;
+            this.buttonLine.Click += new System.EventHandler(this.buttonLine_Click);
             // 
             // MainForm
             // 
@@ -79,10 +132,16 @@
             this.Controls.Add(this.buttonRect);
             this.Controls.Add(this.buttonLine);
             this.Controls.Add(this.openGLControlView);
+            this.Controls.Add(this.menuStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.Text = "Графический редактор";
             ((System.ComponentModel.ISupportInitialize)(this.openGLControlView)).EndInit();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -91,6 +150,12 @@
         private SharpGL.OpenGLControl openGLControlView;
         private System.Windows.Forms.Button buttonLine;
         private System.Windows.Forms.Button buttonRect;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem файлToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem открытьToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem открытьToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem сохранитьToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem справкаToolStripMenuItem;
     }
 }
 
