@@ -54,7 +54,7 @@ namespace Interfaces
 
     public struct Color
     {
-        Color(int r, int g, int b, int a)
+        public Color(int r, int g, int b, int a)
         {
             R = r; G = g; B = b; A = a;
         }
@@ -128,12 +128,12 @@ namespace Interfaces
     {
         /* заметим, что Paths хранит отрезки и дуги, так что может хранить несколько кривых,
          * а Lines - точки, так что для представления разных кривых понадобится массив контейнеров точек.*/
-        string type { get; private set; }
+        string type { get; set; }
 
         Dictionary<string, object> Parameters
         {
             get;
-            private set;
+            set;
         }
         // тип параметры фигуры. для прямоугольника две точки, для окружности точка и радиус...
 

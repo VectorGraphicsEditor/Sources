@@ -2,6 +2,7 @@
 
 using System;
 using System.Windows.Forms;
+using System.Drawing;
 
 namespace VectorGraphicsEditor
 {
@@ -30,6 +31,11 @@ namespace VectorGraphicsEditor
         private float zoomOpenGLView = 1.0f;
 
         private Figures selectedFigure = Figures.Line;
+
+        Color currentColor = Color.Black;
+        
+
+        
 
         public MainForm()
         {
@@ -130,16 +136,13 @@ namespace VectorGraphicsEditor
         {
             gl.Begin(OpenGL.GL_QUADS);
 
-            gl.Color(0, 0, 0);
+            gl.Color(currentColor.R, currentColor.G, currentColor.B);
             gl.Vertex(firstPointX, firstPointY);
 
-            gl.Color(0, 0, 0);
             gl.Vertex(firstPointX, lastPointY);
 
-            gl.Color(0, 0, 0);
             gl.Vertex(lastPointX, lastPointY);
 
-            gl.Color(0, 0, 0);
             gl.Vertex(lastPointX, firstPointY);
             gl.End();
         }
@@ -148,10 +151,9 @@ namespace VectorGraphicsEditor
         {
             gl.Begin(OpenGL.GL_LINES);
 
-            gl.Color(0, 0, 0);
+            gl.Color(currentColor.R, currentColor.G, currentColor.B);
             gl.Vertex(firstPointX, firstPointY);
 
-            gl.Color(0, 0, 0);
             gl.Vertex(lastPointX, lastPointY);
             gl.End();
         }
@@ -201,6 +203,16 @@ namespace VectorGraphicsEditor
         {
             // Logic.IGUI.executeCommand("mouse_down", false);
             isMouseDown = false;
+        }
+
+        private void PickColor_Click(object sender, EventArgs e)
+        {
+            if(colorDialog1.ShowDialog() == DialogResult.OK)
+            {
+                PickColor.BackColor = colorDialog1.Color;
+                currentColor = colorDialog1.Color;
+
+            }
         }
     }
 }

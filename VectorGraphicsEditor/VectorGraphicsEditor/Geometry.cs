@@ -254,6 +254,8 @@ new Point (2, 2),new Point(4, 5), new Point(5, 28.0/5), new Point (6, 2), new Po
             }
         }
 
+        public Dictionary<string, object> Parameters { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         public IFigure Clone()
         {
             throw new NotImplementedException();
@@ -414,6 +416,21 @@ new Point (2, 2),new Point(4, 5), new Point(5, 28.0/5), new Point (6, 2), new Po
         }
 
         private void CreatePaths()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void FillPaths()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Tuple<IEnumerable<Triangle>, IEnumerable<ILineContainer>> NewTriangulation(double eps)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IFigure Create(Dictionary<string, object> parms)
         {
             throw new NotImplementedException();
         }
