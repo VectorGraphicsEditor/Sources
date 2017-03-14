@@ -9,7 +9,7 @@ using test_editor;
 namespace VectorGraphicsEditor
 {
 
-    class Rectangle : Figure
+    public class Rectangle : Figure
     {
         Rectangle(Point DownLeft, Point UpRight, Color BorderColor, Color FillColor)
         {
