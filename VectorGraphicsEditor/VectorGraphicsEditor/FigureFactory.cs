@@ -15,7 +15,7 @@ namespace VectorGraphicsEditor
         {
             prototypes = new Dictionary<string, IFigure>();
             //prototypes["Line"] = new Line(new Point(0, 0), new Point(1, 1), new Color(0, 0, 0));
-            
+
             //prototypes["Rectangle"] = new Rectangle(new Point(0, 0),
             //                                        new Point(1, 1),
             //                                        new Color(0, 0, 0),
@@ -26,7 +26,7 @@ namespace VectorGraphicsEditor
             //                                  new Color(0, 0, 0),
             //                                  new Color(255, 255, 255)
             //                                  );
-            
+
         }
         static IFigure Create(string type, Dictionary<string, object> parms)
         {
@@ -39,7 +39,7 @@ namespace VectorGraphicsEditor
                 return prototypes.Keys;
             }
         }
-        
+
 
     }
 
