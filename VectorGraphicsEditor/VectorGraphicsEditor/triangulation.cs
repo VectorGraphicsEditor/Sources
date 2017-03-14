@@ -47,7 +47,7 @@ namespace test_editor
                 S.Push(_CopyFigureBody[i]);
                 Top = S.Peek();
             }
-            _convexHull = S.ToList();
+            _convexHull = S.Reverse().ToList();
             //ты хотел bool - держи
             return true;
         }

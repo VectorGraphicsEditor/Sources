@@ -36,7 +36,7 @@ namespace VectorGraphicsEditor
 
         public override Tuple<IEnumerable<Triangle>, IEnumerable<ILineContainer>> NewTriangulation(double eps)
         {
-            ;
+            return null;
         }
     }
 }

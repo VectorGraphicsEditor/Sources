@@ -17,7 +17,89 @@ namespace test_editor
         const double ClosenessMeasure = 1e-12;//определяет меру лежания точки на прямой (через пс.скаляр. произв.)
         static int ClosenessCount = 12;//определяет число разрядов точности представления числа с плав.зпт.
 
-        protected bool _colored;
+        protected bool _colored { get; set; }
+        #region реализация интерфейса
+        public string type
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public Dictionary<string, object> Parameters
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public IPath Paths
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public bool Colored
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public Color FillColor
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public Color LineColor
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public bool Is1D
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+        #endregion
         protected bool _is1d;
         protected Color _currentColor;
 
@@ -27,6 +109,26 @@ namespace test_editor
         protected List<Point> _figureBorder;
 
         public abstract Tuple<IEnumerable<Triangle>, IEnumerable<ILineContainer>> NewTriangulation(double eps);
+
+        public void FillPaths()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IFigure Clone()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IFigure Create(Dictionary<string, object> parms)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IFigure Transform(ITransformation transform)
+        {
+            throw new NotImplementedException();
+        }
 
 
         /*    public Figure(string type, ref List<Point> guiPoints)
