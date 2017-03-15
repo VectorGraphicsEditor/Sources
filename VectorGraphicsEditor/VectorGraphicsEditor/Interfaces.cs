@@ -54,7 +54,7 @@ namespace Interfaces
 
     public struct Color
     {
-        Color(int r, int g, int b, int a)
+        public Color(int r, int g, int b, int a)
         {
             R = r; G = g; B = b; A = a;
         }
@@ -148,8 +148,7 @@ namespace Interfaces
         Color FillColor { get; set; }
         Color LineColor { get; set; }
         bool Is1D { get; }
-        IFigure Clone(); // создать такую же фигуру с такими же параметрами
-        IFigure Create(Dictionary<string, object> parms); //создать фигуру того же типа с этими параметрами
+        IFigure Clone(Dictionary<string, object> parms); // создать такую же фигуру с такими же параметрами
         IFigure Transform(ITransformation transform);
         /*Трансформация возвращает новую фигуру, трансформированную. однако очевидно что после этого
           фигура может сменить свой тип.*/
