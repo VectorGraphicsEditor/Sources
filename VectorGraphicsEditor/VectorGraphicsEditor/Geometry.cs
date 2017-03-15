@@ -101,12 +101,12 @@ namespace test_editor
         }
         #endregion
         protected bool _is1d;
-        protected Color _currentColor;
+        protected Color _currentColor { get; set; }
 
-        protected List<Triangle> _triangles;
+        protected List<Triangle> _triangles { get; set; }
 
-        protected List<Point> _convexHull;
-        protected List<Point> _figureBorder;
+        protected List<Point> _convexHull { get; set; }
+        protected List<Point> _figureBorder { get; set; }
 
         public abstract Tuple<IEnumerable<Triangle>, IEnumerable<ILineContainer>> NewTriangulation(double eps);
 
@@ -129,6 +129,8 @@ namespace test_editor
         {
             throw new NotImplementedException();
         }
+
+        public abstract IFigure Clone(Dictionary<string, object> parms);
 
 
         /*    public Figure(string type, ref List<Point> guiPoints)

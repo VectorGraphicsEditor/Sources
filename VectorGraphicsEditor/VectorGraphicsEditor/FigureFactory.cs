@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace VectorGraphicsEditor
 {
     using Interfaces;
-    class FigureFactory
+    public class FigureFactory
     {
 
 
@@ -16,11 +16,11 @@ namespace VectorGraphicsEditor
             prototypes = new Dictionary<string, IFigure>();
             //prototypes["Line"] = new Line(new Point(0, 0), new Point(1, 1), new Color(0, 0, 0));
             
-            //prototypes["Rectangle"] = new Rectangle(new Point(0, 0),
-            //                                        new Point(1, 1),
-            //                                        new Color(0, 0, 0),
-            //                                        new Color(255, 255, 255)
-            //                                        );
+            prototypes["Rectangle"] = new Rectangle(new Point(0, 0),
+                                                    new Point(1, 1),
+                                                    new Color(0, 0, 0, 1),
+                                                    new Color(255, 255, 255, 1)
+                                                    );
             //prototypes["Circle"] = new Circle(new Point(0, 0),
             //                                  1.0,
             //                                  new Color(0, 0, 0),
@@ -28,9 +28,9 @@ namespace VectorGraphicsEditor
             //                                  );
             
         }
-        static IFigure Create(string type, Dictionary<string, object> parms)
+        public IFigure Create(string type, Dictionary<string, object> parms)
         {
-            return prototypes[type].Create(parms);
+            return prototypes[type].Clone(parms);
         }
         static IEnumerable<string> ShapeTypes
         {

@@ -11,11 +11,12 @@ namespace VectorGraphicsEditor
 
     public class Rectangle : Figure
     {
-        Rectangle(Point DownLeft, Point UpRight, Color BorderColor, Color FillColor)
+        public Rectangle(Point DownLeft, Point UpRight, Color BorderColor, Color FillColor)
         {
             _colored = true;
             _is1d = false;
             _currentColor = FillColor;
+
             _figureBorder = new List<Point>()
             {
                 new Point(UpRight.X, DownLeft.Y),
@@ -32,6 +33,14 @@ namespace VectorGraphicsEditor
                 new Triangle(_figureBorder[2], _figureBorder[3], _figureBorder[0])
             };
 
+        }
+
+        public override IFigure Clone(Dictionary<string, object> parms)
+        {
+            return new Rectangle((Point)parms["DownLeft"],
+                            (Point)parms["UpRight"],
+                            (Color)parms["BorderColor"],
+                            (Color)parms["FillColor"]);
         }
 
         public override Tuple<IEnumerable<Triangle>, IEnumerable<ILineContainer>> NewTriangulation(double eps)
