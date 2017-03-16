@@ -21,7 +21,7 @@ namespace test_editor
 
 
 
-        protected List<Triangle> _triangles { get; set; }
+        protected List<trTriangle> _triangles { get; set; }
         protected List<Point> _convexHull { get; set; }
         protected List<Point> _figureBorder { get; set; }
 
@@ -34,7 +34,7 @@ namespace test_editor
         public abstract bool Is1D { get; protected set; }
 
         public abstract void FillPaths();
-        public abstract Tuple<IEnumerable<Triangle>, IEnumerable<ILineContainer>> NewTriangulation(double eps);
+        public abstract Tuple<IEnumerable<trTriangle>, IEnumerable<ILineContainer>> NewTriangulation(double eps);
         public abstract IFigure Clone(Dictionary<string, object> parms);
         public abstract IFigure Transform(ITransformation transform);
     }
