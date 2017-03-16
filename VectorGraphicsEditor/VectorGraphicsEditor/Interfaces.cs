@@ -105,7 +105,7 @@ namespace Interfaces
 
     }
 
-    public class Triangle
+    public class trTriangle
     {
         public Point A { get; set; }
         public Point B { get; set; }
@@ -114,7 +114,7 @@ namespace Interfaces
         {
             return( new Point((A.X + B.X + C.X) / 3, (A.Y + B.Y + C.Y) / 3));
         }
-        public Triangle(Point a, Point b, Point c)
+        public trTriangle(Point a, Point b, Point c)
         {
             A = a;
             B = b;
@@ -142,7 +142,7 @@ namespace Interfaces
 
         bool IsPointInner(Point point);
         void FillPaths(); // это чо вообще??
-        Tuple<IEnumerable<Triangle>,IEnumerable<ILineContainer>> NewTriangulation(double eps);
+        Tuple<IEnumerable<trTriangle>,IEnumerable<ILineContainer>> NewTriangulation(double eps);
         // стоит хранить предыдущий результат, что бы не перещитывать его, если функция вызывается с тем же eps
 
         bool Colored { get; set; }

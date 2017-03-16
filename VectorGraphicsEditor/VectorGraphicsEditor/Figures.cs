@@ -27,10 +27,10 @@ namespace VectorGraphicsEditor
 
             _figureBorder = new List<Point>(_figureBorder);
 
-             _triangles = new List<Triangle>()
+             _triangles = new List<trTriangle>()
             {
-                new Triangle(_figureBorder[0], _figureBorder[1], _figureBorder[2]),
-                new Triangle(_figureBorder[2], _figureBorder[3], _figureBorder[0])
+                new trTriangle(_figureBorder[0], _figureBorder[1], _figureBorder[2]),
+                new trTriangle(_figureBorder[2], _figureBorder[3], _figureBorder[0])
             };
 
         }
@@ -62,7 +62,7 @@ namespace VectorGraphicsEditor
             throw new NotImplementedException();
         }
 
-        public override Tuple<IEnumerable<Triangle>, IEnumerable<ILineContainer>> NewTriangulation(double eps)
+        public override Tuple<IEnumerable<trTriangle>, IEnumerable<ILineContainer>> NewTriangulation(double eps)
         {
             throw new NotImplementedException();
         }
@@ -197,7 +197,7 @@ namespace VectorGraphicsEditor
             throw new NotImplementedException();
         }
 
-        public override Tuple<IEnumerable<Triangle>, IEnumerable<ILineContainer>> NewTriangulation(double eps)
+        public override Tuple<IEnumerable<trTriangle>, IEnumerable<ILineContainer>> NewTriangulation(double eps)
         {
             throw new NotImplementedException();
         }
