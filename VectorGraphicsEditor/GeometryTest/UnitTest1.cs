@@ -21,9 +21,9 @@ namespace GeometryTest
              Конструктор работает
            */
 
-            
-            FigureFactory Factory = new FigureFactory();
 
+            
+            
             var TestRect = Factory.Create("Rectangle", new Dictionary<string, object>()
             {
                 ["DownLeft"] = new Point(1, 1),
@@ -32,7 +32,13 @@ namespace GeometryTest
                 ["FillColor"] = new Color(255, 255, 255, 1)
             });
 
-            FigureFactory B = new FigureFactory();
+            var TestRect2 = Factory.Create("Rectangle", new Dictionary<string, object>()
+            {
+                ["DownLeft"] = new Point(132, 23),
+                ["UpRight"] = new Point(1123, 13),
+                ["BorderColor"] = new Color(0, 0, 0, 1),
+                ["FillColor"] = new Color(255, 255, 255, 1)
+            });
 
         }
     }

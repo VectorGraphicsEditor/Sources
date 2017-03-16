@@ -13,9 +13,9 @@ namespace VectorGraphicsEditor
     {
         public Rectangle(Point DownLeft, Point UpRight, Color BorderColor, Color FillColor)
         {
-            _colored = true;
-            _is1d = false;
-            _currentColor = FillColor;
+            Colored = true;
+            Is1D = false;
+            this.FillColor = FillColor;
 
             _figureBorder = new List<Point>()
             {
@@ -35,6 +35,20 @@ namespace VectorGraphicsEditor
 
         }
 
+        public override bool Colored { get;set;}
+
+        public override Color FillColor { get; set; }
+
+        public override bool Is1D { get; protected set; }
+
+        public override Color LineColor { get; set; }
+
+        public override Dictionary<string, object> Parameters { get; set; }
+
+        public override IPath Paths { get; }
+
+        public override string type { get; set; }
+
         public override IFigure Clone(Dictionary<string, object> parms)
         {
             return new Rectangle((Point)parms["DownLeft"],
@@ -43,9 +57,19 @@ namespace VectorGraphicsEditor
                             (Color)parms["FillColor"]);
         }
 
+        public override void FillPaths()
+        {
+            throw new NotImplementedException();
+        }
+
         public override Tuple<IEnumerable<Triangle>, IEnumerable<ILineContainer>> NewTriangulation(double eps)
         {
-            return null;
+            throw new NotImplementedException();
+        }
+
+        public override IFigure Transform(ITransformation transform)
+        {
+            throw new NotImplementedException();
         }
     }
 }
