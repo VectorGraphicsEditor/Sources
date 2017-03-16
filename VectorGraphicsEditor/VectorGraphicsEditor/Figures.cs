@@ -72,5 +72,141 @@ namespace VectorGraphicsEditor
             throw new NotImplementedException();
         }
     }
+
+    public class Mutant : Figure
+    {
+        public Mutant(List<Segment> path)
+        {
+            _figureBorder = new List<Point>();
+            if (path.Count == 0)
+            {
+                //do nothing
+
+            }
+            else
+            {
+                Line temp = null;
+                foreach (Segment segm in path)
+                {
+                    if (segm.Name == "Line")
+                    {
+                        temp = (Line)segm;
+                        _figureBorder.Add(temp.Beg);
+                    };
+                }
+                _figureBorder.Add(temp.End);
+            }
+        }
+
+
+        #region интерфейса реализация
+        public override bool Colored
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public override Color FillColor
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public override bool Is1D
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            protected set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public override Color LineColor
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public override Dictionary<string, object> Parameters
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public override IPath Paths
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public override string type
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public override IFigure Clone(Dictionary<string, object> parms)
+        {
+            List<Segment> path = (List < Segment > )parms["Vertexes"];
+            return new Mutant(path);
+        }
+
+        public override void FillPaths()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Tuple<IEnumerable<Triangle>, IEnumerable<ILineContainer>> NewTriangulation(double eps)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IFigure Transform(ITransformation transform)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    #endregion
 }
 
