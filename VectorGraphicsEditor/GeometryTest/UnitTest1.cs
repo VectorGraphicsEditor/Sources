@@ -22,8 +22,8 @@ namespace GeometryTest
            */
 
 
-            
-            
+
+            /*
             var TestRect = Factory.Create("Rectangle", new Dictionary<string, object>()
             {
                 ["DownLeft"] = new Point(1, 1),
@@ -39,7 +39,12 @@ namespace GeometryTest
                 ["BorderColor"] = new Color(0, 0, 0, 1),
                 ["FillColor"] = new Color(255, 255, 255, 1)
             });
+            */
 
+            var path = new List<Segment>() { new Line(new Point(2, 2), new Point(6, 2)) };
+            var mt1 = Factory.Create("Mutant_1", new Dictionary<string, object>()
+            { ["Vertexes"] = path });
         }
+       
     }
 }

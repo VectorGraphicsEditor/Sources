@@ -21,13 +21,14 @@ namespace Interfaces
 
     public abstract class Segment
     {
+        public Point Beg { set; get; }
+        public Point End { set; get; }
         public string Name { get; protected set; }
     }
 
     public class Line : Segment
     {
-        public Point Beg { set; get; }
-        public Point End { set; get; }
+
         public Line(Point beg, Point end)
         {
             Name = "Line";
@@ -36,19 +37,19 @@ namespace Interfaces
         }
     }
 
-    public class Arc : Segment
+    public class EllipseArc : Segment
     {
         public Point Center { set; get; }
         public double Rad { set; get; }
-        public double Beg { set; get; }
-        public double End { set; get; }
-        public Arc(Point center, double rad, double beg, double end)
+        public double BegRad { set; get; }
+        public double EndRad { set; get; }
+        public EllipseArc(Point center,double r1, double r2, double rad, double beg, double end)
         {
             Name = "Arc";
             Center = center;
             Rad = rad;
-            Beg = beg;
-            End = end;
+            BegRad = beg;
+            EndRad = end;
         }
     }
 
