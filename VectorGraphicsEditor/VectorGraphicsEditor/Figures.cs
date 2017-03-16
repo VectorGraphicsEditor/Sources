@@ -8,7 +8,6 @@ using test_editor;
 
 namespace VectorGraphicsEditor
 {
-
     public class Rectangle : Figure
     {
         public Rectangle(Point DownLeft, Point UpRight, Color BorderColor, Color FillColor)
@@ -27,10 +26,10 @@ namespace VectorGraphicsEditor
 
             _figureBorder = new List<Point>(_figureBorder);
 
-             _triangles = new List<Triangle>()
+             _triangles = new List<trTriangle>()
             {
-                new Triangle(_figureBorder[0], _figureBorder[1], _figureBorder[2]),
-                new Triangle(_figureBorder[2], _figureBorder[3], _figureBorder[0])
+                new trTriangle(_figureBorder[0], _figureBorder[1], _figureBorder[2]),
+                new trTriangle(_figureBorder[2], _figureBorder[3], _figureBorder[0])
             };
 
         }
@@ -62,7 +61,7 @@ namespace VectorGraphicsEditor
             throw new NotImplementedException();
         }
 
-        public override Tuple<IEnumerable<Triangle>, IEnumerable<ILineContainer>> NewTriangulation(double eps)
+        public override Tuple<IEnumerable<trTriangle>, IEnumerable<ILineContainer>> NewTriangulation(double eps)
         {
             throw new NotImplementedException();
         }
@@ -72,5 +71,68 @@ namespace VectorGraphicsEditor
             throw new NotImplementedException();
         }
     }
+
+    public class Triangle : Figure
+    {
+        public Triangle(Point Point1, Point Point2, Point Point3, Color BorderColor, Color FillColor)
+        {
+            Colored = true;
+            Is1D = false;
+            this.FillColor = FillColor;
+
+            _figureBorder = new List<Point>()
+            {
+                new Point(Point1.X, Point1.Y),
+                new Point(Point2.X, Point2.Y),
+                new Point(Point3.X, Point3.Y)
+            };
+
+            _figureBorder = new List<Point>(_figureBorder);
+
+            _triangles = new List<trTriangle>()
+            {
+                new trTriangle(_figureBorder[0], _figureBorder[1], _figureBorder[2]),
+            };
+
+        }
+        public override string type { get; set;}
+
+        public override Dictionary<string, object> Parameters { get; set;}
+
+        public override IPath Paths { get ; }
+
+        public override bool Colored { get; set; }
+
+        public override Color FillColor { get; set; }
+
+        public override Color LineColor { get; set; }
+
+        public override bool Is1D { get;  protected set; }
+
+        public override void FillPaths()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Tuple<IEnumerable<Interfaces.trTriangle>, IEnumerable<ILineContainer>> NewTriangulation(double eps)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IFigure Clone(Dictionary<string, object> parms)
+        {
+            return new Triangle((Point)parms["Point1"],
+                            (Point)parms["Point2"],
+                            (Point)parms["Point3"],
+                            (Color)parms["BorderColor"],
+                            (Color)parms["FillColor"]);
+        }
+
+        public override IFigure Transform(ITransformation transform)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
 }
 
