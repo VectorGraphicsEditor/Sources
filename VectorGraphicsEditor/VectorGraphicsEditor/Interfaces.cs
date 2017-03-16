@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-
+using SVGLib;
 
 namespace Interfaces
 {
@@ -183,17 +182,43 @@ namespace NGeometry
 
 namespace IO
 {
-    using Interfaces;
-    interface ISavePicture
-    {
-        bool Save(string path, IEnumerable<IFigure> figures);
-        IEnumerable<IFigure> Load(string path);
+    //using Interfaces;
+    //interface ISavePicture
+    //{
+    //    bool Save(string path, IEnumerable<IFigure> figures);
+    //    IEnumerable<IFigure> Load(string path);
+
+    //}
+    //interface ISaveSettings
+    //{
+    //    /* понятия не имею в каком формате они будут */
+    //    bool SaveSettings(string path, Parameter parametr /*запомненные новые фигуры, на пример*/);
+    //    Parameter /*те же настройки */ LoadSettings(string path);
+    //}
+
+    public interface SVGShape {
+        SvgBasicShape ToSVGLibShape(SvgDoc doc);
 
     }
-    interface ISaveSettings
-    {
-        /* понятия не имею в каком формате они будут */
-        bool SaveSettings(string path, Parameter parametr /*запомненные новые фигуры, на пример*/);
-        Parameter /*те же настройки */ LoadSettings(string path);
+
+    public static class SVGIO {
+        //static List<SVGShape> Import(string filename) {
+            
+        //}
+
+        public static void export(List<SVGShape> shapes, string filename, int width, int height)
+        {
+            SvgDoc doc = new SvgDoc();
+            SvgRoot root = doc.CreateNewDocument();
+            root.Width = width.ToString() + "px";
+            root.Height = height.ToString() + "px";
+            foreach(var shape in shapes)
+            {
+                var figure = shape.ToSVGLibShape(doc);
+                doc.AddElement(root, figure);
+            }
+            doc.SaveToFile(filename);
+        }
     }
+
 }
