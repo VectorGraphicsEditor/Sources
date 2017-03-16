@@ -41,8 +41,9 @@ namespace GeometryTest
             });
             */
 
-            var path = new List<Segment>() {new Line(new Point(2, 2), new Point(6, 2)) };
-            var mt1 = new Mutant(path);
+            var path = new List<Segment>() { new Line(new Point(2, 2), new Point(6, 2)) };
+            var mt1 = Factory.Create("Mutant_1", new Dictionary<string, object>()
+            { ["Vertexes"] = path });
         }
        
     }
