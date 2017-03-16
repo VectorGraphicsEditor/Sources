@@ -93,7 +93,7 @@ namespace test_editor
             else return null;
         }
 
-        private List<Triangle> LineTriangleIntersection(Point[] line, Triangle triangle)
+        private List<trTriangle> LineTriangleIntersection(Point[] line, trTriangle triangle)
         {
             List<Point> dots = new List<Point>
             { triangle.A, triangle.B, triangle.C};
@@ -111,7 +111,7 @@ namespace test_editor
             //если не пересекает ни одно, то выйдем
             if (all.All(item => item.intersection == null)) return null;
             //иначе вернем новые треугольники вместо старого
-            List<Triangle> result = new List<Triangle>();
+            List<trTriangle> result = new List<trTriangle>();
 
             //точки пересечения
             var intersecters = all.FindAll(item => item.intersection != null);
@@ -129,8 +129,8 @@ namespace test_editor
                 new PointComparer()
                 ).First();
 
-                result.Add(new Triangle(beginOfLine, intersecters.First().intersection, intersecters.First().segmt[0]));
-                result.Add(new Triangle(beginOfLine, intersecters.First().intersection, intersecters.First().segmt[1]));
+                result.Add(new trTriangle(beginOfLine, intersecters.First().intersection, intersecters.First().segmt[0]));
+                result.Add(new trTriangle(beginOfLine, intersecters.First().intersection, intersecters.First().segmt[1]));
                 return result;
             }
             else
@@ -144,20 +144,20 @@ namespace test_editor
                     intersecters[0].segmt[0] == intersecters[1].segmt[0] || intersecters[0].segmt[0] == intersecters[1].segmt[1] ?
                     intersecters[0].segmt[0] : intersecters[0].segmt[1]);
 
-                result.Add(new Triangle(thirdVertex, intersectVertex[0], intersectVertex[1]));
+                result.Add(new trTriangle(thirdVertex, intersectVertex[0], intersectVertex[1]));
 
                 //два других
 
                 //возьмем то ребро, которое она не пересекает
                 Point[] OnNonIntersctEdge = all.Find(item => item.intersection == null).segmt;
-                result.Add(new Triangle(OnNonIntersctEdge[0], intersectVertex[0], intersectVertex[1]));
-                result.Add(new Triangle(OnNonIntersctEdge[0], OnNonIntersctEdge[1], intersectVertex[1]));
+                result.Add(new trTriangle(OnNonIntersctEdge[0], intersectVertex[0], intersectVertex[1]));
+                result.Add(new trTriangle(OnNonIntersctEdge[0], OnNonIntersctEdge[1], intersectVertex[1]));
 
                 return result;
 
             }
         }
-        private string IsPointInTriagle(Point point, Triangle triangle, ref Point[] edgeWithPoint)
+        private string IsPointInTriagle(Point point, trTriangle triangle, ref Point[] edgeWithPoint)
         {
             double x1 = triangle.A.X;
             double y1 = triangle.A.Y;
@@ -266,7 +266,7 @@ namespace test_editor
                 Point B = _convexHull[i + 1];
                 Point C = _convexHull[i + 2];
                 //Point center = new Point((A.X + B.X + C.X) / 3, (A.Y + B.Y + C.Y) / 3);
-                _triangles.Add(new Triangle(_convexHull[0], _convexHull[i + 1], _convexHull[i + 2]));
+                _triangles.Add(new trTriangle(_convexHull[0], _convexHull[i + 1], _convexHull[i + 2]));
             }
             #region подготовка к корректированию триангуляции
             //выбираем вершины, не попавшие в выпуклую оболочку
@@ -274,7 +274,7 @@ namespace test_editor
             if (InnerOrBoundary.Count != 0)
             {
                 //для каждой (не из выпуклой оболочки) вершине ставим в соответсиве два треугольника, которые содержат на своей границе эту вершину.
-                List<List<Triangle>> boundaryTriangles = new List<List<Triangle>>();
+                List<List<trTriangle>> boundaryTriangles = new List<List<trTriangle>>();
                 //в соответствие этим треугольникам поставим ребро, которое содержит на себе точку.
                 List<Point[]> edgesWithPoint = new List<Point[]>();
                 edge = new Point[2];
@@ -310,12 +310,12 @@ namespace test_editor
                 //Вместо двух треугольников запихаем четыре.
                 while (boundaryTriangles.Count != 0)
                 {
-                    foreach (Triangle triangle in boundaryTriangles.First())
+                    foreach (trTriangle triangle in boundaryTriangles.First())
                     {
                         List<Point> trianglePoints = new List<Point> { triangle.A, triangle.B, triangle.C };
                         IEnumerable<Point> outerPoint = trianglePoints.Except(edgesWithPoint.First(), new PointComparer());
-                        var firstAdding = new Triangle(outerPoint.First(), edgesWithPoint.First()[0], boundaryPoints.First());
-                        var secondAdding = new Triangle(outerPoint.First(), edgesWithPoint.First()[1], boundaryPoints.First());
+                        var firstAdding = new trTriangle(outerPoint.First(), edgesWithPoint.First()[0], boundaryPoints.First());
+                        var secondAdding = new trTriangle(outerPoint.First(), edgesWithPoint.First()[1], boundaryPoints.First());
 
                         _triangles.Add(firstAdding);
                         _triangles.Add(secondAdding);
@@ -330,7 +330,7 @@ namespace test_editor
 
                             if (IsPointAtLine(point, edgesWithPoint.First()[0], edgesWithPoint.First()[1]))
                             {
-                                boundaryTriangles.Add(new List<Triangle>() { firstAdding, secondAdding });
+                                boundaryTriangles.Add(new List<trTriangle>() { firstAdding, secondAdding });
                                 edgesWithPoint.Add(edgesWithPoint.First());
                                 boundaryPoints.Add(point);
                             }
@@ -354,12 +354,12 @@ namespace test_editor
 
                     //найдем внешний для точки треугольник
                     int indexExtTriangle = _triangles.FindIndex(x => IsPointInTriagle(considered, x, ref edge) == "Inner");
-                    Triangle externalTriangle = _triangles[indexExtTriangle];
+                    trTriangle externalTriangle = _triangles[indexExtTriangle];
 
                     //создадим три новых треугольника вместо старого
-                    Triangle first = new Triangle(externalTriangle.A, externalTriangle.B, considered);
-                    Triangle second = new Triangle(externalTriangle.B, externalTriangle.C, considered);
-                    Triangle third = new Triangle(externalTriangle.A, externalTriangle.C, considered);
+                    trTriangle first = new trTriangle(externalTriangle.A, externalTriangle.B, considered);
+                    trTriangle second = new trTriangle(externalTriangle.B, externalTriangle.C, considered);
+                    trTriangle third = new trTriangle(externalTriangle.A, externalTriangle.C, considered);
 
                     _triangles.Add(first);
                     _triangles.Add(second);
@@ -385,10 +385,10 @@ namespace test_editor
                     edge[0] = _figureBorder[i];
                     edge[1] = _figureBorder[i + 1];
                     List<int> ToRemove = new List<int>();
-                    List<Triangle> ToAdd = new List<Triangle>();
+                    List<trTriangle> ToAdd = new List<trTriangle>();
                     foreach (var item in _triangles.Select((value, j) => new { value, j }))
                     {
-                        List<Triangle> possibleAdd = LineTriangleIntersection(edge, item.value);
+                        List<trTriangle> possibleAdd = LineTriangleIntersection(edge, item.value);
 
                         if (possibleAdd != null)
                         {
