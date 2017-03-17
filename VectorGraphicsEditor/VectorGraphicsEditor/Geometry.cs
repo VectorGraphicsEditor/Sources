@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Interfaces;
 
-namespace test_editor
+namespace VectorGraphicsEditor
 {
 
     using Interfaces;
     using NGeometry;
-
+    using tree_class;
 
     public abstract partial class Figure : IFigure
     {
@@ -132,6 +132,11 @@ namespace test_editor
 
         public abstract IFigure Clone(Dictionary<string, object> parms);
 
+        public bool IsPointInner(Point point)
+        {
+            throw new NotImplementedException();
+        }
+
 
         /*    public Figure(string type, ref List<Point> guiPoints)
             {
@@ -145,6 +150,58 @@ namespace test_editor
                 //CreatePaths();
                 if (!_is1d) CreateTriangulation();
             }*/
+    }
+
+    class Geometry : IGeometryForLogic
+    {
+        IFigure IGeometryForLogic.Intersection(IFigure first, IFigure second)
+        {
+            //как-то приходим к List<Line> и проч. пока не знаю как.
+            IFigure result = null;
+
+            List<Line> pe = null; 
+            //если результат build_CHT - нельзя определить выпуклую оболочку, тогда возвращать null. Для арок, будет null, видимо.
+            Tree<List<Line>> first_tree =  first.Build_CHT(pe);
+            Tree<List<Line>> second_tree = second.Build_CHT(pe);
+            if( first_tree != null & second_tree != null)
+            {
+                if (first_tree.HasChildren == false)
+                {
+                    //CNINT (first_tree.value, second_tree ); // first - выпуклая, second - дерево выпуклых
+                    //return
+                }
+                if (second_tree.HasChildren == false)
+                {
+                    //CNINT (second_tree.value, first_tree ); // наоборот
+                    //return
+                }
+                //обе фигуры невыпуклые
+                /*
+                    //проверка на пересечение CNINT first.value и second_tree
+                    если пересечение пусто
+                    return null
+                    иначе делать текст ниже:
+                */
+                List<Tree<List<Line>>> Child_List = null;
+                Child_List = first_tree.localChildren;
+                foreach (Tree<List<Line>> Elem in Child_List) //обход дерева
+                {
+
+                    //local_intersection = CNINT ( 
+                }
+            }
+            return result;
+        }
+
+        IFigure IGeometryForLogic.Subtraction(IFigure first, IFigure second)
+        {
+            throw new NotImplementedException();
+        }
+
+        IFigure IGeometryForLogic.Union(IFigure first, IFigure second)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Interfaces
 {
+    using tree_class;
     public struct Parameter
     {
         public string Name { get; set; }
@@ -152,6 +153,11 @@ namespace Interfaces
         IFigure Transform(ITransformation transform);
         /*Трансформация возвращает новую фигуру, трансформированную. однако очевидно что после этого
           фигура может сменить свой тип.*/
+        //
+        Tree<List<Line>> Build_CHT(List<Line> pe); // структура во входных параметрах - вещь неправильная, но пока я откровенно забил, и хоть как-то работаю.
+        List<Line> Build_figure_from_CHT(Tree<List<Line>> CHT);
+        List<Point> Build_Convex_Hull(List<Line> pe);
+        //
     }
 }
 
