@@ -16,7 +16,7 @@ namespace test_editor
             else return angle;
         }
 
-        private bool ConvexHull()
+        protected bool ConvexHull()
         {
             List<Point> _CopyFigureBody = _figureBorder;
 
