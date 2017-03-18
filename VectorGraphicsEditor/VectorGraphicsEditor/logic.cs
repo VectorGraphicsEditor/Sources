@@ -53,7 +53,15 @@ namespace Logic
             //IFigure Fig = MakeFigure(Point beg, Point end, int type);
            // Figures.addNewFigure(Fig);
         }
-        
+
+        // 1. Так как для треугольника точек начала и конца не хватит, то предлагаю передавать их через массив.
+        // 2. Также наверно стоит возвращать успешность операции. 
+        public bool addFigure(Interfaces.Point[] points, string type)
+        {
+            // TODO
+            return true;
+        }
+
         //Удаление выбранных фигур
         public void removeFigures()
         {
