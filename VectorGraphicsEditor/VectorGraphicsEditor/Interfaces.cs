@@ -16,7 +16,9 @@ namespace Interfaces
 
     public interface ICommand
     {
-        //...
+        bool CanExecute(object x);
+
+        void Execute(object x);
     }
 
     public abstract class Segment
@@ -163,9 +165,15 @@ namespace Logic
     {
         IEnumerable<IFigure> Figures { get; }
         Interfaces.Point ToScreen(Interfaces.Point xy);
+    }
 
-        /*Тут будут функции заказа команды у фабрики и все такое*/
- 
+    public interface ILogicForCommand
+    {
+        int CountFigures { get; }
+        int CountCurientFigures { get; }
+        void addFigure(IFigure fig);
+
+        void removeFigures();
     }
 }
 
