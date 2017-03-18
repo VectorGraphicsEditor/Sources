@@ -58,6 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants.cs" />
     <Compile Include="Container.cs" />
     <Compile Include="FigureFactory.cs" />
     <Compile Include="Figures.cs" />

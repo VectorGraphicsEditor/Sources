@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-
+using VectorGraphicsEditor;
 
 namespace Interfaces
 {
@@ -71,7 +70,10 @@ namespace Interfaces
 
         public bool Equals(Point x, Point y)
         {
-            return (x.X == y.X && x.Y == y.Y);
+            return (
+                Math.Abs(x.X - y.X) < Constants.epsForEqualPoints &&
+                Math.Abs(x.Y - y.Y) < Constants.epsForEqualPoints
+                );
         }
 
         public int GetHashCode(Point obj)
