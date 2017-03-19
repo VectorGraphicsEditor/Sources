@@ -12,7 +12,7 @@ namespace Interfaces
         public string Name { get; set; }
         public object Value { get; set; }
     }
-
+        
     public interface ICommand
     {
         bool CanExecute(object x);

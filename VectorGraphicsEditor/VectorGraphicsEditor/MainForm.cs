@@ -11,12 +11,17 @@ namespace VectorGraphicsEditor
 {
     public partial class MainForm : Form
     {
-        Logic.ILogicForGUI logic = new Logic.logic();
+        Container containerFigures = new Logic.Container();
+
+        // Наименьший dpi 
+        double minDpi = 1;
 
         private enum Figures {
             Line,
             Quadrangle,
-            Triangle
+            Triangle,
+            Circle,
+            Ellipse
         };
 
         // Временно
@@ -45,7 +50,9 @@ namespace VectorGraphicsEditor
         };
 
         private Interfaces.Point[] last3Points;
-        
+        private Interfaces.Color borderColor = new Interfaces.Color(0, 0, 0, 255);
+        private Interfaces.Color fillColor = new Interfaces.Color(0, 0, 255, 10);
+
         private int iPointTriangle = 0;
 
         private bool isMouseDown = false;
@@ -114,78 +121,6 @@ namespace VectorGraphicsEditor
             last3Points[2] = lastPoint;
         }
         
-        private void openGLControlView_MouseDown(object sender, MouseEventArgs e)
-        {
-            bool result = true;
-            if (isModeSelectFigures)
-            {
-                // logic.SelectFigure(e.X, e.Y);
-            }
-            else
-            {
-                AddNewLastPoint(new Interfaces.Point(e.X, e.Y));
-
-                if (selectedFigure == Figures.Triangle)
-                {
-                    if (iPointTriangle > 2)
-                    {
-                        iPointTriangle = 1;
-                    }
-                    else if(iPointTriangle == 2)
-                    {
-                        iPointTriangle++;
-                        //result = logic.addFigure(last3Points, "triangle");
-
-                        if (!result)
-                        {
-                            // Ошибка добавления новой фигуры
-                        }
-                    }
-                    else
-                    {
-                        iPointTriangle++;
-                    }
-                }
-
-
-                isMouseDown = true;
-                isStartDrag = true;
-                isChangedOpenGLView = true;
-            }
-        }
-
-        private void openGLControlView_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (!isLoadOpenGLView) return;
-
-            if (isMouseDown && (selectedFigure != Figures.Triangle))
-            {
-                if (isStartDrag)
-                {
-                    AddNewLastPoint(new Interfaces.Point(e.X, e.Y));
-                }
-
-                last3Points[2] = new Interfaces.Point(e.X, e.Y);
-
-                isChangedOpenGLView = true;
-            }
-            isStartDrag = false;
-        }
-        
-        private void openGLControlView_MouseWheel(object sender, MouseEventArgs e)
-        {
-            if (!isLoadOpenGLView) return;
-
-            if (e.Delta < 0)
-            {
-                zoomOpenGLView *= 1.05f;
-            }
-            else
-            {
-                zoomOpenGLView *= 0.95f;
-            }
-            isChangedOpenGLView = true;
-        }
 
         private void buttonRect_Click(object sender, EventArgs e)
         {
@@ -242,6 +177,95 @@ namespace VectorGraphicsEditor
             gl.End();
         }
 
+        void DrawEllipse(OpenGL gl, Interfaces.Point leftUpperPoint, Interfaces.Point rightDownPoint, int numSegments)
+        {
+            Interfaces.Point centerPoint = new Interfaces.Point(leftUpperPoint.X + (rightDownPoint.X - leftUpperPoint.X) / 2.0, leftUpperPoint.Y + (rightDownPoint.Y - leftUpperPoint.Y) / 2.0);
+            Interfaces.Point r = new Interfaces.Point(Math.Abs(rightDownPoint.X - centerPoint.X), Math.Abs(rightDownPoint.Y - centerPoint.Y));
+            double theta = 2.0 * Math.PI / (double)(numSegments);
+            double cos = Math.Cos(theta);
+            double sin = Math.Sin(theta);
+            double t;
+
+            double x = 1;
+            double y = 0;
+
+            gl.Color(0, 0, 0);
+            gl.Begin(OpenGL.GL_LINE_LOOP);
+            for (int ii = 0; ii < numSegments; ii++)
+            {
+                // Радиус и отступ
+                gl.Vertex(x * r.X + centerPoint.X, openGLControlView.Height - (y * r.Y + centerPoint.Y));
+
+                // Матрица поворота
+                t = x;
+                x = cos * x - sin * y;
+                y = sin * t + cos * y;
+            }
+            gl.End();
+
+
+            x = 1;
+            y = 0;
+
+            gl.Color(0, 0, 255, 0.14);
+            gl.Begin(OpenGL.GL_POLYGON);
+            for (int ii = 0; ii < numSegments; ii++)
+            {
+                // Радиус и отступ
+                gl.Vertex(x * r.X + centerPoint.X, openGLControlView.Height - (y * r.Y + centerPoint.Y));
+
+                // Матрица поворота
+                t = x;
+                x = cos * x - sin * y;
+                y = sin * t + cos * y;
+            }
+            gl.End();
+        }
+
+        void DrawCircle(OpenGL gl, Interfaces.Point centerPoint, Interfaces.Point borderPoint, int numSegments)
+        {
+            double r = Math.Sqrt((borderPoint.X - centerPoint.X) * (borderPoint.X - centerPoint.X) + (borderPoint.Y - centerPoint.Y) * (borderPoint.Y - centerPoint.Y));
+            double theta = 2.0 * Math.PI / (double)(numSegments);
+            double cos = Math.Cos(theta);
+            double sin = Math.Sin(theta);
+            double t;
+
+            double x = 1;
+            double y = 0;
+
+            gl.Color(0, 0, 0);
+            gl.Begin(OpenGL.GL_LINE_LOOP);
+            for (int ii = 0; ii < numSegments; ii++)
+            {
+                // Радиус и отступ
+                gl.Vertex(x * r + centerPoint.X, openGLControlView.Height - (y * r + centerPoint.Y));
+
+                // Матрица поворота
+                t = x;
+                x = cos * x - sin * y;
+                y = sin * t + cos * y;
+            }
+            gl.End();
+
+
+            x = 1;
+            y = 0;
+
+            gl.Color(0, 0, 255, 0.14);
+            gl.Begin(OpenGL.GL_POLYGON);
+            for (int ii = 0; ii < numSegments; ii++)
+            {
+                // Радиус и отступ
+                gl.Vertex(x * r + centerPoint.X, openGLControlView.Height - (y * r + centerPoint.Y));
+
+                // Матрица поворота
+                t = x;
+                x = cos * x - sin * y;
+                y = sin * t + cos * y;
+            }
+            gl.End();
+        }
+
 
         private void DrawPoints(OpenGL gl)
         {
@@ -257,12 +281,9 @@ namespace VectorGraphicsEditor
 
         private void DrawLine(OpenGL gl, Interfaces.Point firstPoint, Interfaces.Point lastPoint)
         {
+            gl.Color(0, 0, 0);
             gl.Begin(OpenGL.GL_LINES);
-
-            gl.Color(0, 0, 0);
             gl.Vertex(firstPoint.X, openGLControlView.Height - firstPoint.Y);
-
-            gl.Color(0, 0, 0);
             gl.Vertex(lastPoint.X, openGLControlView.Height - lastPoint.Y);
             gl.End();
         }
@@ -273,29 +294,41 @@ namespace VectorGraphicsEditor
             int contextWidth = openGLControlView.Width;
             int contextHeight = openGLControlView.Height;
             preGL2D(gl, openGLControlView.Width, openGLControlView.Height);
-
-
+            
             Graphics graphics = this.CreateGraphics();
 
             // Берем наименьший dpi 
-            //double minDpi = Math.Min(graphics.DpiX, graphics.DpiY);
+            minDpi = Math.Min(graphics.DpiX, graphics.DpiY);
+                        
+            //foreach (var obj in listForDisplay)
+            //{
+            //    foreach (var line in obj)
+            //    {
+            //        int i = 0;
+            //        Interfaces.Point[] pointsLines = new Interfaces.Point[3];
+            //        foreach (var path in line.Path)
+            //        {
+            //            pointsLines[i] = path;
+            //            i++;
+            //        }
 
-            //IEnumerable<Interfaces.IFigure> figures = logic.Figures;
+            //        DrawTriangle(gl, pointsLines);
+            //    }
+            //}
 
-            
-            foreach (var obj in listForDisplay)
+            List<IFigure> figures = containerFigures.getFigures();
+            Dictionary<string, object> figureParameters;
+
+            foreach (var figure in figures)
             {
-                foreach (var line in obj)
+                figureParameters = figure.Parameters;
+                if (figure is Rectangle)
                 {
-                    int i = 0;
-                    Interfaces.Point[] pointsLines = new Interfaces.Point[3];
-                    foreach (var path in line.Path)
-                    {
-                        pointsLines[i] = path;
-                        i++;
-                    }
-
-                    DrawTriangle(gl, pointsLines);
+                    //Interfaces.Point leftDownPoint = (Interfaces.Point)figureParameters["DownLeft"];
+                    //Interfaces.Point rightUpPoint = (Interfaces.Point)figureParameters["UpRight"];
+                    //DrawQuadrangle(gl,
+                    //    new Interfaces.Point(leftDownPoint.X, rightUpPoint.Y),
+                    //    new Interfaces.Point(rightUpPoint.X, leftDownPoint.Y));
                 }
             }
 
@@ -326,12 +359,107 @@ namespace VectorGraphicsEditor
                         new Interfaces.Point(last3Points[1].X, last3Points[1].Y),
                         new Interfaces.Point(last3Points[2].X, last3Points[2].Y));
                     break;
+                case Figures.Ellipse:
+                    DrawEllipse(gl,
+                        new Interfaces.Point(last3Points[1].X, last3Points[1].Y),
+                        new Interfaces.Point(last3Points[2].X, last3Points[2].Y),
+                        360
+                        );
+                    break;
+                case Figures.Circle:
+                    DrawCircle(gl,
+                        new Interfaces.Point(last3Points[1].X, last3Points[1].Y),
+                        new Interfaces.Point(last3Points[2].X, last3Points[2].Y),
+                        360
+                        );
+                    break;
             }
 
             gl.Flush();
             gl.Finish();
         }
 
+        private void openGLControlView_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (isModeSelectFigures)
+            {
+                // logic.SelectFigure(e.X, e.Y);
+            }
+            else
+            {
+                AddNewLastPoint(new Interfaces.Point(e.X, e.Y));
+
+                if (selectedFigure == Figures.Triangle)
+                {
+                    if (iPointTriangle > 2)
+                    {
+                        iPointTriangle = 1;
+                    }
+                    else if (iPointTriangle == 2)
+                    {
+                        iPointTriangle++;
+
+                        //IFigure figure = Factory.Create(
+                        //    "Triangle",
+                        //    new Dictionary<string, object>()
+                        //    {
+                        //        { "Point1", last3Points[0] },
+                        //        { "Point2", last3Points[1] },
+                        //        { "Point3", last3Points[2] }
+                        //    });
+
+                        //containerFigures.addNewFigure(figure);
+                    }
+                    else
+                    {
+                        iPointTriangle++;
+                    }
+                }
+                else
+                {
+                    last3Points[0] = new Interfaces.Point(e.X, e.Y);
+                    last3Points[1] = new Interfaces.Point(e.X, e.Y);
+                    last3Points[2] = new Interfaces.Point(e.X, e.Y);
+                }
+
+                isMouseDown = true;
+                isStartDrag = true;
+                isChangedOpenGLView = true;
+            }
+        }
+
+        private void openGLControlView_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (!isLoadOpenGLView) return;
+
+            if (isMouseDown && (selectedFigure != Figures.Triangle))
+            {
+                if (isStartDrag)
+                {
+                    last3Points[2] = new Interfaces.Point(e.X, e.Y);
+                }
+
+                last3Points[2] = new Interfaces.Point(e.X, e.Y);
+
+                isChangedOpenGLView = true;
+            }
+            isStartDrag = false;
+        }
+
+        private void openGLControlView_MouseWheel(object sender, MouseEventArgs e)
+        {
+            if (!isLoadOpenGLView) return;
+
+            if (e.Delta < 0)
+            {
+                zoomOpenGLView *= 1.05f;
+            }
+            else
+            {
+                zoomOpenGLView *= 0.95f;
+            }
+            isChangedOpenGLView = true;
+        }
         private void openGLControlView_OpenGLDraw(object sender, RenderEventArgs args)
         {
             if (!isLoadOpenGLView) return;
@@ -349,8 +477,64 @@ namespace VectorGraphicsEditor
 
         private void openGLControlView_MouseUp(object sender, MouseEventArgs e)
         {
-            // Logic.IGUI.executeCommand("mouse_down", false);
             isMouseDown = false;
+            
+            switch (selectedFigure)
+            {
+                case Figures.Line:
+                    
+                    //containerFigures.addNewFigure(
+                    //    Factory.Create(
+                    //    "Line",
+                    //    new Dictionary<string, object>()
+                    //    {
+                    //        { "Point1", last3Points[1] },
+                    //        { "Point2", last3Points[2] }
+                    //    })
+                    //);
+                    break;
+                case Figures.Quadrangle:
+
+                    containerFigures.addNewFigure(
+                        Factory.Create(
+                        "Rectangle",
+                        new Dictionary<string, object>()
+                        {
+                            { "DownLeft", new Interfaces.Point(last3Points[1].X, last3Points[2].Y)  },
+                            { "UpRight", new Interfaces.Point(last3Points[2].X, last3Points[1].Y) },
+                            { "BorderColor", borderColor},
+                            { "FillColor", fillColor}
+                        })
+                    );
+                    break;
+
+                case Figures.Circle:
+
+                    //containerFigures.addNewFigure(
+                    //    Factory.Create(
+                    //    "Circle",
+                    //    new Dictionary<string, object>()
+                    //    {
+                    //        { "Point1", last3Points[1] },
+                    //        { "Point2", last3Points[2] }
+                    //    })
+                    //);
+                    break;
+
+                case Figures.Ellipse:
+
+                    //containerFigures.addNewFigure(
+                    //    Factory.Create(
+                    //    "Ellipse",
+                    //    new Dictionary<string, object>()
+                    //    {
+                    //        { "Point1", last3Points[1] },
+                    //        { "Point2", last3Points[2] }
+                    //    })
+                    //);
+                    break;
+            }
+            isStartDrag = false;
         }
 
         private void buttonTriangle_Click(object sender, EventArgs e)
@@ -376,6 +560,16 @@ namespace VectorGraphicsEditor
         private void сохранитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //logic.executeCommand("save");
+        }
+
+        private void buttonEllipse_Click(object sender, EventArgs e)
+        {
+            selectedFigure = Figures.Ellipse;
+        }
+
+        private void buttonCircle_Click(object sender, EventArgs e)
+        {
+            selectedFigure = Figures.Circle;
         }
     }
 }
