@@ -228,10 +228,16 @@ namespace test_editor
                         break;
                     }
                 }
-                edgeWithPoint[0] = beg;
-                edgeWithPoint[1] = end;
 
-                return "On the border";
+                if (point.X >= beg.X && point.X <= end.X ||
+                    point.X <= beg.X && point.X >= end.X )
+                {
+                    edgeWithPoint[0] = beg;
+                    edgeWithPoint[1] = end;
+
+                    return "On the border";
+                }
+                else return "External";
             }
 
             else
@@ -260,14 +266,13 @@ namespace test_editor
                 Point D = new Point();
 
                 int intersections = 0;
-                _figureBorder.Add(_figureBorder.First());
                 for (int i = 0; i < _figureBorder.Count - 1; i++)
                 {
+                    if (_figureBorder[i] == null || _figureBorder[i + 1] == null) continue;
                     C = _figureBorder[i];
                     D = new Point(_figureBorder[i + 1].X + ClosenessMeasure, _figureBorder[i + 1].Y + ClosenessMeasure);
                     if (IslinesIntersect(A, B, C, D)) intersections++;
                 }
-                _figureBorder.RemoveAt(_figureBorder.Count - 1);
                 return (intersections % 2 != 0);
             }
         }
@@ -279,13 +284,17 @@ namespace test_editor
             //y=kx+b
             double k = (A.Y - B.Y) / (A.X - B.X);
             double b = B.Y - k * B.X;
-            return (Math.Abs(purpose.Y - k * purpose.X - b) < ClosenessMeasure);
+            bool flag = (purpose.X <= A.X && purpose.X >= B.X ||
+                purpose.X >= A.X && purpose.X <= B.X);
+            return (Math.Abs(purpose.Y - k * purpose.X - b) < ClosenessMeasure && flag);
         }
 
         protected void CreateTriangulation()
         {   //просто одно ребро, потом понадобится
             Point[] edge;
             _triangles = new List<trTriangle>();
+            _figureBorder = new List<Point>();
+            foreach (var Border in _onlyPoints) _figureBorder.AddRange(Border);
             //начальная триангуляция с исползованием выпуклой оболочки
             for (int i = 0; i < _convexHull.Count - 2; i++)
             {
@@ -312,6 +321,7 @@ namespace test_editor
                 //вершины внутри выпуклой оболочки и не на границе
                 List<Point> innerPoints = new List<Point>();
 
+DeleteBoundaryPoints:
                 for (int i = 0; i < InnerOrBoundary.Count; i++)
                 {
 
@@ -328,11 +338,12 @@ namespace test_editor
                         innerPoints.Add(InnerOrBoundary[i]);
                     }
                 }
+
                 #endregion
                 //теперь у нас есть соответствие (вершина на ребре - ребро - треугольники, для которых это ребро смежное)
                 //+ вершины не на ребрах
 
-                DeleteBoundaryPoints:
+                
                 #region нейтрализация вершин на границах
                 //Вместо двух треугольников запихаем четыре.
                 while (boundaryTriangles.Count != 0)
@@ -400,16 +411,32 @@ namespace test_editor
                     boundaryPoints.AddRange(innerPoints.FindAll(x => IsPointAtLine(x, externalTriangle.A, considered)));
                     boundaryPoints.AddRange(innerPoints.FindAll(x => IsPointAtLine(x, externalTriangle.B, considered)));
                     boundaryPoints.AddRange(innerPoints.FindAll(x => IsPointAtLine(x, externalTriangle.C, considered)));
-
+                    innerPoints.RemoveAll(x => boundaryPoints.Contains(x));
                     //если в итоге такие точки есть, то по новой их удалять
-                    if (boundaryPoints.Count != 0) goto DeleteBoundaryPoints;
+                    if (boundaryPoints.Count != 0)
+                    {
+                        //очень плохая идея и некачественный код
+                        InnerOrBoundary.Clear();
+                        InnerOrBoundary.AddRange(boundaryPoints);
+                        boundaryPoints.Clear();
+                        goto DeleteBoundaryPoints;
+                    }
                 }
                 #endregion
 
 
                 #region коррекция пересечения ребер с треугольниками в триангуляции
+                _figureBorder.Clear();
+                foreach (List<Point> Border in _onlyPoints)
+                {
+                    _figureBorder.AddRange(Border);
+                    _figureBorder.Add(Border[0]);
+                    _figureBorder.Add(null);
+                }
+                
                 for (int i = 0; i < _figureBorder.Count - 1; i++)
                 {//организовать цикл по всем ребрам, включая последнее
+                    if (_figureBorder[i] == null || _figureBorder[i + 1] == null) continue;
                     edge[0] = _figureBorder[i];
                     edge[1] = _figureBorder[i + 1];
                     List<int> ToRemove = new List<int>();

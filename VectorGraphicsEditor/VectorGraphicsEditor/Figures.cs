@@ -137,7 +137,7 @@ namespace VectorGraphicsEditor
 
         public override Tuple<IEnumerable<Interfaces.trTriangle>, IEnumerable<ILineContainer>> NewTriangulation(double eps)
         {
-
+            throw new NotImplementedException();
         }
 
         public override IFigure Clone(Dictionary<string, object> parms)
@@ -295,7 +295,8 @@ namespace VectorGraphicsEditor
     {
         public Test()
         {
-            _figureBorder = new List<Point>()
+            _onlyPoints = new List<List<Point>>
+            { new List<Point>()
             {
                 new Point(2, 2),
                 new Point(4, 5),
@@ -305,6 +306,14 @@ namespace VectorGraphicsEditor
                 new Point(7, 8),
                 new Point(3, 8),
                 new Point(1, 5)
+            }, 
+            new List<Point>()
+            {
+                new Point(0, 0),
+                new Point(0, 10),
+                new Point(10, 10),
+                new Point(10, 0)
+            }
             };
             ConvexHull();
             CreateTriangulation();
