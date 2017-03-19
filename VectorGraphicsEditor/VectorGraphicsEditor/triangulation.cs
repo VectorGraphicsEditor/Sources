@@ -9,6 +9,7 @@ namespace test_editor
 {
     public abstract partial class Figure : IFigure
     {
+        //Все, что обслуживает триангуляцию по точкам
         private double PolarAngle(Point p0, Point p1)
         {
             double angle = Math.Atan2(p1.Y - p0.Y, p1.X - p0.X);
@@ -18,7 +19,12 @@ namespace test_editor
 
         protected bool ConvexHull()
         {
-            List<Point> _CopyFigureBody = _figureBorder;
+            List<Point> _CopyFigureBody = new List<Point>();
+            foreach (var elem in _onlyPoints)
+            {
+                _CopyFigureBody.AddRange(elem);
+            }
+
 
             _CopyFigureBody = _CopyFigureBody.OrderByDescending(point => point.X).ThenBy(point => point.Y).ToList();
             Point p0 = _CopyFigureBody[0];
@@ -69,7 +75,7 @@ namespace test_editor
             double b1 = C.X - A.X;
             double b2 = C.Y - A.Y;
             double intersectionX = (b1 * a22 - b2 * a12) / det;
-            double intersectionY = (b2 * a11 - b1 * a12) / det;
+            double intersectionY = (b2 * a11 - b1 * a21) / det;
 
             return (intersectionX < 1 && intersectionX > 0 &&
                 intersectionY < 1 && intersectionY > 0);
@@ -262,7 +268,7 @@ namespace test_editor
                     if (IslinesIntersect(A, B, C, D)) intersections++;
                 }
                 _figureBorder.RemoveAt(_figureBorder.Count - 1);
-                return (intersections % 2 == 0);
+                return (intersections % 2 != 0);
             }
         }
 

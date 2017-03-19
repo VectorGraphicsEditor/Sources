@@ -8,6 +8,21 @@ using test_editor;
 
 namespace VectorGraphicsEditor
 {
+    public class SpecPath : ILineContainer
+    {
+        public IEnumerable<Point> Path
+        {
+            get
+            {
+                return Path;
+            }
+            set
+            {
+                Path = value;
+            }
+        }
+    }
+
     public class Rectangle : Figure
     {
         public Rectangle(Point DownLeft, Point UpRight, Color BorderColor, Color FillColor)
@@ -61,9 +76,15 @@ namespace VectorGraphicsEditor
             throw new NotImplementedException();
         }
 
+        
         public override Tuple<IEnumerable<trTriangle>, IEnumerable<ILineContainer>> NewTriangulation(double eps)
         {
-            throw new NotImplementedException();
+            SpecPath path = new SpecPath();
+            path.Path = _figureBorder;
+            List<ILineContainer> ToReturn = new List<ILineContainer>() {path};
+            return new 
+                Tuple<IEnumerable<trTriangle>, IEnumerable<ILineContainer>>
+                (_triangles, ToReturn);
         }
 
         public override IFigure Transform(ITransformation transform)
@@ -116,7 +137,7 @@ namespace VectorGraphicsEditor
 
         public override Tuple<IEnumerable<Interfaces.trTriangle>, IEnumerable<ILineContainer>> NewTriangulation(double eps)
         {
-            throw new NotImplementedException();
+
         }
 
         public override IFigure Clone(Dictionary<string, object> parms)

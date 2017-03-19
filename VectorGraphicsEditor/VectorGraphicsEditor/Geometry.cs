@@ -24,6 +24,7 @@ namespace test_editor
         protected List<trTriangle> _triangles { get; set; }
         protected List<Point> _convexHull { get; set; }
         protected List<Point> _figureBorder { get; set; }
+        protected List<List<Point>> _onlyPoints { get; set; }
 
         public abstract string type { get; set; }
         public abstract Dictionary<string, object> Parameters { get; set; }
