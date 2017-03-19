@@ -11,8 +11,8 @@ namespace test_editor
     {
         private double PolarAngle(Point p0, Point p1)
         {
-            double angle = Math.Atan((p1.Y - p0.Y) / (p1.X - p0.X));
-            if (angle < 0) return Math.PI + angle;
+            double angle = Math.Atan2(p1.Y - p0.Y, p1.X - p0.X);
+            if (angle < 0) return 2 * Math.PI + angle;
             else return angle;
         }
 
@@ -20,11 +20,11 @@ namespace test_editor
         {
             List<Point> _CopyFigureBody = _figureBorder;
 
-            _CopyFigureBody.OrderByDescending(point => point.X).ThenBy(point => point.Y).ToList();
+            _CopyFigureBody = _CopyFigureBody.OrderByDescending(point => point.X).ThenBy(point => point.Y).ToList();
             Point p0 = _CopyFigureBody[0];
             _CopyFigureBody.Remove(p0);
 
-            _CopyFigureBody.OrderBy(point => PolarAngle(p0, point)).ThenBy(point => Math.Sqrt(Math.Pow(p0.X - point.X, 2) + Math.Pow(p0.Y - point.Y, 2))).ToList();
+            _CopyFigureBody = _CopyFigureBody.OrderBy(point => PolarAngle(p0, point)).ThenBy(point => Math.Sqrt(Math.Pow(p0.X - point.X, 2) + Math.Pow(p0.Y - point.Y, 2))).ToList();
             var S = new Stack<Point>();
             S.Push(p0);
             S.Push(_CopyFigureBody[0]);
@@ -36,12 +36,14 @@ namespace test_editor
             {
                 Point u = new Point(Top.X - NextToTop.X, Top.Y - NextToTop.Y);
                 Point v = new Point(_CopyFigureBody[i].X - Top.X, _CopyFigureBody[i].Y - Top.Y);
-                while (u.X * v.Y - u.Y * v.X < 0)
+                while (u.X * v.Y - u.Y * v.X <= 0)
                 {
                     S.Pop();
                     Top = S.Pop();
                     NextToTop = S.Peek();
                     S.Push(Top);
+                    u = new Point(Top.X - NextToTop.X, Top.Y - NextToTop.Y);
+                    v = new Point(_CopyFigureBody[i].X - Top.X, _CopyFigureBody[i].Y - Top.Y);
                 }
                 NextToTop = S.Peek();
                 S.Push(_CopyFigureBody[i]);
@@ -51,6 +53,7 @@ namespace test_editor
             //ты хотел bool - держи
             return true;
         }
+
 
         private bool IslinesIntersect(Point A, Point B, Point C, Point D)
         {//SLAE coeffs
@@ -71,6 +74,12 @@ namespace test_editor
             return (intersectionX < 1 && intersectionX > 0 &&
                 intersectionY < 1 && intersectionY > 0);
         }
+        public void Swap<T>(ref T A, ref T B)
+        {
+            T temp = A;
+            A = B;
+            B = temp;
+        }
         private Point getLinesIntersect(Point A, Point B, Point C, Point D)
         {
             double a11 = B.X - A.X;
@@ -85,7 +94,7 @@ namespace test_editor
             double b1 = C.X - A.X;
             double b2 = C.Y - A.Y;
             double intersectionX = (b1 * a22 - b2 * a12) / det;
-            double intersectionY = (b2 * a11 - b1 * a12) / det;
+            double intersectionY = (b2 * a11 - b1 * a21) / det;
 
             if (intersectionX < 1 && intersectionX > ClosenessMeasure &&
                 intersectionY < 1 && intersectionY > ClosenessMeasure)
@@ -150,6 +159,18 @@ namespace test_editor
 
                 //возьмем то ребро, которое она не пересекает
                 Point[] OnNonIntersctEdge = all.Find(item => item.intersection == null).segmt;
+
+                //чтобы точно сделать из двух ребер два треугольника (непересекающихся)
+                //нужно отсортировать точки в них
+                if (OnNonIntersctEdge[0].Y > OnNonIntersctEdge[1].Y)
+                    Swap(ref OnNonIntersctEdge[0], ref OnNonIntersctEdge[1]);
+                //не буду писать метод для одной замены
+                if (intersectVertex[0].Y > intersectVertex[1].Y)
+                {
+                    var temp = intersectVertex[0];
+                    intersectVertex[0] = intersectVertex[1];
+                    intersectVertex[1] = temp;
+                }
                 result.Add(new trTriangle(OnNonIntersctEdge[0], intersectVertex[0], intersectVertex[1]));
                 result.Add(new trTriangle(OnNonIntersctEdge[0], OnNonIntersctEdge[1], intersectVertex[1]));
 
@@ -241,7 +262,7 @@ namespace test_editor
                     if (IslinesIntersect(A, B, C, D)) intersections++;
                 }
                 _figureBorder.RemoveAt(_figureBorder.Count - 1);
-                return (intersections % 2 != 1);
+                return (intersections % 2 == 0);
             }
         }
 
@@ -255,10 +276,10 @@ namespace test_editor
             return (Math.Abs(purpose.Y - k * purpose.X - b) < ClosenessMeasure);
         }
 
-        private void CreateTriangulation()
+        protected void CreateTriangulation()
         {   //просто одно ребро, потом понадобится
             Point[] edge;
-
+            _triangles = new List<trTriangle>();
             //начальная триангуляция с исползованием выпуклой оболочки
             for (int i = 0; i < _convexHull.Count - 2; i++)
             {
@@ -378,6 +399,7 @@ namespace test_editor
                     if (boundaryPoints.Count != 0) goto DeleteBoundaryPoints;
                 }
                 #endregion
+
 
                 #region коррекция пересечения ребер с треугольниками в триангуляции
                 for (int i = 0; i < _figureBorder.Count - 1; i++)

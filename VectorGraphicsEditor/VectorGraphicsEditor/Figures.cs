@@ -277,15 +277,16 @@ namespace VectorGraphicsEditor
             _figureBorder = new List<Point>()
             {
                 new Point(2, 2),
+                new Point(4, 5),
+                new Point(6, 6),
                 new Point(6, 2),
-                new Point(7, 4),
                 new Point(9, 4),
                 new Point(7, 8),
                 new Point(3, 8),
-                new Point(5, 2)
+                new Point(1, 5)
             };
             ConvexHull();
-            
+            CreateTriangulation();
     }
        
         #region интерфейс
