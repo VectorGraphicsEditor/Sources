@@ -24,8 +24,13 @@ namespace VectorGraphicsEditor
             //                                  new Color(0, 0, 0),
             //                                  new Color(255, 255, 255)
             //                                  );
+
+            // prototypes["Triangle"] = new Triangle(new Point(0, 0),
+            //                                      new Point(1, 0),
+            //                                      new Point(0, 0),
+            //                                      new Color(0, 0, 0),
+            //                                      new Color(255, 255, 255));
             prototypes["Mutant_"+(prototypes.Count()).ToString()] = new Mutant(new List<Segment>());
-            
         }
         public static IFigure Create(string type, Dictionary<string, object> parms)
         {

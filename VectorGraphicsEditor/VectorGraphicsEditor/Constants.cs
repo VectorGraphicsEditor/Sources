@@ -9,6 +9,6 @@ namespace VectorGraphicsEditor
     public static class Constants
     {
         // Эпсилон для сравнения точек
-        public static double epsForEqualPoints = 10E-10;
+        public const double epsForEqualPoints = 10E-10;
     }
 }
