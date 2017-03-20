@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-
+using VectorGraphicsEditor;
 
 namespace Interfaces
 {
@@ -13,10 +12,12 @@ namespace Interfaces
         public string Name { get; set; }
         public object Value { get; set; }
     }
-
+        
     public interface ICommand
     {
-        //...
+        bool CanExecute(object x);
+
+        void Execute(object x);
     }
 
     public abstract class Segment
@@ -69,7 +70,10 @@ namespace Interfaces
 
         public bool Equals(Point x, Point y)
         {
-            return (x.X == y.X && x.Y == y.Y);
+            return (
+                Math.Abs(x.X - y.X) < Constants.epsForEqualPoints &&
+                Math.Abs(x.Y - y.Y) < Constants.epsForEqualPoints
+                );
         }
 
         public int GetHashCode(Point obj)
@@ -163,9 +167,15 @@ namespace Logic
     {
         IEnumerable<IFigure> Figures { get; }
         Interfaces.Point ToScreen(Interfaces.Point xy);
+    }
 
-        /*Тут будут функции заказа команды у фабрики и все такое*/
- 
+    public interface ILogicForCommand
+    {
+        int CountFigures { get; }
+        int CountCurientFigures { get; }
+        void addFigure(IFigure fig);
+
+        void removeFigures();
     }
 }
 

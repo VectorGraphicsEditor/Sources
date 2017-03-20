@@ -38,6 +38,10 @@
             this.справкаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.buttonRect = new System.Windows.Forms.Button();
             this.buttonLine = new System.Windows.Forms.Button();
+            this.buttonTriangle = new System.Windows.Forms.Button();
+            this.buttonSelectFigure = new System.Windows.Forms.Button();
+            this.buttonEllipse = new System.Windows.Forms.Button();
+            this.buttonCircle = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.openGLControlView)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -85,18 +89,21 @@
             this.открытьToolStripMenuItem.Name = "открытьToolStripMenuItem";
             this.открытьToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.открытьToolStripMenuItem.Text = "Создать";
+            this.открытьToolStripMenuItem.Click += new System.EventHandler(this.открытьToolStripMenuItem_Click);
             // 
             // открытьToolStripMenuItem1
             // 
             this.открытьToolStripMenuItem1.Name = "открытьToolStripMenuItem1";
             this.открытьToolStripMenuItem1.Size = new System.Drawing.Size(132, 22);
             this.открытьToolStripMenuItem1.Text = "Открыть";
+            this.открытьToolStripMenuItem1.Click += new System.EventHandler(this.открытьToolStripMenuItem1_Click);
             // 
             // сохранитьToolStripMenuItem
             // 
             this.сохранитьToolStripMenuItem.Name = "сохранитьToolStripMenuItem";
             this.сохранитьToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.сохранитьToolStripMenuItem.Text = "Сохранить";
+            this.сохранитьToolStripMenuItem.Click += new System.EventHandler(this.сохранитьToolStripMenuItem_Click);
             // 
             // справкаToolStripMenuItem
             // 
@@ -124,11 +131,55 @@
             this.buttonLine.UseVisualStyleBackColor = true;
             this.buttonLine.Click += new System.EventHandler(this.buttonLine_Click);
             // 
+            // buttonTriangle
+            // 
+            this.buttonTriangle.Location = new System.Drawing.Point(124, 27);
+            this.buttonTriangle.Name = "buttonTriangle";
+            this.buttonTriangle.Size = new System.Drawing.Size(97, 50);
+            this.buttonTriangle.TabIndex = 4;
+            this.buttonTriangle.Text = "Треугольник";
+            this.buttonTriangle.UseVisualStyleBackColor = true;
+            this.buttonTriangle.Click += new System.EventHandler(this.buttonTriangle_Click);
+            // 
+            // buttonSelectFigure
+            // 
+            this.buttonSelectFigure.Location = new System.Drawing.Point(433, 27);
+            this.buttonSelectFigure.Name = "buttonSelectFigure";
+            this.buttonSelectFigure.Size = new System.Drawing.Size(97, 50);
+            this.buttonSelectFigure.TabIndex = 7;
+            this.buttonSelectFigure.Text = "Выбрать фигуру";
+            this.buttonSelectFigure.UseVisualStyleBackColor = true;
+            this.buttonSelectFigure.Click += new System.EventHandler(this.buttonSelectFigure_Click);
+            // 
+            // buttonEllipse
+            // 
+            this.buttonEllipse.Location = new System.Drawing.Point(330, 27);
+            this.buttonEllipse.Name = "buttonEllipse";
+            this.buttonEllipse.Size = new System.Drawing.Size(97, 50);
+            this.buttonEllipse.TabIndex = 8;
+            this.buttonEllipse.Text = "Эллипс";
+            this.buttonEllipse.UseVisualStyleBackColor = true;
+            this.buttonEllipse.Click += new System.EventHandler(this.buttonEllipse_Click);
+            // 
+            // buttonCircle
+            // 
+            this.buttonCircle.Location = new System.Drawing.Point(227, 27);
+            this.buttonCircle.Name = "buttonCircle";
+            this.buttonCircle.Size = new System.Drawing.Size(97, 50);
+            this.buttonCircle.TabIndex = 9;
+            this.buttonCircle.Text = "Окружность";
+            this.buttonCircle.UseVisualStyleBackColor = true;
+            this.buttonCircle.Click += new System.EventHandler(this.buttonCircle_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1137, 696);
+            this.Controls.Add(this.buttonCircle);
+            this.Controls.Add(this.buttonEllipse);
+            this.Controls.Add(this.buttonSelectFigure);
+            this.Controls.Add(this.buttonTriangle);
             this.Controls.Add(this.buttonRect);
             this.Controls.Add(this.buttonLine);
             this.Controls.Add(this.openGLControlView);
@@ -156,6 +207,10 @@
         private System.Windows.Forms.ToolStripMenuItem открытьToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem сохранитьToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem справкаToolStripMenuItem;
+        private System.Windows.Forms.Button buttonTriangle;
+        private System.Windows.Forms.Button buttonSelectFigure;
+        private System.Windows.Forms.Button buttonEllipse;
+        private System.Windows.Forms.Button buttonCircle;
     }
 }
 

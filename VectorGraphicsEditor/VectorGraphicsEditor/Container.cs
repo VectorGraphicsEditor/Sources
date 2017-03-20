@@ -16,14 +16,16 @@ namespace Logic
             FiguresList = new List<IFigure>();
         }
 
-        public List<IFigure> Figure()
+        public List<IFigure> getFigures()
         {
-           
-            {
-                return FiguresList;
-            }
+             return FiguresList;
         }
-        
+
+        public IFigure getFigure(int index)
+        {
+            return FiguresList[index];
+        }
+
         public int addNewFigure(IFigure figure)
         {
             FiguresList.Add(figure);
@@ -32,12 +34,19 @@ namespace Logic
 
         public int removeFigures(List<int> index)
         {
-            index.Sort();
-            for (int i = index[index.Count - 1]; i >= 0; i--)
-                FiguresList.RemoveAt(index[i]);
-            return FiguresList.Count;
+            if (index.Count > 0)
+            {
+                index.Sort();
+                for (int i = index[index.Count - 1]; i >= 0; i--)
+                    FiguresList.RemoveAt(index[i]);
+                return FiguresList.Count;
+            }
+            else
+            {
+                FiguresList.RemoveAt(FiguresList.Count - 1);
+                return FiguresList.Count;
+            }
         }
-
 
 
         public int size()
