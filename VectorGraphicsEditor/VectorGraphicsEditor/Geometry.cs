@@ -178,17 +178,21 @@ namespace VectorGraphicsEditor
                 //обе фигуры невыпуклые
                 /*
                     //проверка на пересечение CNINT first.value и second_tree
-                    если пересечение пусто
-                    return null
+                    oi = CNINT(first_tree.value, second_tree)
+                    //если пересечение пусто
+                    if(oi == null)
+                        return null
                     иначе делать текст ниже:
-                */
+               
                 List<Tree<List<Line>>> Child_List = null;
-                Child_List = first_tree.localChildren;
+                Child_List = oi.localChildren;
                 foreach (Tree<List<Line>> Elem in Child_List) //обход дерева
                 {
 
                     //local_intersection = CNINT ( 
+                    //...
                 }
+              */
             }
             return result;
         }
@@ -202,6 +206,70 @@ namespace VectorGraphicsEditor
         {
             throw new NotImplementedException();
         }
+    }
+    public Tree<List<Line>> CNINT(Tree<List<Line>> poly1, List<Line> c_poly2)//обход по всему дереву пойдет, если узел не имеет пересечений, его потомкам не нужно искать пересечение, имхо
+    {
+        Tree<List<Line>> Res = null;
+        //Res = new Tree<List<Line>>( CCINT(poly1.value,c_poly2) )// пересечение узла и c_poly2 как 2 выпуклых фигур
+        if(poly1.HasChildren == false)
+        {
+            /*
+            return (Res);
+            */
+        }
+        /*
+        List<Tree<List<Line>>> Child_List = null;
+        Child_List = poly1.localChildren;
+        foreach (Tree<List<Line>> Child in Child_List) //обход дерева с заменой узлов на пересечения
+        {
+            Tree<List<Line>> node = CNINT(Child,c_poly2)
+            //Поставить node на место Child в имходном дереве// проверить, в шарпе ссылка(хорошо) или копирование(плохо).
+        }
+        */
+    }
+    public List<Line> CCINT(List<Line> c_poly1,List<Line> c_poly2)
+    {
+        /* Спросить у Паши уже функцию Convex Hull, я даже не знаю, что на выходе, точки или грани.
+        List<Line> CH = ... // получить выпуклую оболочку для c_poly1 + c_poly2
+        List<Line> DE1 = null;
+        List<Line> DE2 = null;
+        foreach(Line CH_Edge in CH)
+        {
+            foreach(Line Poly1_Edge in c_poly1) //овнокод?
+            {
+                if ( Poly1_Edge != CH_Edge)
+                {
+                    DE1.Add(Poly1_Edge)
+                }
+            }
+            foreach((Line Poly1_Edge in c_poly2)
+            {
+                if ( Poly2_Edge != CH_Edge)
+                {
+                    DE2.Add(Poly2_Edge)
+                }
+            }
+        }
+        //нашли все Delta Edges. Найдем точки их пересечения, точки poly1, которые внутри poly 2 и наоборот. Совокупность точек дает CH, который явл. резултатом пересечения.
+        List<Point> result = null;
+        foreach(Line D_Edge1 in DE1)
+        {
+            foreach(Line D_Edge2 in DE2)
+            {
+                result.Add(getIntersectionPoints(D_Edge1.Beg,D_Edge1.End,D_Edge2.Beg,D_Edge2.End);
+            }
+        }
+        foreach(Line D_Edge1 in DE1) // пройтись по всем точкам DE1, добавить, те, Которые внутри c_poly2
+        {
+            if(..)
+            resutl.Add(..)
+        }
+        foreach(Line D_Edge2 in DE2) // пройтись по всем точкам DE2, добавить, те, Которые внутри c_poly1
+        {
+            if(..)
+            resutl.Add(..)
+        }
+        */
     }
 }
 
