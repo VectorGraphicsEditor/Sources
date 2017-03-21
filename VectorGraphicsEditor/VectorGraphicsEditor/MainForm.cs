@@ -131,6 +131,17 @@ namespace VectorGraphicsEditor
         {
             selectedFigure = Figures.Line;
         }
+
+        private void DrawTriangle(OpenGL gl, trTriangle triangle, Interfaces.Color color)
+        {
+            gl.Color(color.R, color.G, color.B, (double)color.A/255.0);
+            gl.Begin(OpenGL.GL_TRIANGLES);
+            gl.Vertex(triangle.A.X, openGLControlView.Height - triangle.A.Y);
+            gl.Vertex(triangle.B.X, openGLControlView.Height - triangle.B.Y);
+            gl.Vertex(triangle.C.X, openGLControlView.Height - triangle.C.Y);
+            gl.End();
+        }
+
         private void DrawTriangle(OpenGL gl, Interfaces.Point[] points)
         {
             gl.Color(0, 0, 255, 0.14);
@@ -317,19 +328,50 @@ namespace VectorGraphicsEditor
             //}
 
             List<IFigure> figures = containerFigures.getFigures();
-            Dictionary<string, object> figureParameters;
+            //Dictionary<string, object> figureParameters;
 
             foreach (var figure in figures)
             {
-                figureParameters = figure.Parameters;
-                if (figure is Rectangle)
+                //figureParameters = figure.Parameters;
+                //if (figure is Rectangle)
+                //{
+                //    //Interfaces.Point leftDownPoint = (Interfaces.Point)figureParameters["DownLeft"];
+                //    //Interfaces.Point rightUpPoint = (Interfaces.Point)figureParameters["UpRight"];
+                //    //DrawQuadrangle(gl,
+                //    //    new Interfaces.Point(leftDownPoint.X, rightUpPoint.Y),
+                //    //    new Interfaces.Point(rightUpPoint.X, leftDownPoint.Y));
+                //}
+
+                Tuple<IEnumerable<trTriangle>, IEnumerable<ILineContainer>> triangulation;
+                triangulation = figure.NewTriangulation(minDpi);
+
+                // Обход по всем треугольникам
+                foreach (var triangle in triangulation.Item1)
                 {
-                    //Interfaces.Point leftDownPoint = (Interfaces.Point)figureParameters["DownLeft"];
-                    //Interfaces.Point rightUpPoint = (Interfaces.Point)figureParameters["UpRight"];
-                    //DrawQuadrangle(gl,
-                    //    new Interfaces.Point(leftDownPoint.X, rightUpPoint.Y),
-                    //    new Interfaces.Point(rightUpPoint.X, leftDownPoint.Y));
+                    DrawTriangle(gl, triangle, figure.FillColor);
                 }
+
+
+                foreach (var border in triangulation.Item2)
+                {
+                    Interfaces.Point firstPointBorder = null;
+                    Interfaces.Point prevPointBorder = null;
+                    bool isFirst = true;
+                    foreach (var point in border.Path)
+                    {
+                        if (isFirst)
+                        {
+                            firstPointBorder = point;
+                            isFirst = false;
+                            prevPointBorder = point;
+                            continue;
+                        }
+                        DrawLine(gl, prevPointBorder, point);
+                        prevPointBorder = point;
+                    }
+                    DrawLine(gl, prevPointBorder, firstPointBorder);
+                }
+
             }
 
             switch (selectedFigure)

@@ -12,14 +12,8 @@ namespace VectorGraphicsEditor
     {
         public IEnumerable<Point> Path
         {
-            get
-            {
-                return Path;
-            }
-            set
-            {
-                Path = value;
-            }
+            get;
+            set;
         }
     }
 
@@ -35,7 +29,7 @@ namespace VectorGraphicsEditor
             {
                 new Point(UpRight.X, DownLeft.Y),
                 UpRight,
-                new Point(UpRight.Y, DownLeft.X),
+                new Point(DownLeft.X, UpRight.Y),
                 DownLeft
             };
 
