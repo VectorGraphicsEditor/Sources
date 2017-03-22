@@ -55,7 +55,7 @@ namespace VectorGraphicsEditor
 
         public override IPath Paths { get; }
 
-        public override string type { get; set; }
+        public override string type { get; }
 
         public override IFigure Clone(Dictionary<string, object> parms)
         {
@@ -110,7 +110,7 @@ namespace VectorGraphicsEditor
                 };
 
         }
-        public override string type { get; set; }
+        public override string type { get;}
 
         public override Dictionary<string, object> Parameters { get; set; }
 
@@ -131,7 +131,12 @@ namespace VectorGraphicsEditor
 
         public override Tuple<IEnumerable<Interfaces.trTriangle>, IEnumerable<ILineContainer>> NewTriangulation(double eps)
         {
-            throw new NotImplementedException();
+            SpecPath path = new SpecPath();
+            path.Path = _figureBorder;
+            List<ILineContainer> ToReturn = new List<ILineContainer>() { path };
+            return new
+                Tuple<IEnumerable<trTriangle>, IEnumerable<ILineContainer>>
+                (_triangles, ToReturn);
         }
 
         public override IFigure Clone(Dictionary<string, object> parms)
@@ -150,83 +155,61 @@ namespace VectorGraphicsEditor
     }
 
     public class Mutant : Figure
-    {
-        public Mutant(List<Segment> path)
+    {   
+        //представление в виде списка связных границ
+        //произвольного типа
+        List<List<Segment>> path;
+
+
+        public Mutant(List<List<Segment>> path, Color BorderColor, Color FillColor)
         {
-            _figureBorder = new List<Point>();
-            if (path.Count == 0)
+            this.FillColor = FillColor;
+            this.LineColor = BorderColor;
+
+            this.path = path;
+
+            foreach (List<Segment> border in path)
             {
-                //do nothing
+                List<Point> toAdd = new List<Point>();
+                int count = border.Count;
+                int i = 0;
+                foreach (Segment segment in border)
+                {
+
+                    if (segment.Name == "Line")
+                    {
+                        toAdd.Add(segment.Beg);
+
+                    }
+                    else if (segment.Name == "Arc")
+                    {
+                        //должен возвращать все, кроме последней точки
+                        toAdd.AddRange(ArcPointsConverter(segment));
+
+                    }
+                    if (i == count - 1)
+                        toAdd.Add(segment.End);
+                }
 
             }
-            else
-            {
-                Line temp = null;
-                foreach (Segment segm in path)
-                {
-                    if (segm.Name == "Line")
-                    {
-                        temp = (Line)segm;
-                        _figureBorder.Add(temp.Beg);
-                    };
-                }
-                _figureBorder.Add(temp.End);
-            }
+
         }
+
+        private IEnumerable<Point> ArcPointsConverter(Segment segment)
+        {
+            throw new NotImplementedException();
+        }
+
 
 
         #region интерфейса реализация
-        public override bool Colored
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
+        public override bool Colored { get; set; }
 
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public override Color FillColor { get; set; }
 
-        public override Color FillColor
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
+        public override bool Is1D { get; protected set; }
 
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public override bool Is1D
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            protected set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public override Color LineColor
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public override Color LineColor { get; set; }
 
         public override Dictionary<string, object> Parameters
         {
@@ -249,23 +232,19 @@ namespace VectorGraphicsEditor
             }
         }
 
-        public override string type
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public override string type { get; }
 
         public override IFigure Clone(Dictionary<string, object> parms)
         {
-            List<Segment> path = (List<Segment>)parms["Vertexes"];
-            return new Mutant(path);
+            
+            List<List<Segment>> NewPath = MakeNewMutant(path, parms["NewLeftDownCorner"], parms["NewRightUpCorner"]);
+
+            return new Mutant(NewPath, this.LineColor, this.FillColor);
+        }
+
+        private List<List<Segment>> MakeNewMutant(List<List<Segment>> path, object v1, object v2)
+        {
+            throw new NotImplementedException();
         }
 
         public override void FillPaths()
@@ -275,7 +254,18 @@ namespace VectorGraphicsEditor
 
         public override Tuple<IEnumerable<trTriangle>, IEnumerable<ILineContainer>> NewTriangulation(double eps)
         {
-            throw new NotImplementedException();
+            this.CreateTriangulation();//пока только для фигур без кривых линий!!!
+            List<ILineContainer> toReturn = new List<ILineContainer>();
+
+            foreach (List<Point> border in this._onlyPoints)
+            {
+                SpecPath toAdd = new SpecPath();
+                toAdd.Path = border;
+                toReturn.Add(toAdd);
+
+            }
+            return new Tuple<IEnumerable<trTriangle>, IEnumerable<ILineContainer>>(_triangles, toReturn);
+
         }
 
         public override IFigure Transform(ITransformation transform)
@@ -394,10 +384,6 @@ namespace VectorGraphicsEditor
                 throw new NotImplementedException();
             }
 
-            set
-            {
-                throw new NotImplementedException();
-            }
         }
 
         public override IFigure Clone(Dictionary<string, object> parms)
