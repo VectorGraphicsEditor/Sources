@@ -7,8 +7,6 @@ using Interfaces;
 using Logic;
 
 //фабрика и классы всех возможных(пока(это хотя бы сделать)) комманд
-//не могу разобраться с тем, как реализовать CanExecuteChanged думаю спросить об этом
-//у Рояка если кто знает, то напишите мне или сами сделайте одну для примера.
 
 namespace VectorGraphicsEditor
 {
@@ -27,6 +25,8 @@ namespace VectorGraphicsEditor
              prototypes["Intersection"] = new Intersection(Logic);
              prototypes["Difference"] = new Difference(Logic);
              prototypes["Pick"] = new Pick(Logic);
+             prototypes["MoveIndex"] = new MoveIndex(Logic);
+             prototypes["MoveLayer"] = new MoveLayer(Logic);
              prototypes["Save"] = new Save(Logic);
              prototypes["Load"] = new Load(Logic);
              prototypes["SaveSettings"] = new SaveSettings(Logic);
@@ -65,7 +65,7 @@ namespace VectorGraphicsEditor
             Logic = Log;
         }
 
-        public AddFigure Create(Dictionary<string, object> parms)
+        ICommand ICommand.Create(Dictionary<string, object> parms)
         {
             return new AddFigure(Logic);
         }
@@ -93,7 +93,7 @@ namespace VectorGraphicsEditor
             Logic = Log;
         }
 
-        public RemoveFigure Create(Dictionary<string, object> parms)
+        ICommand ICommand.Create(Dictionary<string, object> parms)
         {
             return new RemoveFigure(Logic);
         }
@@ -127,7 +127,7 @@ namespace VectorGraphicsEditor
             Logic = Log;
         }
 
-        public EditFigure Create(Dictionary<string, object> parms)
+        ICommand ICommand.Create(Dictionary<string, object> parms)
         {
             return new EditFigure(Logic);
         }
@@ -157,7 +157,7 @@ namespace VectorGraphicsEditor
             Logic = Log;
         }
 
-        public Transform Create(Dictionary<string, object> parms)
+        ICommand ICommand.Create(Dictionary<string, object> parms)
         {
             return new Transform(Logic);
         }
@@ -190,7 +190,7 @@ namespace VectorGraphicsEditor
             Logic = Log;
         }
 
-        public Union Create(Dictionary<string, object> parms)
+        ICommand ICommand.Create(Dictionary<string, object> parms)
         {
             return new Union(Logic);
         }
@@ -222,7 +222,7 @@ namespace VectorGraphicsEditor
             Logic = Log;
         }
 
-        public Intersection Create(Dictionary<string, object> parms)
+        ICommand ICommand.Create(Dictionary<string, object> parms)
         {
             return new Intersection(Logic);
         }
@@ -254,7 +254,7 @@ namespace VectorGraphicsEditor
             Logic = Log;
         }
 
-        public Difference Create(Dictionary<string, object> parms)
+        ICommand ICommand.Create(Dictionary<string, object> parms)
         {
             return new Difference(Logic);
         }
@@ -286,7 +286,7 @@ namespace VectorGraphicsEditor
             Logic = Log;
         }
 
-        public Pick Create(Dictionary<string, object> parms)
+        ICommand ICommand.Create(Dictionary<string, object> parms)
         {
             return new Pick(Logic);
         }
@@ -297,9 +297,106 @@ namespace VectorGraphicsEditor
 
         void ICommand.Execute(object x)
         {
-
+            //ееей рукожопость
+            Tuple<Interfaces.Point, bool> buf = (Tuple<Interfaces.Point, bool>)x;
+            Logic.addCurientFigure(buf.Item1, buf.Item2);
         }
     }
+
+
+    class MoveIndex : ICommand
+    {
+        ILogicForCommand Logic;
+        public MoveIndex(ILogicForGUI Log)
+        {
+            Logic = (ILogicForCommand)Log;
+        }
+
+        public MoveIndex(ILogicForCommand Log)
+        {
+            Logic = Log;
+        }
+
+        ICommand ICommand.Create(Dictionary<string, object> parms)
+        {
+            return new MoveIndex(Logic);
+        }
+        bool ICommand.CanExecute(object x)
+        {
+            if (Logic.CountCurientFigures == 0 || Logic.CountCurientFigures == 1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        void ICommand.Execute(object x)
+        {
+            Logic.moveIndexFigure((bool)x);
+        }
+    }
+
+    class MoveLayer : ICommand
+    {
+        ILogicForCommand Logic;
+        public MoveLayer(ILogicForGUI Log)
+        {
+            Logic = (ILogicForCommand)Log;
+        }
+
+        public MoveLayer(ILogicForCommand Log)
+        {
+            Logic = Log;
+        }
+
+        ICommand ICommand.Create(Dictionary<string, object> parms)
+        {
+            return new MoveLayer(Logic);
+        }
+
+        bool ICommand.CanExecute(object x)
+        {
+            if (Logic.CountCurientFigures == 1)
+            {
+                if ((bool)x)
+                {
+                    if (Logic.IndexCurientElem != Logic.CountFigures - 1)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    if (Logic.IndexCurientElem != 0)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        void ICommand.Execute(object x)
+        {
+            Logic.moveIndexFigure((bool)x);
+        }
+    }
+
+#region IO commands
 
     //сохранение
     class Save:ICommand
@@ -315,7 +412,7 @@ namespace VectorGraphicsEditor
             Logic = Log;
         }
 
-        public Save Create(Dictionary<string, object> parms)
+        ICommand ICommand.Create(Dictionary<string, object> parms)
         {
             return new Save(Logic);
         }
@@ -344,7 +441,7 @@ namespace VectorGraphicsEditor
             Logic = Log;
         }
 
-        public Load Create(Dictionary<string, object> parms)
+        ICommand ICommand.Create(Dictionary<string, object> parms)
         {
             return new Load(Logic);
         }
@@ -373,7 +470,7 @@ namespace VectorGraphicsEditor
             Logic = Log;
         }
 
-        public SaveSettings Create(Dictionary<string, object> parms)
+        ICommand ICommand.Create(Dictionary<string, object> parms)
         {
             return new SaveSettings(Logic);
         }
@@ -402,7 +499,7 @@ namespace VectorGraphicsEditor
             Logic = Log;
         }
 
-        public LoadSettings Create(Dictionary<string, object> parms)
+        ICommand ICommand.Create(Dictionary<string, object> parms)
         {
             return new LoadSettings(Logic);
         }
@@ -416,7 +513,8 @@ namespace VectorGraphicsEditor
 
         }
     }
-    
+#endregion
+
     //отмена последней команды
     class UnDo:ICommand
     {
@@ -431,7 +529,7 @@ namespace VectorGraphicsEditor
             Logic = Log;
         }
 
-        public UnDo Create(Dictionary<string, object> parms)
+        ICommand ICommand.Create(Dictionary<string, object> parms)
         {
             return new UnDo(Logic);
         }
@@ -460,7 +558,7 @@ namespace VectorGraphicsEditor
             Logic = Log;
         }
 
-        public ReDo Create(Dictionary<string, object> parms)
+        ICommand ICommand.Create(Dictionary<string, object> parms)
         {
             return new ReDo(Logic);
         }
@@ -489,7 +587,7 @@ namespace VectorGraphicsEditor
             Logic = Log;
         }
 
-        public Copy Create(Dictionary<string, object> parms)
+        ICommand ICommand.Create(Dictionary<string, object> parms)
         {
             return new Copy(Logic);
         }
@@ -519,7 +617,7 @@ namespace VectorGraphicsEditor
             Logic = Log;
         }
 
-        public Paste Create(Dictionary<string, object> parms)
+        ICommand ICommand.Create(Dictionary<string, object> parms)
         {
             return new Paste(Logic);
         }
@@ -548,7 +646,7 @@ namespace VectorGraphicsEditor
             Logic = Log;
         }
 
-        public AddPrototipe Create(Dictionary<string, object> parms)
+        ICommand ICommand.Create(Dictionary<string, object> parms)
         {
             return new AddPrototipe(Logic);
         }

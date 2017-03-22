@@ -30,7 +30,6 @@ namespace VectorGraphicsEditor
             //                                      new Point(0, 0),
             //                                      new Color(0, 0, 0),
             //                                      new Color(255, 255, 255));
-            prototypes["Mutant_"+(prototypes.Count()).ToString()] = new Mutant(new List<Segment>());
         }
         public static IFigure Create(string type, Dictionary<string, object> parms)
         {
@@ -43,8 +42,13 @@ namespace VectorGraphicsEditor
                 return prototypes.Keys;
             }
         }
-        
 
+        //Все таки наверное так и для мутанта хранить еще значения этого "квадрата", в который он вложен
+        //и как-то преобразовывать новую фигуру сжимая мутанта.
+        public static void AddPrototipe(IFigure mutant)
+        {
+            prototypes["Mutant_" + (prototypes.Count() - 3).ToString()] = mutant;
+        }
     }
 
 }

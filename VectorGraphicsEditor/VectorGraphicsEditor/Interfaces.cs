@@ -15,6 +15,7 @@ namespace Interfaces
         
     public interface ICommand
     {
+        ICommand Create(Dictionary<string, object> parms);
         bool CanExecute(object x);
 
         void Execute(object x);
@@ -173,9 +174,19 @@ namespace Logic
     {
         int CountFigures { get; }
         int CountCurientFigures { get; }
+        int IndexCurientElem { get; }
+
         void addFigure(IFigure fig);
 
         void removeFigures();
+
+        void addCurientFigure(Interfaces.Point dot, bool add);
+
+        void moveIndexFigure(bool direction);
+
+        void moveCurientIndex(bool direction);
+
+        
     }
 }
 
