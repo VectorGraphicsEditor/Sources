@@ -24,6 +24,7 @@ namespace VectorGraphicsEditor
             Ellipse
         };
 
+
         // Временно
         class LineTemp : ILineContainer
         {
@@ -51,7 +52,7 @@ namespace VectorGraphicsEditor
 
         private Interfaces.Point[] last3Points;
         private Interfaces.Color borderColor = new Interfaces.Color(0, 0, 0, 255);
-        private Interfaces.Color fillColor = new Interfaces.Color(0, 0, 255, 10);
+        private Interfaces.Color fillColor = new Interfaces.Color(255, 255, 255, 255);
 
         private int iPointTriangle = 0;
 
@@ -67,6 +68,7 @@ namespace VectorGraphicsEditor
 
         public MainForm()
         {
+     
             InitializeComponent();
 
             last3Points = new Interfaces.Point[3] {
@@ -74,6 +76,8 @@ namespace VectorGraphicsEditor
                 new Interfaces.Point(0, 0),
                 new Interfaces.Point(0, 0)
             };
+            button_choose_fill_color.BackColor = System.Drawing.Color.White;
+            button_choose_line_color.BackColor = System.Drawing.Color.Black;
         }
 
         public OpenGL getOpenGL()
@@ -119,8 +123,7 @@ namespace VectorGraphicsEditor
             last3Points[0] = last3Points[1];
             last3Points[1] = last3Points[2];
             last3Points[2] = lastPoint;
-        }
-        
+        }    
 
         private void buttonRect_Click(object sender, EventArgs e)
         {
@@ -134,7 +137,7 @@ namespace VectorGraphicsEditor
 
         private void DrawTriangle(OpenGL gl, trTriangle triangle, Interfaces.Color color)
         {
-            gl.Color(color.R, color.G, color.B, (double)color.A/255.0);
+            gl.Color(color.R / 255.0f, color.G / 255.0f, color.B / 255.0f, color.A / 255.0f);
             gl.Begin(OpenGL.GL_TRIANGLES);
             gl.Vertex(triangle.A.X, openGLControlView.Height - triangle.A.Y);
             gl.Vertex(triangle.B.X, openGLControlView.Height - triangle.B.Y);
@@ -144,14 +147,14 @@ namespace VectorGraphicsEditor
 
         private void DrawTriangle(OpenGL gl, Interfaces.Point[] points)
         {
-            gl.Color(0, 0, 255, 0.14);
+            gl.Color(fillColor.R / 255.0f, fillColor.G / 255.0f, fillColor.B / 255.0f, fillColor.A / 255.0f);
             gl.Begin(OpenGL.GL_TRIANGLES);
             gl.Vertex(points[0].X, openGLControlView.Height - points[0].Y);
             gl.Vertex(points[1].X, openGLControlView.Height - points[1].Y);
             gl.Vertex(points[2].X, openGLControlView.Height - points[2].Y);
             gl.End();
 
-            gl.Color(0, 0, 0);
+            gl.Color(borderColor.R / 255.0f, borderColor.G / 255.0f, borderColor.B / 255.0f, borderColor.A / 255.0f);
             gl.Begin(OpenGL.GL_LINES);
             gl.Vertex(points[0].X, openGLControlView.Height - points[0].Y);
             gl.Vertex(points[1].X, openGLControlView.Height - points[1].Y);
@@ -164,7 +167,7 @@ namespace VectorGraphicsEditor
 
         private void DrawQuadrangle(OpenGL gl, Interfaces.Point firstPoint, Interfaces.Point lastPoint)
         {
-            gl.Color(0, 0, 255, 0.14);
+            gl.Color(fillColor.R / 255.0f, fillColor.G / 255.0f, fillColor.B / 255.0f, fillColor.A / 255.0f);
             gl.Begin(OpenGL.GL_QUADS);
             gl.Vertex(firstPoint.X, openGLControlView.Height - firstPoint.Y);
             gl.Vertex(firstPoint.X, openGLControlView.Height - lastPoint.Y);
@@ -172,7 +175,7 @@ namespace VectorGraphicsEditor
             gl.Vertex(lastPoint.X, openGLControlView.Height - firstPoint.Y);
             gl.End();
 
-            gl.Color(0, 0, 0);
+            gl.Color(borderColor.R / 255.0f, borderColor.G / 255.0f, borderColor.B / 255.0f, borderColor.A / 255.0f);
             gl.Begin(OpenGL.GL_LINES);
             gl.Vertex(firstPoint.X, openGLControlView.Height - firstPoint.Y);
             gl.Vertex(firstPoint.X, openGLControlView.Height - lastPoint.Y);
@@ -200,7 +203,7 @@ namespace VectorGraphicsEditor
             double x = 1;
             double y = 0;
 
-            gl.Color(0, 0, 0);
+            gl.Color(borderColor.R / 255.0f, borderColor.G / 255.0f, borderColor.B / 255.0f, borderColor.A / 255.0f);
             gl.Begin(OpenGL.GL_LINE_LOOP);
             for (int ii = 0; ii < numSegments; ii++)
             {
@@ -218,7 +221,7 @@ namespace VectorGraphicsEditor
             x = 1;
             y = 0;
 
-            gl.Color(0, 0, 255, 0.14);
+            gl.Color(fillColor.R / 255.0f, fillColor.G / 255.0f, fillColor.B / 255.0f, fillColor.A / 255.0f);
             gl.Begin(OpenGL.GL_POLYGON);
             for (int ii = 0; ii < numSegments; ii++)
             {
@@ -244,7 +247,7 @@ namespace VectorGraphicsEditor
             double x = 1;
             double y = 0;
 
-            gl.Color(0, 0, 0);
+            gl.Color(borderColor.R / 255.0f, borderColor.G / 255.0f, borderColor.B / 255.0f, borderColor.A / 255.0f);
             gl.Begin(OpenGL.GL_LINE_LOOP);
             for (int ii = 0; ii < numSegments; ii++)
             {
@@ -262,7 +265,7 @@ namespace VectorGraphicsEditor
             x = 1;
             y = 0;
 
-            gl.Color(0, 0, 255, 0.14);
+            gl.Color(fillColor.R / 255.0f, fillColor.G / 255.0f, fillColor.B / 255.0f, fillColor.A / 255.0f);
             gl.Begin(OpenGL.GL_POLYGON);
             for (int ii = 0; ii < numSegments; ii++)
             {
@@ -292,7 +295,7 @@ namespace VectorGraphicsEditor
 
         private void DrawLine(OpenGL gl, Interfaces.Point firstPoint, Interfaces.Point lastPoint)
         {
-            gl.Color(0, 0, 0);
+            gl.Color(borderColor.R / 255.0f, borderColor.G / 255.0f, borderColor.B / 255.0f, borderColor.A / 255.0f);
             gl.Begin(OpenGL.GL_LINES);
             gl.Vertex(firstPoint.X, openGLControlView.Height - firstPoint.Y);
             gl.Vertex(lastPoint.X, openGLControlView.Height - lastPoint.Y);
@@ -502,6 +505,7 @@ namespace VectorGraphicsEditor
             }
             isChangedOpenGLView = true;
         }
+
         private void openGLControlView_OpenGLDraw(object sender, RenderEventArgs args)
         {
             if (!isLoadOpenGLView) return;
@@ -612,6 +616,31 @@ namespace VectorGraphicsEditor
         private void buttonCircle_Click(object sender, EventArgs e)
         {
             selectedFigure = Figures.Circle;
+        }
+
+        private void button_choose_line_color_Click(object sender, EventArgs e)
+        {
+            ColorDialog cd = new ColorDialog();
+            if (cd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                borderColor = new Interfaces.Color(cd.Color.R, cd.Color.G, cd.Color.B, cd.Color.A);
+                button_choose_line_color.BackColor = cd.Color;
+            }
+        }
+
+        private void button_choose_fill_color_Click(object sender, EventArgs e)
+        {
+            ColorDialog cd = new ColorDialog();
+            if (cd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                fillColor = new Interfaces.Color(cd.Color.R, cd.Color.G, cd.Color.B, cd.Color.A);
+                button_choose_fill_color.BackColor = cd.Color;
+            }
+        }
+
+        private void openGLControlView_SizeChanged(object sender, EventArgs e)
+        {
+            isChangedOpenGLView = true;
         }
     }
 }

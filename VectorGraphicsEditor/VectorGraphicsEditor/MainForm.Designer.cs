@@ -42,12 +42,22 @@
             this.buttonSelectFigure = new System.Windows.Forms.Button();
             this.buttonEllipse = new System.Windows.Forms.Button();
             this.buttonCircle = new System.Windows.Forms.Button();
+            this.button_choose_line_color = new System.Windows.Forms.Button();
+            this.button_choose_fill_color = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.openGLControlView)).BeginInit();
             this.menuStrip1.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // openGLControlView
             // 
+            this.openGLControlView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.openGLControlView.AutoSize = true;
             this.openGLControlView.DrawFPS = false;
             this.openGLControlView.Location = new System.Drawing.Point(12, 82);
             this.openGLControlView.Name = "openGLControlView";
@@ -58,6 +68,7 @@
             this.openGLControlView.TabIndex = 0;
             this.openGLControlView.OpenGLInitialized += new System.EventHandler(this.openGLControlView_OpenGLInitialized);
             this.openGLControlView.OpenGLDraw += new SharpGL.RenderEventHandler(this.openGLControlView_OpenGLDraw);
+            this.openGLControlView.SizeChanged += new System.EventHandler(this.openGLControlView_SizeChanged);
             this.openGLControlView.MouseDown += new System.Windows.Forms.MouseEventHandler(this.openGLControlView_MouseDown);
             this.openGLControlView.MouseMove += new System.Windows.Forms.MouseEventHandler(this.openGLControlView_MouseMove);
             this.openGLControlView.MouseUp += new System.Windows.Forms.MouseEventHandler(this.openGLControlView_MouseUp);
@@ -171,11 +182,60 @@
             this.buttonCircle.UseVisualStyleBackColor = true;
             this.buttonCircle.Click += new System.EventHandler(this.buttonCircle_Click);
             // 
+            // button_choose_line_color
+            // 
+            this.button_choose_line_color.Location = new System.Drawing.Point(6, 19);
+            this.button_choose_line_color.Name = "button_choose_line_color";
+            this.button_choose_line_color.Size = new System.Drawing.Size(74, 25);
+            this.button_choose_line_color.TabIndex = 10;
+            this.button_choose_line_color.UseVisualStyleBackColor = true;
+            this.button_choose_line_color.Click += new System.EventHandler(this.button_choose_line_color_Click);
+            // 
+            // button_choose_fill_color
+            // 
+            this.button_choose_fill_color.Location = new System.Drawing.Point(88, 19);
+            this.button_choose_fill_color.Name = "button_choose_fill_color";
+            this.button_choose_fill_color.Size = new System.Drawing.Size(74, 25);
+            this.button_choose_fill_color.TabIndex = 11;
+            this.button_choose_fill_color.UseVisualStyleBackColor = true;
+            this.button_choose_fill_color.Click += new System.EventHandler(this.button_choose_fill_color_Click);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.button_choose_line_color);
+            this.groupBox1.Controls.Add(this.button_choose_fill_color);
+            this.groupBox1.Location = new System.Drawing.Point(536, 27);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(168, 50);
+            this.groupBox1.TabIndex = 12;
+            this.groupBox1.TabStop = false;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(85, 3);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(77, 13);
+            this.label1.TabIndex = 12;
+            this.label1.Text = "Цвет заливки";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 3);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(75, 13);
+            this.label2.TabIndex = 13;
+            this.label2.Text = "Цвет контура";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1137, 696);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.buttonCircle);
             this.Controls.Add(this.buttonEllipse);
             this.Controls.Add(this.buttonSelectFigure);
@@ -191,6 +251,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.openGLControlView)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -211,6 +273,11 @@
         private System.Windows.Forms.Button buttonSelectFigure;
         private System.Windows.Forms.Button buttonEllipse;
         private System.Windows.Forms.Button buttonCircle;
+        private System.Windows.Forms.Button button_choose_line_color;
+        private System.Windows.Forms.Button button_choose_fill_color;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
     }
 }
 
