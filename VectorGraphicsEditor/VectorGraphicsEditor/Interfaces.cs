@@ -161,7 +161,6 @@ namespace Interfaces
 		//
         Tree<List<Line>> Build_CHT(List<Line> pe); // структура во входных параметрах - вещь неправильная, но пока я откровенно забил, и хоть как-то работаю.
         List<Line> Build_figure_from_CHT(Tree<List<Line>> CHT);
-        List<Point> Build_Convex_Hull(List<Line> pe);
         //
     }
 }

@@ -421,6 +421,120 @@ namespace VectorGraphicsEditor
         }
         #endregion
     }
+
+    public class TestMamykin : Figure
+    {
+        TestMamykin()
+        {
+
+        }
+        public override bool Colored
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public override Color FillColor
+        {
+            get
+            {
+
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public override bool Is1D
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            protected set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public override Color LineColor
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public override Dictionary<string, object> Parameters
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public override IPath Paths
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public override string type
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public override IFigure Clone(Dictionary<string, object> parms)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void FillPaths()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Tuple<IEnumerable<trTriangle>, IEnumerable<ILineContainer>> NewTriangulation(double eps)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IFigure Transform(ITransformation transform)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
 
 

@@ -33,7 +33,7 @@ namespace test_editor
             }
             else
             {
-                List<Point> CH = this.Build_Convex_Hull(pe); //convex hull
+                //List<Point> CH = this.Build_Convex_Hull(pe); //convex hull 
                 //получаем che - convex hull edges(принадлежат CH).DONE
 
                 //получаем dre - delta regions edges(не принадлежат CH).DONE
@@ -51,11 +51,11 @@ namespace test_editor
 
                 //che
                 //Тут подпрограмма должна быть:
-                Point P_prev = CH[0];
+                Point P_prev = _convexHull[0];
                 Line Line_to_add = null;
-                foreach (Point P_next in CH)
+                foreach (Point P_next in _convexHull)
                 {
-                    if (P_next == CH[0])
+                    if (P_next == _convexHull[0])
                         continue;
                     Line_to_add = new Line(P_prev, P_next);
                     P_prev = P_next;
@@ -182,7 +182,7 @@ namespace test_editor
         public List<Line> CCINT(List<Line> c_poly1, List<Line> c_poly2)
         {
             /* Спросить у Паши уже функцию Convex Hull, я даже не знаю, что на выходе, точки или грани.
-            List<Line> CH = ... // получить выпуклую оболочку для c_poly1 + c_poly2
+            List<Line> CH = ... // получить выпуклую оболочку для c_poly1 + c_poly2      (_convexHull -> list<lines>
             List<Line> DE1 = null;
             List<Line> DE2 = null;
             foreach(Line CH_Edge in CH)
