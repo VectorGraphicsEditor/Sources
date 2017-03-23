@@ -134,7 +134,7 @@ namespace Interfaces
     {
         /* заметим, что Paths хранит отрезки и дуги, так что может хранить несколько кривых,
          * а Lines - точки, так что для представления разных кривых понадобится массив контейнеров точек.*/
-        string type { get; set; }
+        string type { get; }
 
         Dictionary<string, object> Parameters
         {
