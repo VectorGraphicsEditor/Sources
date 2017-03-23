@@ -26,7 +26,7 @@ namespace test_editor
         protected List<Point> _figureBorder { get; set; }
         protected List<List<Point>> _onlyPoints { get; set; }
 
-        public abstract string type { get; set; }
+        public abstract string type { get; }
         public abstract Dictionary<string, object> Parameters { get; set; }
         public abstract IPath Paths { get; }
         public abstract bool Colored { get; set; }
