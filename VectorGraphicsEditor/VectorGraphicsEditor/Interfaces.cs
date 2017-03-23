@@ -3,32 +3,34 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-
+using VectorGraphicsEditor;
 
 namespace Interfaces
 {
-    using tree_class;
+	using tree_class;
     public struct Parameter
     {
         public string Name { get; set; }
         public object Value { get; set; }
     }
-
+        
     public interface ICommand
     {
-        //...
+        bool CanExecute(object x);
+
+        void Execute(object x);
     }
 
     public abstract class Segment
     {
+        public Point Beg { set; get; }
+        public Point End { set; get; }
         public string Name { get; protected set; }
     }
 
     public class Line : Segment
     {
-        public Point Beg { set; get; }
-        public Point End { set; get; }
+
         public Line(Point beg, Point end)
         {
             Name = "Line";
@@ -37,19 +39,19 @@ namespace Interfaces
         }
     }
 
-    public class Arc : Segment
+    public class EllipseArc : Segment
     {
         public Point Center { set; get; }
         public double Rad { set; get; }
-        public double Beg { set; get; }
-        public double End { set; get; }
-        public Arc(Point center, double rad, double beg, double end)
+        public double BegRad { set; get; }
+        public double EndRad { set; get; }
+        public EllipseArc(Point center,double r1, double r2, double rad, double beg, double end)
         {
             Name = "Arc";
             Center = center;
             Rad = rad;
-            Beg = beg;
-            End = end;
+            BegRad = beg;
+            EndRad = end;
         }
     }
 
@@ -69,7 +71,10 @@ namespace Interfaces
 
         public bool Equals(Point x, Point y)
         {
-            return (x.X == y.X && x.Y == y.Y);
+            return (
+                Math.Abs(x.X - y.X) < Constants.epsForEqualPoints &&
+                Math.Abs(x.Y - y.Y) < Constants.epsForEqualPoints
+                );
         }
 
         public int GetHashCode(Point obj)
@@ -105,7 +110,7 @@ namespace Interfaces
 
     }
 
-    public class Triangle
+    public class trTriangle
     {
         public Point A { get; set; }
         public Point B { get; set; }
@@ -114,7 +119,7 @@ namespace Interfaces
         {
             return( new Point((A.X + B.X + C.X) / 3, (A.Y + B.Y + C.Y) / 3));
         }
-        public Triangle(Point a, Point b, Point c)
+        public trTriangle(Point a, Point b, Point c)
         {
             A = a;
             B = b;
@@ -142,7 +147,7 @@ namespace Interfaces
 
         bool IsPointInner(Point point);
         void FillPaths(); // это чо вообще??
-        Tuple<IEnumerable<Triangle>,IEnumerable<ILineContainer>> NewTriangulation(double eps);
+        Tuple<IEnumerable<trTriangle>,IEnumerable<ILineContainer>> NewTriangulation(double eps);
         // стоит хранить предыдущий результат, что бы не перещитывать его, если функция вызывается с тем же eps
 
         bool Colored { get; set; }
@@ -153,7 +158,7 @@ namespace Interfaces
         IFigure Transform(ITransformation transform);
         /*Трансформация возвращает новую фигуру, трансформированную. однако очевидно что после этого
           фигура может сменить свой тип.*/
-        //
+		//
         Tree<List<Line>> Build_CHT(List<Line> pe); // структура во входных параметрах - вещь неправильная, но пока я откровенно забил, и хоть как-то работаю.
         List<Line> Build_figure_from_CHT(Tree<List<Line>> CHT);
         List<Point> Build_Convex_Hull(List<Line> pe);
@@ -168,9 +173,15 @@ namespace Logic
     {
         IEnumerable<IFigure> Figures { get; }
         Interfaces.Point ToScreen(Interfaces.Point xy);
+    }
 
-        /*Тут будут функции заказа команды у фабрики и все такое*/
- 
+    public interface ILogicForCommand
+    {
+        int CountFigures { get; }
+        int CountCurientFigures { get; }
+        void addFigure(IFigure fig);
+
+        void removeFigures();
     }
 }
 
