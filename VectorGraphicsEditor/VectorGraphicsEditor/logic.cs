@@ -16,15 +16,15 @@ namespace Logic
         //Список индексов на фигуры, которые мы обрабатываем. По умолчанию последняя созданная фигура
         private List<int> CurientFigures;
 
-        private int countFigures;
 
         logic()
         {
             Figures = new Container();
             CurientFigures = new List<int>();
-            countFigures = 0;
         }
 
+
+        // возвращает список фигур
         IEnumerable<IFigure> ILogicForGUI.Figures
         {
             get
@@ -34,15 +34,16 @@ namespace Logic
         }
 
 
-         
-        public void addCurientFigure(Interfaces.Point dot, bool add)
+        // выделение фигуры мышкой добавляет в список выделенных фигур. если add - true. При этом можно 
+        // начать заново выделять, если add - false
+        void ILogicForCommand.addCurientFigure(Interfaces.Point dot, bool add)
         {
             bool find = false;
             int index;
-            for (index = countFigures - 1; index >= 0; index--)
+            for (index = Figures.Count - 1; index >= 0; index--)
             {
                 //Проверяем лежит ли данная точка в этой фигуре
-                //find = isPointInner(Figures.getFigure(index), dot)
+                find = Figures.getFigure(index).IsPointInner(dot);
                 //Если нашли
                 if (find)
                     //если надо добавить
@@ -82,16 +83,72 @@ namespace Logic
             }
         }
 
+        // Передвижение индекса: если выделена одна фигура, то мы перемещаемся по элементам начиная с
+        // того на котором мы находимся, если там нет выделенных фигур, то шагаем от начала списка или
+        // от конца. Предусмотренно циклическое передвижение. не знаю зачем)
+        void ILogicForCommand.moveCurientIndex(bool direction)
+        {
+            if (CurientFigures.Count == 0)
+            {
+                if (direction)
+                {
+                    CurientFigures.Add(0);
+                }
+                else
+                {
+                    CurientFigures.Add(Figures.Count);
+                }
+            }
+            if (CurientFigures.Count == 1)
+            {
+                if (direction)
+                {
+                    if (CurientFigures[0] == Figures.Count - 1)
+                    {
+                        CurientFigures[0] = 0;
+                    }
+                    else
+                    {
+                        CurientFigures[0] += 1;
+                    }
+                }
+                else
+                {
+                    if (CurientFigures[0] == 0)
+                    {
+                        CurientFigures[0] = Figures.Count - 1;
+                    }
+                    else
+                    {
+                        CurientFigures[0] -= 1;
+                    }
+                }
+            }
+        }
+
+        // перемещение фигур относительно "z координаты". у нас же типа слои.
+        void ILogicForCommand.moveIndexFigure(bool direction)
+        {
+            if (direction)
+            {
+                Figures.swap(CurientFigures[0], CurientFigures[0] + 1);
+            }
+            else
+            {
+                Figures.swap(CurientFigures[0] - 1, CurientFigures[0]);
+            }
+        }
+
         //Добавление новой фигуры
         void ILogicForCommand.addFigure(IFigure fig)
         { 
-           countFigures = Figures.addNewFigure(fig);
+           Figures.addNewFigure(fig);
         }
         
         //Удаление выбранных фигур
         void ILogicForCommand.removeFigures()
         {
-            countFigures = Figures.removeFigures(CurientFigures);
+            Figures.removeFigures(CurientFigures);
         }
         
         Interfaces.Point ILogicForGUI.ToScreen(Interfaces.Point xy)
@@ -99,18 +156,31 @@ namespace Logic
             throw new NotImplementedException();
         }
 
+        // Количество фигур
         int ILogicForCommand.CountFigures 
         { 
             get 
             {
-                return countFigures;
+                return Figures.Count;
             } 
         }
+
+        // Количество выделенных фигур
         int ILogicForCommand.CountCurientFigures 
         {
             get
             {
                 return CurientFigures.Count;
+            }
+        }
+
+        // Возвращает индекс первого элемента выбранных фигур.
+        // Иногда приходится работать с одним выбранным элементом, тогда это и пригождается
+        int ILogicForCommand.IndexCurientElem
+        {
+            get
+            {
+                return CurientFigures[0];
             }
         }
     }
