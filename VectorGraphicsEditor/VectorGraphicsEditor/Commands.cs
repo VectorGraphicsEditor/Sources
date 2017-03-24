@@ -11,48 +11,48 @@ using Logic;
 namespace VectorGraphicsEditor
 {
 
-    class CommandsFactory
-     {
-         Dictionary<string, ICommand> prototypes;
-         CommandsFactory(ILogicForGUI Logic)
-         {
-             prototypes = new Dictionary<string, ICommand>();
-             prototypes["AddFigure"] = new AddFigure(Logic);
-             prototypes["RemoveFigure"] = new RemoveFigure(Logic);
-             prototypes["EditFigure"] = new EditFigure(Logic);
-             prototypes["Transform"] = new Transform(Logic);
-             prototypes["Union"] = new Union(Logic);
-             prototypes["Intersection"] = new Intersection(Logic);
-             prototypes["Difference"] = new Difference(Logic);
-             prototypes["Pick"] = new Pick(Logic);
-             prototypes["MoveIndex"] = new MoveIndex(Logic);
-             prototypes["MoveLayer"] = new MoveLayer(Logic);
-             prototypes["Save"] = new Save(Logic);
-             prototypes["Load"] = new Load(Logic);
-             prototypes["SaveSettings"] = new SaveSettings(Logic);
-             prototypes["LoadSettings"] = new LoadSettings(Logic);
-             prototypes["UnDo"] = new UnDo(Logic);
-             prototypes["ReDo"] = new ReDo(Logic);
-             prototypes["Copy"] = new Copy(Logic);
-             prototypes["Paste"] = new Paste(Logic);
-             prototypes["AddPrototipe"] = new AddPrototipe(Logic);
-         }
-         ICommand Create(string type, Dictionary<string, object> parms)
-         {
-             return prototypes[type].Create(parms);
-         }
-         IEnumerable<string> CommandsTypes
-         {
-             get
-             {
-                 return prototypes.Keys;
-             }
-         }
-     }
+    public class CommandsFactory
+    {
+        Dictionary<string, ICommand> prototypes;
+        public CommandsFactory(ILogicForGUI Logic)
+        {
+            prototypes = new Dictionary<string, ICommand>();
+            prototypes["AddFigure"] = new AddFigure(Logic);
+            prototypes["RemoveFigure"] = new RemoveFigure(Logic);
+            prototypes["EditFigure"] = new EditFigure(Logic);
+            prototypes["Transform"] = new Transform(Logic);
+            prototypes["Union"] = new Union(Logic);
+            prototypes["Intersection"] = new Intersection(Logic);
+            prototypes["Difference"] = new Difference(Logic);
+            prototypes["Pick"] = new Pick(Logic);
+            prototypes["MoveIndex"] = new MoveIndex(Logic);
+            prototypes["MoveLayer"] = new MoveLayer(Logic);
+            prototypes["Save"] = new Save(Logic);
+            prototypes["Load"] = new Load(Logic);
+            prototypes["SaveSettings"] = new SaveSettings(Logic);
+            prototypes["LoadSettings"] = new LoadSettings(Logic);
+            prototypes["UnDo"] = new UnDo(Logic);
+            prototypes["ReDo"] = new ReDo(Logic);
+            prototypes["Copy"] = new Copy(Logic);
+            prototypes["Paste"] = new Paste(Logic);
+            prototypes["AddPrototipe"] = new AddPrototipe(Logic);
+        }
+        public ICommand Create(string type, Dictionary<string, object> parms)
+        {
+            return prototypes[type].Create(parms);
+        }
+        public IEnumerable<string> CommandsTypes
+        {
+            get
+            {
+                return prototypes.Keys;
+            }
+        }
+    }
 
     //добавляет фигуру. то есть gui должен у себя создавать фигуру, редактировать ее при создании
     //и после того как мышку отпустили передать фигуру нам
-    class AddFigure:ICommand
+    class AddFigure : ICommand
     {
         ILogicForCommand Logic;
         public AddFigure(ILogicForGUI Log)

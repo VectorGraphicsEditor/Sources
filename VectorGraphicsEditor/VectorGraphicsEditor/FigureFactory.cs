@@ -25,11 +25,11 @@ namespace VectorGraphicsEditor
             //                                  new Color(255, 255, 255)
             //                                  );
 
-            // prototypes["Triangle"] = new Triangle(new Point(0, 0),
-            //                                      new Point(1, 0),
-            //                                      new Point(0, 0),
-            //                                      new Color(0, 0, 0),
-            //                                      new Color(255, 255, 255));
+            prototypes["Triangle"] = new Triangle(new Point(0, 0),
+                                                  new Point(1, 0),
+                                                  new Point(0, 0),
+                                                  new Color(0, 0, 0, 1),
+                                                  new Color(255, 255, 255, 1));
         }
         public static IFigure Create(string type, Dictionary<string, object> parms)
         {
