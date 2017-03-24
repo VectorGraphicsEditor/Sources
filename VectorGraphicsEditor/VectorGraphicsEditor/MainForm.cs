@@ -339,9 +339,10 @@ namespace VectorGraphicsEditor
 
         private void DrawLine(OpenGL gl, Interfaces.Point firstPoint, Interfaces.Point lastPoint, Interfaces.Color color)
         {
-            gl.Color(color.R / 255.0f, color.G / 255.0f, color.B / 255.0f, color.A / 255.0f);
             gl.Begin(OpenGL.GL_LINES);
+            gl.Color(color.R / 255.0f, color.G / 255.0f, color.B / 255.0f, color.A / 255.0f);
             gl.Vertex(firstPoint.X, openGLControlView.Height - firstPoint.Y);
+            gl.Color(color.R / 255.0f, color.G / 255.0f, color.B / 255.0f, color.A / 255.0f);
             gl.Vertex(lastPoint.X, openGLControlView.Height - lastPoint.Y);
             gl.End();
         }
