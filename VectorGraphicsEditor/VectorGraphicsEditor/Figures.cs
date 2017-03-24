@@ -24,6 +24,7 @@ namespace VectorGraphicsEditor
             Colored = true;
             Is1D = false;
             this.FillColor = FillColor;
+            this.LineColor = BorderColor;
 
             _figureBorder = new List<Point>()
             {
@@ -94,6 +95,7 @@ namespace VectorGraphicsEditor
             Colored = true;
             Is1D = false;
             this.FillColor = FillColor;
+            this.LineColor = BorderColor;
 
             _figureBorder = new List<Point>()
                 {
