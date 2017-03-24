@@ -45,8 +45,12 @@
             this.button_choose_line_color = new System.Windows.Forms.Button();
             this.button_choose_fill_color = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.buttonScaleLine = new System.Windows.Forms.Button();
+            this.buttonDivider = new System.Windows.Forms.Button();
+            this.buttonIntersection = new System.Windows.Forms.Button();
+            this.buttonUnion = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.openGLControlView)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -212,15 +216,6 @@
             this.groupBox1.TabIndex = 12;
             this.groupBox1.TabStop = false;
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(85, 3);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(77, 13);
-            this.label1.TabIndex = 12;
-            this.label1.Text = "Цвет заливки";
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -230,11 +225,64 @@
             this.label2.TabIndex = 13;
             this.label2.Text = "Цвет контура";
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(85, 3);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(77, 13);
+            this.label1.TabIndex = 12;
+            this.label1.Text = "Цвет заливки";
+            // 
+            // buttonScaleLine
+            // 
+            this.buttonScaleLine.Location = new System.Drawing.Point(710, 30);
+            this.buttonScaleLine.Name = "buttonScaleLine";
+            this.buttonScaleLine.Size = new System.Drawing.Size(97, 50);
+            this.buttonScaleLine.TabIndex = 13;
+            this.buttonScaleLine.Text = "Линейка";
+            this.buttonScaleLine.UseVisualStyleBackColor = true;
+            this.buttonScaleLine.Click += new System.EventHandler(this.buttonScaleLine_Click);
+            // 
+            // buttonDivider
+            // 
+            this.buttonDivider.Location = new System.Drawing.Point(813, 30);
+            this.buttonDivider.Name = "buttonDivider";
+            this.buttonDivider.Size = new System.Drawing.Size(97, 50);
+            this.buttonDivider.TabIndex = 14;
+            this.buttonDivider.Text = "Циркуль";
+            this.buttonDivider.UseVisualStyleBackColor = true;
+            this.buttonDivider.Click += new System.EventHandler(this.buttonDivider_Click);
+            // 
+            // buttonIntersection
+            // 
+            this.buttonIntersection.Location = new System.Drawing.Point(916, 30);
+            this.buttonIntersection.Name = "buttonIntersection";
+            this.buttonIntersection.Size = new System.Drawing.Size(97, 50);
+            this.buttonIntersection.TabIndex = 15;
+            this.buttonIntersection.Text = "Пересечение";
+            this.buttonIntersection.UseVisualStyleBackColor = true;
+            this.buttonIntersection.Click += new System.EventHandler(this.buttonIntersection_Click);
+            // 
+            // buttonUnion
+            // 
+            this.buttonUnion.Location = new System.Drawing.Point(1019, 30);
+            this.buttonUnion.Name = "buttonUnion";
+            this.buttonUnion.Size = new System.Drawing.Size(97, 50);
+            this.buttonUnion.TabIndex = 16;
+            this.buttonUnion.Text = "Объединение";
+            this.buttonUnion.UseVisualStyleBackColor = true;
+            this.buttonUnion.Click += new System.EventHandler(this.buttonUnion_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1137, 696);
+            this.Controls.Add(this.buttonUnion);
+            this.Controls.Add(this.buttonIntersection);
+            this.Controls.Add(this.buttonDivider);
+            this.Controls.Add(this.buttonScaleLine);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.buttonCircle);
             this.Controls.Add(this.buttonEllipse);
@@ -278,6 +326,10 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button buttonScaleLine;
+        private System.Windows.Forms.Button buttonDivider;
+        private System.Windows.Forms.Button buttonIntersection;
+        private System.Windows.Forms.Button buttonUnion;
     }
 }
 

@@ -9,7 +9,7 @@ using Interfaces;
 
 namespace Logic
 {
-    class logic : ILogicForGUI, ILogicForCommand
+    public class logic : ILogicForGUI, ILogicForCommand
     {
         //Контейнер фигур
         private Container Figures;
@@ -17,7 +17,7 @@ namespace Logic
         private List<int> CurientFigures;
 
 
-        logic()
+        public logic()
         {
             Figures = new Container();
             CurientFigures = new List<int>();
