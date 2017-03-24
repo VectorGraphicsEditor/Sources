@@ -55,8 +55,11 @@ namespace VectorGraphicsEditor
         private Interfaces.Color fillColor = new Interfaces.Color(255, 255, 255, 255);
 
         private int iPointTriangle = 0;
+        private int prevLocationX, prevLocationY;//для запоминания предыдущего положения мыши
+        private int canvasPositionX = 0, canvasPositionY = 0;//положение полотна
 
         private bool isMouseDown = false;
+        private bool isMiddleButton = false; // флаг для средней кнопки мыши
         private bool isChangedOpenGLView = true;
         private bool isLoadOpenGLView = false;
         private bool isStartDrag = false;
@@ -96,6 +99,9 @@ namespace VectorGraphicsEditor
 
             gl.MatrixMode(OpenGL.GL_MODELVIEW);
             gl.LoadIdentity();
+
+            // Передвижение полотна при зажатом колёсике
+            gl.Translate(canvasPositionX, -canvasPositionY, 0);
 
             gl.ShadeModel(OpenGL.GL_SMOOTH);
             gl.PixelStore(OpenGL.GL_UNPACK_ALIGNMENT, 4);
@@ -426,76 +432,100 @@ namespace VectorGraphicsEditor
 
         private void openGLControlView_MouseDown(object sender, MouseEventArgs e)
         {
-            if (isModeSelectFigures)
-            {
-                // logic.SelectFigure(e.X, e.Y);
-            }
-            else
-            {
-                AddNewLastPoint(new Interfaces.Point(e.X, e.Y));
 
-                if (selectedFigure == Figures.Triangle)
+            if (e.Button == MouseButtons.Left)
+            {
+                if (isModeSelectFigures)
                 {
-                    if (iPointTriangle > 2)
-                    {
-                        iPointTriangle = 1;
-                    }
-                    else if (iPointTriangle == 2)
-                    {
-                        iPointTriangle++;
+                    // logic.SelectFigure(e.X, e.Y);
+                }
 
-                        //IFigure figure = Factory.Create(
-                        //    "Triangle",
-                        //    new Dictionary<string, object>()
-                        //    {
-                        //        { "Point1", last3Points[0] },
-                        //        { "Point2", last3Points[1] },
-                        //        { "Point3", last3Points[2] }
-                        //    });
+                else
+                {//тут к координатам точки прибавляю смещение полотна
+                    AddNewLastPoint(new Interfaces.Point(e.X - canvasPositionX, e.Y - canvasPositionY));
 
-                        //containerFigures.addNewFigure(figure);
+                    if (selectedFigure == Figures.Triangle)
+                    {
+                        if (iPointTriangle > 2)
+                        {
+                            iPointTriangle = 1;
+                        }
+                        else if (iPointTriangle == 2)
+                        {
+                            iPointTriangle++;
+
+                            //IFigure figure = Factory.Create(
+                            //    "Triangle",
+                            //    new Dictionary<string, object>()
+                            //    {
+                            //        { "Point1", last3Points[0] },
+                            //        { "Point2", last3Points[1] },
+                            //        { "Point3", last3Points[2] }
+                            //    });
+
+                            //containerFigures.addNewFigure(figure);
+                        }
+                        else
+                        {
+                            iPointTriangle++;
+                        }
                     }
                     else
                     {
-                        iPointTriangle++;
+                        last3Points[0] = new Interfaces.Point(e.X - canvasPositionX, e.Y - canvasPositionY);
+                        last3Points[1] = new Interfaces.Point(e.X - canvasPositionX, e.Y - canvasPositionY);
+                        last3Points[2] = new Interfaces.Point(e.X - canvasPositionX, e.Y - canvasPositionY);
                     }
-                }
-                else
-                {
-                    last3Points[0] = new Interfaces.Point(e.X, e.Y);
-                    last3Points[1] = new Interfaces.Point(e.X, e.Y);
-                    last3Points[2] = new Interfaces.Point(e.X, e.Y);
-                }
 
-                isMouseDown = true;
-                isStartDrag = true;
-                isChangedOpenGLView = true;
+                    isMouseDown = true;
+                    isStartDrag = true;
+                    isChangedOpenGLView = true;
+                }
+            }
+            if (e.Button == MouseButtons.Middle)
+            {//Тут будем зажимать колёсико
+                isMiddleButton = true;
+                prevLocationX = e.X;
+                prevLocationY = e.Y;
             }
         }
 
         private void openGLControlView_MouseMove(object sender, MouseEventArgs e)
         {
-            if (!isLoadOpenGLView) return;
-
-            if (isMouseDown && (selectedFigure != Figures.Triangle))
+            if (e.Button == MouseButtons.Left)
             {
-                if (isStartDrag)
+                if (!isLoadOpenGLView) return;
+
+                if (isMouseDown && (selectedFigure != Figures.Triangle))
                 {
-                    last3Points[2] = new Interfaces.Point(e.X, e.Y);
+                    if (isStartDrag)
+                    {
+                        last3Points[2] = new Interfaces.Point(e.X - canvasPositionX, e.Y - canvasPositionY);
+                    }
+
+                    last3Points[2] = new Interfaces.Point(e.X - canvasPositionX, e.Y - canvasPositionY);
+
+                    isChangedOpenGLView = true;
                 }
-
-                last3Points[2] = new Interfaces.Point(e.X, e.Y);
-
-                isChangedOpenGLView = true;
+                isStartDrag = false;
             }
-            isStartDrag = false;
+            if (e.Button == MouseButtons.Middle)
+            {//Тут будет двигаться полотно при зажатом колёсике
+                canvasPositionX -= e.Location.X - prevLocationX;
+                canvasPositionY -= e.Location.Y - prevLocationY;
+                isChangedOpenGLView = true;
+                Refresh();
+                //glTranslate(e.Location.X - prevLocationX, prevLocationY - e.Location.Y, 0);
+                prevLocationX = e.X;
+                prevLocationY = e.Y;
+            }
         }
 
         private void openGLControlView_MouseWheel(object sender, MouseEventArgs e)
         {
             if (!isLoadOpenGLView) return;
 
-            if (e.Delta < 0)
+            if (e.Delta > 0)
             {
                 zoomOpenGLView *= 1.05f;
             }
@@ -523,64 +553,71 @@ namespace VectorGraphicsEditor
 
         private void openGLControlView_MouseUp(object sender, MouseEventArgs e)
         {
-            isMouseDown = false;
-            
-            switch (selectedFigure)
+            if (e.Button == MouseButtons.Left)
             {
-                case Figures.Line:
-                    
-                    //containerFigures.addNewFigure(
-                    //    Factory.Create(
-                    //    "Line",
-                    //    new Dictionary<string, object>()
-                    //    {
-                    //        { "Point1", last3Points[1] },
-                    //        { "Point2", last3Points[2] }
-                    //    })
-                    //);
-                    break;
-                case Figures.Quadrangle:
+                isMouseDown = false;
 
-                    containerFigures.addNewFigure(
-                        Factory.Create(
-                        "Rectangle",
-                        new Dictionary<string, object>()
-                        {
+                switch (selectedFigure)
+                {
+                    case Figures.Line:
+
+                        //containerFigures.addNewFigure(
+                        //    Factory.Create(
+                        //    "Line",
+                        //    new Dictionary<string, object>()
+                        //    {
+                        //        { "Point1", last3Points[1] },
+                        //        { "Point2", last3Points[2] }
+                        //    })
+                        //);
+                        break;
+                    case Figures.Quadrangle:
+
+                        containerFigures.addNewFigure(
+                            Factory.Create(
+                            "Rectangle",
+                            new Dictionary<string, object>()
+                            {
                             { "DownLeft", new Interfaces.Point(last3Points[1].X, last3Points[2].Y)  },
                             { "UpRight", new Interfaces.Point(last3Points[2].X, last3Points[1].Y) },
                             { "BorderColor", borderColor},
                             { "FillColor", fillColor}
-                        })
-                    );
-                    break;
+                            })
+                        );
+                        break;
 
-                case Figures.Circle:
+                    case Figures.Circle:
 
-                    //containerFigures.addNewFigure(
-                    //    Factory.Create(
-                    //    "Circle",
-                    //    new Dictionary<string, object>()
-                    //    {
-                    //        { "Point1", last3Points[1] },
-                    //        { "Point2", last3Points[2] }
-                    //    })
-                    //);
-                    break;
+                        //containerFigures.addNewFigure(
+                        //    Factory.Create(
+                        //    "Circle",
+                        //    new Dictionary<string, object>()
+                        //    {
+                        //        { "Point1", last3Points[1] },
+                        //        { "Point2", last3Points[2] }
+                        //    })
+                        //);
+                        break;
 
-                case Figures.Ellipse:
+                    case Figures.Ellipse:
 
-                    //containerFigures.addNewFigure(
-                    //    Factory.Create(
-                    //    "Ellipse",
-                    //    new Dictionary<string, object>()
-                    //    {
-                    //        { "Point1", last3Points[1] },
-                    //        { "Point2", last3Points[2] }
-                    //    })
-                    //);
-                    break;
+                        //containerFigures.addNewFigure(
+                        //    Factory.Create(
+                        //    "Ellipse",
+                        //    new Dictionary<string, object>()
+                        //    {
+                        //        { "Point1", last3Points[1] },
+                        //        { "Point2", last3Points[2] }
+                        //    })
+                        //);
+                        break;
+                }
+                isStartDrag = false;
             }
-            isStartDrag = false;
+            if (e.Button == MouseButtons.Middle)
+            {
+                isMiddleButton = false;
+            }
         }
 
         private void buttonTriangle_Click(object sender, EventArgs e)
