@@ -11,14 +11,42 @@ namespace test_editor
     using Interfaces;
     using tree_class;
     using NGeometry;
+
+
     public abstract partial class Figure : IFigure
     {
-        private List<Point> Build_Convex_Hull(List<Line> pe) //polytope edges. 
+
+        public List<Line> Convert_Points_to_Lines(List<Point> P)
         {
-            List<Point> result = null;
-            //алгоритм для выпуклой оболочки
-            return (result);
+            List<Line> Result = null;
+            Point P_prev = P[0];
+            Line Line_to_add = null;
+            foreach (Point P_next in P)
+            {
+                if (P_next == P[0])
+                    continue;
+                else
+                {
+                    Line_to_add = new Line(P_prev, P_next);
+                    P_prev = P_next;
+                    Result.Add(Line_to_add);
+                }
+            }
+            //.
+            return Result;
         }
+        public List<Point> Convert_Lines_to_Points(List<Line> L)
+        {
+            List<Point> Result = null;
+            Result.Add(L[0].Beg);
+            foreach (Line Elem in L)
+            {
+                Result.Add(Elem.End);
+            }
+
+            return Result;
+        }
+
         public Tree<List<Line>> Build_CHT(List<Line> pe) // Построить дерево выпуклых фигур.
         {
             Tree<List<Line>> CHT = null; // голова дерева
@@ -57,9 +85,12 @@ namespace test_editor
                 {
                     if (P_next == _convexHull[0])
                         continue;
-                    Line_to_add = new Line(P_prev, P_next);
-                    P_prev = P_next;
-                    CHE.Add(Line_to_add);
+                    else
+                    {
+                        Line_to_add = new Line(P_prev, P_next);
+                        P_prev = P_next;
+                        CHE.Add(Line_to_add);
+                    }
                 }
                 //.
                 //dre
@@ -158,95 +189,184 @@ namespace test_editor
             return null;
         }
 
-        public Tree<List<Line>> CNINT(Tree<List<Line>> poly1, List<Line> c_poly2)//обход по всему дереву пойдет, если узел не имеет пересечений, его потомкам не нужно искать пересечение, имхо
+        public Tree<List<Line>> CNINT(Tree<List<Line>> poly1, List<Line> c_poly2)//Пересечение дерева выпуклых фигур и выпуклой фигуры
         {
-            Tree<List<Line>> Res = null;
-            //Res = new Tree<List<Line>>( CCINT(poly1.value,c_poly2) )// пересечение узла и c_poly2 как 2 выпуклых фигур
+            List<Line> Res = null;
+            Res = CCINT(poly1.Value, c_poly2);// пересечение узла и c_poly2 как 2 выпуклых фигур
+            poly1.Value = Res;
+
             if (poly1.HasChildren == false)
             {
-                /*
-                return (Res);
-                */
+                return poly1;
             }
-            /*
+
             List<Tree<List<Line>>> Child_List = null;
             Child_List = poly1.localChildren;
+            int index = 0;
             foreach (Tree<List<Line>> Child in Child_List) //обход дерева с заменой узлов на пересечения
             {
-                Tree<List<Line>> node = CNINT(Child,c_poly2)
-                //Поставить node на место Child в имходном дереве// проверить, в шарпе ссылка(хорошо) или копирование(плохо).
+                Tree<List<Line>> node = CNINT(Child, c_poly2);
+                //Поставить node на место Child в иcходном дереве// проверить, в шарпе ссылка(хорошо) или копирование(плохо).
+                poly1[index].Value = node.Value;
+                index++;
             }
-            */
-            return null;
+            return poly1;
         }
-        public List<Line> CCINT(List<Line> c_poly1, List<Line> c_poly2)
+        public List<Line> CCINT(List<Line> c_poly1, List<Line> c_poly2)//Пересечение 2 выпуклых фигур
         {
-            /* Спросить у Паши уже функцию Convex Hull, я даже не знаю, что на выходе, точки или грани.
-            List<Line> CH = ... // получить выпуклую оболочку для c_poly1 + c_poly2      (_convexHull -> list<lines>
+            List<Point> result = null; // выпуклое пересечение.
+            //List<Line> CH =  ConvexHull();// получить выпуклую оболочку для c_poly1 + c_poly2      (CH -> list<lines> !!!!
+            List<Line> CH = null;
+
             List<Line> DE1 = null;
             List<Line> DE2 = null;
-            foreach(Line CH_Edge in CH)
+            foreach (Line CH_Edge in CH)
             {
-                foreach(Line Poly1_Edge in c_poly1) //овнокод?
+                foreach (Line Poly1_Edge in c_poly1)
                 {
-                    if ( Poly1_Edge != CH_Edge)
+                    if (Poly1_Edge != CH_Edge)
                     {
-                        DE1.Add(Poly1_Edge)
+                        DE1.Add(Poly1_Edge);
                     }
                 }
-                foreach((Line Poly1_Edge in c_poly2)
+                foreach (Line Poly2_Edge in c_poly2)
                 {
-                    if ( Poly2_Edge != CH_Edge)
+                    if (Poly2_Edge != CH_Edge)
                     {
-                        DE2.Add(Poly2_Edge)
+                        DE2.Add(Poly2_Edge);
                     }
                 }
             }
             //нашли все Delta Edges. Найдем точки их пересечения, точки poly1, которые внутри poly 2 и наоборот. Совокупность точек дает CH, который явл. резултатом пересечения.
-            List<Point> result = null;
-            foreach(Line D_Edge1 in DE1)
+            foreach (Line D_Edge1 in DE1)
             {
-                foreach(Line D_Edge2 in DE2)
+                foreach (Line D_Edge2 in DE2)
                 {
-                    result.Add(getIntersectionPoints(D_Edge1.Beg,D_Edge1.End,D_Edge2.Beg,D_Edge2.End);
+                    result.Add(getLinesIntersect(D_Edge1.Beg, D_Edge1.End, D_Edge2.Beg, D_Edge2.End));
                 }
             }
-            foreach(Line D_Edge1 in DE1) // пройтись по всем точкам DE1, добавить, те, Которые внутри c_poly2
+            foreach (Line D_Edge1 in DE1) // пройтись по всем точкам DE1, добавить, те, Которые внутри c_poly2
             {
-                if(..)
-                resutl.Add(..)
+                if (IsPointInner(D_Edge1.Beg))
+                    result.Add(D_Edge1.Beg);
+                if (IsPointInner(D_Edge1.End))
+                    result.Add(D_Edge1.Beg);
             }
-            foreach(Line D_Edge2 in DE2) // пройтись по всем точкам DE2, добавить, те, Которые внутри c_poly1
+            foreach (Line D_Edge2 in DE2) // пройтись по всем точкам DE2, добавить, те, Которые внутри c_poly1
             {
-                if(..)
-                resutl.Add(..)
+                if (IsPointInner(D_Edge2.Beg))
+                    result.Add(D_Edge2.Beg);
+                if (IsPointInner(D_Edge2.End))
+                    result.Add(D_Edge2.Beg);
             }
-            */
+            //return Convert_Points_to_Lines(ConvexHull(result));
             return null;
         }
     }
-    class Geometry : IGeometryForLogic
+    static class for_interseciton
     {
-        IFigure IGeometryForLogic.Intersection(IFigure first, IFigure second)
+        static public Tree<List<Line>> CNINT(this IFigure figure, Tree<List<Line>> poly1, List<Line> c_poly2)
+        {
+            List<Line> Res = null;
+            Res = CCINT(poly1.Value, c_poly2);// пересечение узла и c_poly2 как 2 выпуклых фигур
+            poly1.Value = Res;
+
+            if (poly1.HasChildren == false)
+            {
+                return poly1;
+            }
+
+            List<Tree<List<Line>>> Child_List = null;
+            Child_List = poly1.localChildren;
+            int index = 0;
+            foreach (Tree<List<Line>> Child in Child_List) //обход дерева с заменой узлов на пересечения
+            {
+                Tree<List<Line>> node = CNINT(Child, c_poly2);
+                //Поставить node на место Child в иcходном дереве// проверить, в шарпе ссылка(хорошо) или копирование(плохо).
+                poly1[index].Value = node.Value;
+                index++;
+            }
+            return poly1;
+        }
+        static public List<Line> CCINT(this IFigure figure, List<Line> c_poly1, List<Line> c_poly2)
+        {
+            List<Point> result = null; // выпуклое пересечение.
+            //List<Line> CH =  ConvexHull();// получить выпуклую оболочку для c_poly1 + c_poly2      (CH -> list<lines> !!!!
+            List<Line> CH = null;
+
+            List<Line> DE1 = null;
+            List<Line> DE2 = null;
+            foreach (Line CH_Edge in CH)
+            {
+                foreach (Line Poly1_Edge in c_poly1)
+                {
+                    if (Poly1_Edge != CH_Edge)
+                    {
+                        DE1.Add(Poly1_Edge);
+                    }
+                }
+                foreach (Line Poly2_Edge in c_poly2)
+                {
+                    if (Poly2_Edge != CH_Edge)
+                    {
+                        DE2.Add(Poly2_Edge);
+                    }
+                }
+            }
+            //нашли все Delta Edges. Найдем точки их пересечения, точки poly1, которые внутри poly 2 и наоборот. Совокупность точек дает CH, который явл. резултатом пересечения.
+            foreach (Line D_Edge1 in DE1)
+            {
+                foreach (Line D_Edge2 in DE2)
+                {
+                    result.Add(getLinesIntersect(D_Edge1.Beg, D_Edge1.End, D_Edge2.Beg, D_Edge2.End));
+                }
+            }
+            foreach (Line D_Edge1 in DE1) // пройтись по всем точкам DE1, добавить, те, Которые внутри c_poly2
+            {
+                if (IsPointInner(D_Edge1.Beg))
+                    result.Add(D_Edge1.Beg);
+                if (IsPointInner(D_Edge1.End))
+                    result.Add(D_Edge1.Beg);
+            }
+            foreach (Line D_Edge2 in DE2) // пройтись по всем точкам DE2, добавить, те, Которые внутри c_poly1
+            {
+                if (IsPointInner(D_Edge2.Beg))
+                    result.Add(D_Edge2.Beg);
+                if (IsPointInner(D_Edge2.End))
+                    result.Add(D_Edge2.Beg);
+            }
+            //return Convert_Points_to_Lines(ConvexHull(result));
+            return null;
+        }
+    }
+    partial class Geometry : IGeometryForLogic
+    {
+        IFigure IGeometryForLogic.Intersection(IFigure first, IFigure second)//Non Convex Intersection
         {
             //как-то приходим к List<Line> и проч. пока не знаю как.
             IFigure result = null;
 
-            List<Line> pe = null;
+            List<Line> pe1 = null; // брать из path, видимо.
+            List<Line> pe2 = null;
             //если результат build_CHT - нельзя определить выпуклую оболочку, тогда возвращать null. Для арок, будет null, видимо.
-            Tree<List<Line>> first_tree = first.Build_CHT(pe);
-            Tree<List<Line>> second_tree = second.Build_CHT(pe);
+
+            Tree<List<Line>> first_tree = first.Build_CHT(pe1);
+            Tree<List<Line>> second_tree = second.Build_CHT(pe2);
             if (first_tree != null & second_tree != null)
             {
                 if (first_tree.HasChildren == false)
                 {
-                    //CNINT (first_tree.value, second_tree ); // first - выпуклая, second - дерево выпуклых
-                    //return
+
+                    Tree<List<Line>> Result = first.CNINT(second_tree, first_tree.Value); // first - выпуклая, second - дерево выпуклых
+                    first.Build_figure_from_CHT(Result);
+                    return null;
                 }
                 if (second_tree.HasChildren == false)
                 {
-                    //CNINT (second_tree.value, first_tree ); // наоборот
-                    //return
+                    Tree<List<Line>> Result = second.CNINT (first_tree, second_tree.Value); // наоборот
+                    second.Build_figure_from_CHT(Result);
+                    //как-то преобразовать в path-ы и вернуть?
+                    return null;
                 }
                 //обе фигуры невыпуклые
                 /*
