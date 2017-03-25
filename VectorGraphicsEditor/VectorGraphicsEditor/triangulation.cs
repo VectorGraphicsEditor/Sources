@@ -16,7 +16,7 @@ namespace test_editor
             if (angle < 0) return 2 * Math.PI + angle;
             else return angle;
         }
-
+        
         protected bool ConvexHull()
         {
             List<Point> _CopyFigureBody = new List<Point>();
@@ -24,7 +24,6 @@ namespace test_editor
             {
                 _CopyFigureBody.AddRange(elem);
             }
-
 
             _CopyFigureBody = _CopyFigureBody.OrderByDescending(point => point.X).ThenBy(point => point.Y).ToList();
             Point p0 = _CopyFigureBody[0];
