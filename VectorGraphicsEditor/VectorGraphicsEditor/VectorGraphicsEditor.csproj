@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>VectorGraphicsEditor</RootNamespace>
     <AssemblyName>VectorGraphicsEditor</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -63,6 +64,7 @@
     <Compile Include="Figures.cs" />
     <Compile Include="Geometry.cs" />
     <Compile Include="Interfaces.cs" />
+    <Compile Include="IO.cs" />
     <Compile Include="logic.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -72,9 +74,28 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SVGLib\AssemblyInfo.cs" />
+    <Compile Include="SVGLib\ErrH.cs" />
+    <Compile Include="SVGLib\SvgAttribute.cs" />
+    <Compile Include="SVGLib\SvgBasicShape.cs" />
+    <Compile Include="SVGLib\SvgCircle.cs" />
+    <Compile Include="SVGLib\SvgDesc.cs" />
+    <Compile Include="SVGLib\SvgDoc.cs" />
+    <Compile Include="SVGLib\SvgElement.cs" />
+    <Compile Include="SVGLib\SvgEllipse.cs" />
+    <Compile Include="SVGLib\SvgGroup.cs" />
+    <Compile Include="SVGLib\SvgImage.cs" />
+    <Compile Include="SVGLib\SvgLine.cs" />
+    <Compile Include="SVGLib\SvgPath.cs" />
+    <Compile Include="SVGLib\SvgPolygon.cs" />
+    <Compile Include="SVGLib\SvgRect.cs" />
+    <Compile Include="SVGLib\SvgRoot.cs" />
+    <Compile Include="SVGLib\SvgText.cs" />
+    <Compile Include="SVGLib\SvgUnsupported.cs" />
     <Compile Include="triangulation.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
