@@ -16,22 +16,35 @@ namespace Logic
             FiguresList = new List<IFigure>();
         }
 
+        // Колличество элементов
+        public int Count
+        {
+            get
+            {
+                return FiguresList.Count;
+            }
+        }
+
+        // Возврашает лист фигур
         public List<IFigure> getFigures()
         {
              return FiguresList;
         }
 
+        // Возвращает фигуру по индексу
         public IFigure getFigure(int index)
         {
             return FiguresList[index];
         }
 
+        // Добавление фигуры в конец массива
         public int addNewFigure(IFigure figure)
         {
             FiguresList.Add(figure);
             return FiguresList.Count;
         }
 
+        // удаление фигур с заданными индексами причем если список пуст, то он удалит последний
         public int removeFigures(List<int> index)
         {
             if (index.Count > 0)
@@ -48,10 +61,14 @@ namespace Logic
             }
         }
 
-
-        public int size()
+        // в шарпах нет реализации swap или я не умею в гугл?
+        // ну в общем мы меняем местами в списке положение элементов
+        // может этого нельзя делать?
+        public void swap(int firstindex, int secondindex)
         {
-            return FiguresList.Count;
+            IFigure buf = FiguresList[firstindex];
+            FiguresList[firstindex] = FiguresList[secondindex];
+            FiguresList[secondindex] = buf;
         }
 
     }

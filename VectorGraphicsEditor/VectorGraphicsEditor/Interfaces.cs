@@ -15,6 +15,7 @@ namespace Interfaces
         
     public interface ICommand
     {
+        ICommand Create(Dictionary<string, object> parms);
         bool CanExecute(object x);
 
         void Execute(object x);
@@ -133,7 +134,7 @@ namespace Interfaces
     {
         /* заметим, что Paths хранит отрезки и дуги, так что может хранить несколько кривых,
          * а Lines - точки, так что для представления разных кривых понадобится массив контейнеров точек.*/
-        string type { get; set; }
+        string type { get; }
 
         Dictionary<string, object> Parameters
         {
@@ -173,9 +174,19 @@ namespace Logic
     {
         int CountFigures { get; }
         int CountCurientFigures { get; }
+        int IndexCurientElem { get; }
+
         void addFigure(IFigure fig);
 
         void removeFigures();
+
+        void addCurientFigure(Interfaces.Point dot, bool add);
+
+        void moveIndexFigure(bool direction);
+
+        void moveCurientIndex(bool direction);
+
+        
     }
 }
 
