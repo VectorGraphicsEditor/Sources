@@ -53,7 +53,7 @@ namespace Interfaces
 
     public struct Color
     {
-        public Color(int r, int g, int b, int a)
+        public Color(int r, int g, int b, int a) : this()
         {
             R = r; G = g; B = b; A = a;
         }
@@ -182,7 +182,7 @@ namespace NGeometry
 
 namespace IO
 {
-    //using Interfaces;
+    using Interfaces;
     //interface ISavePicture
     //{
     //    bool Save(string path, IEnumerable<IFigure> figures);
@@ -196,9 +196,11 @@ namespace IO
     //    Parameter /*те же настройки */ LoadSettings(string path);
     //}
 
-    public interface SVGShape {
-        SvgBasicShape ToSVGLibShape(SvgDoc doc);
-
+    public abstract class SVGShape {
+        public Color fill { get; protected set; }
+        public Color stroke { get; protected set; }
+        public int w { get; protected set; } // stroke width
+        public abstract SvgBasicShape ToSVGLibShape(SvgDoc doc);
     }
 
     public static class SVGIO {
@@ -219,6 +221,42 @@ namespace IO
             }
             doc.SaveToFile(filename);
         }
+
+        public static Tuple<List<SVGShape>, int, int> import(string filename)
+        {
+            List<SVGShape> shapes = new List<SVGShape>() {new SVGEllipse(new Point(50.0, 50.0), 20.0, 10.0, 
+                new Color(100, 255, 56, 0),
+                new Color(0, 0, 0, 0),
+                2)};
+
+            SvgDoc doc = new SvgDoc();
+            doc.LoadFromFile(filename);
+            SvgRoot root = doc.GetSvgRoot();
+            int width, height = 1;
+            Int32.TryParse(root.Width.ToString().Substring(0, root.Width.Length - 2), out width);
+            Int32.TryParse(root.Height.ToString().Substring(0, root.Height.Length - 2), out height);
+            Console.WriteLine(width);
+            Console.WriteLine(height); 
+
+            int i = 2;
+            SvgElement el;
+            while ((el = doc.GetSvgElement(i)) != null) {
+                el = doc.GetSvgElement(i);
+                Console.WriteLine(el.getElementName());
+                ++i;
+            }
+            Console.WriteLine(i); 
+
+            //foreach (var shape in shapes)
+            //{
+            //    var figure = shape.ToSVGLibShape(doc);
+            //    doc.AddElement(root, figure);
+            //}
+            //doc.SaveToFile(filename);
+
+            return Tuple.Create(shapes, width, height);
+        }
+
     }
 
 }
