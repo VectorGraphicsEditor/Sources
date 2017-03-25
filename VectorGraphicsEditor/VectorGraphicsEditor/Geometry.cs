@@ -21,10 +21,10 @@ namespace test_editor
 
 
 
-        protected List<trTriangle> _triangles { get; set; }
-        protected List<Point> _convexHull { get; set; }
-        protected List<Point> _figureBorder { get; set; }
-        protected List<List<Point>> _onlyPoints { get; set; }
+        public List<trTriangle> _triangles { get; set; }
+        public List<Point> _convexHull { get; set; }
+        public List<Point> _figureBorder { get; set; }
+        public List<List<Point>> _onlyPoints { get; set; }//списки связных границ в виде точек
 
         public abstract string type { get; }
         public abstract Dictionary<string, object> Parameters { get; set; }
