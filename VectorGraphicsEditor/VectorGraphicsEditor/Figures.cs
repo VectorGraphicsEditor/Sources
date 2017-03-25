@@ -33,7 +33,7 @@ namespace VectorGraphicsEditor
                 new Point(DownLeft.X, UpRight.Y),
                 DownLeft
             };
-
+            _convexHull = new List<Point>(_figureBorder);
             _figureBorder = new List<Point>(_figureBorder);
 
             _triangles = new List<trTriangle>()
@@ -71,13 +71,13 @@ namespace VectorGraphicsEditor
             throw new NotImplementedException();
         }
 
-        
+
         public override Tuple<IEnumerable<trTriangle>, IEnumerable<ILineContainer>> NewTriangulation(double eps)
         {
             SpecPath path = new SpecPath();
             path.Path = _figureBorder;
-            List<ILineContainer> ToReturn = new List<ILineContainer>() {path};
-            return new 
+            List<ILineContainer> ToReturn = new List<ILineContainer>() { path };
+            return new
                 Tuple<IEnumerable<trTriangle>, IEnumerable<ILineContainer>>
                 (_triangles, ToReturn);
         }
@@ -103,7 +103,7 @@ namespace VectorGraphicsEditor
                     new Point(Point2.X, Point2.Y),
                     new Point(Point3.X, Point3.Y)
                 };
-
+            _convexHull = new List<Point>(_figureBorder);
             _figureBorder = new List<Point>(_figureBorder);
 
             _triangles = new List<trTriangle>()
@@ -112,7 +112,7 @@ namespace VectorGraphicsEditor
                 };
 
         }
-        public override string type { get;}
+        public override string type { get; }
 
         public override Dictionary<string, object> Parameters { get; set; }
 
@@ -157,19 +157,24 @@ namespace VectorGraphicsEditor
     }
 
     public class Mutant : Figure
-    {   
+    {
         //представление в виде списка связных границ
         //произвольного типа
         List<List<Segment>> path;
 
-
-        public Mutant(List<List<Segment>> path, Color BorderColor, Color FillColor)
+        private double PerimetreOfEllipse(double a, double b)
+        {
+            double x = Math.Log(2) / Math.Log(Math.PI / 2);
+            return 4 * Math.Pow((Math.Pow(a, x) + Math.Pow(b, x)), 1 / x);
+        }
+        public Mutant(List<List<Segment>> path, Color BorderColor, Color FillColor, double Epsilon)
         {
             this.FillColor = FillColor;
             this.LineColor = BorderColor;
 
             this.path = path;
-
+            _onlyPoints = new List<List<Point>>();
+            #region Обработка входных данных
             foreach (List<Segment> border in path)
             {
                 List<Point> toAdd = new List<Point>();
@@ -186,21 +191,67 @@ namespace VectorGraphicsEditor
                     else if (segment.Name == "Arc")
                     {
                         //должен возвращать все, кроме последней точки
-                        toAdd.AddRange(ArcPointsConverter(segment));
+                        toAdd.AddRange(ArcPointsConverter(segment, Epsilon));
 
                     }
                     if (i == count - 1)
                         toAdd.Add(segment.End);
                 }
 
+                _onlyPoints.Add(toAdd);
             }
+            #endregion 
+            ConvexHull();
+            CreateTriangulation();
 
         }
-
-        private IEnumerable<Point> ArcPointsConverter(Segment segment)
+        private IEnumerable<Point> ArcPointsConverter(Segment segment, double eps)
         {
-            throw new NotImplementedException();
+            EllipseArc arc = (EllipseArc)segment;
+
+            //какая часть периметра задействована
+            double part = Math.Abs(arc.EndRad - arc.BegRad) / (2 * Math.PI);
+
+            //сколько реально длины периметра задействовано
+            part *= PerimetreOfEllipse(arc.A, arc.B);
+
+            //сколько отрезков
+            part = part / eps;
+
+
+
+            List<Point> result = new List<Point>();
+            double x, y, t = 0;
+            for (int i = 0; i < (int)part; i++)
+            {
+                x = arc.A * Math.Cos(t) + arc.Center.X;
+                y =  arc.Center.Y;
+                if (arc.Beg.X < arc.End.X)
+                    y += arc.B * Math.Sin(t);
+                else
+                    y -= arc.B * Math.Sin(t);
+
+                result.Add(new Point(x, y));
+                t += Math.PI / part;
+            }
+            double cos = Math.Cos(Math.PI*arc.RotAngle/180);
+            double sin = Math.Sin(Math.PI * arc.RotAngle/180);
+
+            foreach (Point point in result)
+            {
+                point.X = point.X * cos - point.Y * sin;
+                point.Y = point.X * sin + point.Y * cos;   
+            }
+            if (arc.Beg.X < arc.End.X)
+            {
+                result.Add(arc.Beg);
+                result.RemoveAt(0);
+                result.Reverse();
+                }
+            return result;
+
         }
+
 
 
 
@@ -238,10 +289,10 @@ namespace VectorGraphicsEditor
 
         public override IFigure Clone(Dictionary<string, object> parms)
         {
-            
-            List<List<Segment>> NewPath = MakeNewMutant(path, parms["NewLeftDownCorner"], parms["NewRightUpCorner"]);
 
-            return new Mutant(NewPath, this.LineColor, this.FillColor);
+            List<List<Segment>> NewPath = MakeNewMutant(path, parms["NewLeftDownCorner"], parms["NewRightUpCorner"]);
+            double eps = (double)parms["Epsilon"];
+            return new Mutant(NewPath, this.LineColor, this.FillColor, eps);
         }
 
         private List<List<Segment>> MakeNewMutant(List<List<Segment>> path, object v1, object v2)
@@ -276,6 +327,9 @@ namespace VectorGraphicsEditor
         }
     }
     #endregion
+}
+
+
 
     public class Test : Figure
     {
@@ -409,6 +463,6 @@ namespace VectorGraphicsEditor
         }
         #endregion
     }
-}
+
 
 
