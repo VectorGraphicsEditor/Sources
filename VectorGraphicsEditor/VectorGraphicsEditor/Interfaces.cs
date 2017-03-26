@@ -193,6 +193,14 @@ namespace Logic
 
         void moveCurientIndex(bool direction);
 
+        int GetStackIndex();
+
+        int GetStackCount();
+
+        void SetPreviousStackState();
+
+        void SetNextStackState();
+
         
     }
 }
