@@ -36,26 +36,29 @@
             this.открытьToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.сохранитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.справкаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.buttonRect = new System.Windows.Forms.Button();
-            this.buttonLine = new System.Windows.Forms.Button();
-            this.buttonTriangle = new System.Windows.Forms.Button();
-            this.buttonSelectFigure = new System.Windows.Forms.Button();
-            this.buttonEllipse = new System.Windows.Forms.Button();
-            this.buttonCircle = new System.Windows.Forms.Button();
             this.button_choose_line_color = new System.Windows.Forms.Button();
             this.button_choose_fill_color = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.buttonScaleLine = new System.Windows.Forms.Button();
-            this.buttonDivider = new System.Windows.Forms.Button();
-            this.buttonIntersection = new System.Windows.Forms.Button();
             this.buttonUnion = new System.Windows.Forms.Button();
+
             this.buttonStartMutant = new System.Windows.Forms.Button();
             this.buttonSaveMutant = new System.Windows.Forms.Button();
             this.buttonMutantNext = new System.Windows.Forms.Button();
             this.buttonDelete = new System.Windows.Forms.Button();
             this.buttonMinus = new System.Windows.Forms.Button();
+
+            this.buttonIntersection = new System.Windows.Forms.Button();
+            this.buttonDivider = new System.Windows.Forms.Button();
+            this.buttonScaleLine = new System.Windows.Forms.Button();
+            this.buttonCircle = new System.Windows.Forms.Button();
+            this.buttonEllipse = new System.Windows.Forms.Button();
+            this.buttonSelectFigure = new System.Windows.Forms.Button();
+            this.buttonTriangle = new System.Windows.Forms.Button();
+            this.buttonRect = new System.Windows.Forms.Button();
+            this.buttonLine = new System.Windows.Forms.Button();
+
             ((System.ComponentModel.ISupportInitialize)(this.openGLControlView)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -67,6 +70,8 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.openGLControlView.AutoSize = true;
+            this.openGLControlView.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.openGLControlView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.openGLControlView.DrawFPS = false;
             this.openGLControlView.Location = new System.Drawing.Point(12, 82);
             this.openGLControlView.Name = "openGLControlView";
@@ -85,6 +90,7 @@
             // 
             // menuStrip1
             // 
+            this.menuStrip1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.файлToolStripMenuItem,
             this.справкаToolStripMenuItem});
@@ -107,21 +113,21 @@
             // открытьToolStripMenuItem
             // 
             this.открытьToolStripMenuItem.Name = "открытьToolStripMenuItem";
-            this.открытьToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.открытьToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.открытьToolStripMenuItem.Text = "Создать";
             this.открытьToolStripMenuItem.Click += new System.EventHandler(this.открытьToolStripMenuItem_Click);
             // 
             // открытьToolStripMenuItem1
             // 
             this.открытьToolStripMenuItem1.Name = "открытьToolStripMenuItem1";
-            this.открытьToolStripMenuItem1.Size = new System.Drawing.Size(132, 22);
+            this.открытьToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
             this.открытьToolStripMenuItem1.Text = "Открыть";
             this.открытьToolStripMenuItem1.Click += new System.EventHandler(this.открытьToolStripMenuItem1_Click);
             // 
             // сохранитьToolStripMenuItem
             // 
             this.сохранитьToolStripMenuItem.Name = "сохранитьToolStripMenuItem";
-            this.сохранитьToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.сохранитьToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.сохранитьToolStripMenuItem.Text = "Сохранить";
             this.сохранитьToolStripMenuItem.Click += new System.EventHandler(this.сохранитьToolStripMenuItem_Click);
             // 
@@ -130,66 +136,6 @@
             this.справкаToolStripMenuItem.Name = "справкаToolStripMenuItem";
             this.справкаToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
             this.справкаToolStripMenuItem.Text = "Справка";
-            // 
-            // buttonRect
-            // 
-            this.buttonRect.Image = global::VectorGraphicsEditor.Properties.Resources.квадрат_второй;
-            this.buttonRect.Location = new System.Drawing.Point(68, 27);
-            this.buttonRect.Name = "buttonRect";
-            this.buttonRect.Size = new System.Drawing.Size(50, 50);
-            this.buttonRect.TabIndex = 2;
-            this.buttonRect.UseVisualStyleBackColor = true;
-            this.buttonRect.Click += new System.EventHandler(this.buttonRect_Click);
-            // 
-            // buttonLine
-            // 
-            this.buttonLine.Image = global::VectorGraphicsEditor.Properties.Resources.Линия;
-            this.buttonLine.Location = new System.Drawing.Point(12, 27);
-            this.buttonLine.Name = "buttonLine";
-            this.buttonLine.Size = new System.Drawing.Size(50, 50);
-            this.buttonLine.TabIndex = 1;
-            this.buttonLine.UseVisualStyleBackColor = true;
-            this.buttonLine.Click += new System.EventHandler(this.buttonLine_Click);
-            // 
-            // buttonTriangle
-            // 
-            this.buttonTriangle.Location = new System.Drawing.Point(124, 27);
-            this.buttonTriangle.Name = "buttonTriangle";
-            this.buttonTriangle.Size = new System.Drawing.Size(97, 50);
-            this.buttonTriangle.TabIndex = 4;
-            this.buttonTriangle.Text = "Треугольник";
-            this.buttonTriangle.UseVisualStyleBackColor = true;
-            this.buttonTriangle.Click += new System.EventHandler(this.buttonTriangle_Click);
-            // 
-            // buttonSelectFigure
-            // 
-            this.buttonSelectFigure.Location = new System.Drawing.Point(433, 27);
-            this.buttonSelectFigure.Name = "buttonSelectFigure";
-            this.buttonSelectFigure.Size = new System.Drawing.Size(97, 50);
-            this.buttonSelectFigure.TabIndex = 7;
-            this.buttonSelectFigure.Text = "Выбрать фигуру";
-            this.buttonSelectFigure.UseVisualStyleBackColor = true;
-            this.buttonSelectFigure.Click += new System.EventHandler(this.buttonSelectFigure_Click);
-            // 
-            // buttonEllipse
-            // 
-            this.buttonEllipse.Location = new System.Drawing.Point(330, 27);
-            this.buttonEllipse.Name = "buttonEllipse";
-            this.buttonEllipse.Size = new System.Drawing.Size(97, 50);
-            this.buttonEllipse.TabIndex = 8;
-            this.buttonEllipse.Text = "Эллипс";
-            this.buttonEllipse.UseVisualStyleBackColor = true;
-            this.buttonEllipse.Click += new System.EventHandler(this.buttonEllipse_Click);
-            // 
-            // buttonCircle
-            // 
-            this.buttonCircle.Location = new System.Drawing.Point(227, 27);
-            this.buttonCircle.Name = "buttonCircle";
-            this.buttonCircle.Size = new System.Drawing.Size(97, 50);
-            this.buttonCircle.TabIndex = 9;
-            this.buttonCircle.Text = "Окружность";
-            this.buttonCircle.UseVisualStyleBackColor = true;
-            this.buttonCircle.Click += new System.EventHandler(this.buttonCircle_Click);
             // 
             // button_choose_line_color
             // 
@@ -215,7 +161,7 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.button_choose_line_color);
             this.groupBox1.Controls.Add(this.button_choose_fill_color);
-            this.groupBox1.Location = new System.Drawing.Point(536, 27);
+            this.groupBox1.Location = new System.Drawing.Point(348, 27);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(168, 50);
             this.groupBox1.TabIndex = 12;
@@ -239,45 +185,105 @@
             this.label1.TabIndex = 12;
             this.label1.Text = "Цвет заливки";
             // 
-            // buttonScaleLine
+            // buttonUnion
             // 
-            this.buttonScaleLine.Location = new System.Drawing.Point(710, 30);
-            this.buttonScaleLine.Name = "buttonScaleLine";
-            this.buttonScaleLine.Size = new System.Drawing.Size(97, 50);
-            this.buttonScaleLine.TabIndex = 13;
-            this.buttonScaleLine.Text = "Линейка";
-            this.buttonScaleLine.UseVisualStyleBackColor = true;
-            this.buttonScaleLine.Click += new System.EventHandler(this.buttonScaleLine_Click);
-            // 
-            // buttonDivider
-            // 
-            this.buttonDivider.Location = new System.Drawing.Point(813, 30);
-            this.buttonDivider.Name = "buttonDivider";
-            this.buttonDivider.Size = new System.Drawing.Size(97, 50);
-            this.buttonDivider.TabIndex = 14;
-            this.buttonDivider.Text = "Циркуль";
-            this.buttonDivider.UseVisualStyleBackColor = true;
-            this.buttonDivider.Click += new System.EventHandler(this.buttonDivider_Click);
+            this.buttonUnion.Image = global::VectorGraphicsEditor.Properties.Resources.Объединение;
+            this.buttonUnion.Location = new System.Drawing.Point(690, 27);
+            this.buttonUnion.Name = "buttonUnion";
+            this.buttonUnion.Size = new System.Drawing.Size(50, 50);
+            this.buttonUnion.TabIndex = 16;
+            this.buttonUnion.UseVisualStyleBackColor = true;
+            this.buttonUnion.Click += new System.EventHandler(this.buttonUnion_Click);
             // 
             // buttonIntersection
             // 
-            this.buttonIntersection.Location = new System.Drawing.Point(916, 30);
+            this.buttonIntersection.Image = global::VectorGraphicsEditor.Properties.Resources.Пересечение;
+            this.buttonIntersection.Location = new System.Drawing.Point(634, 27);
             this.buttonIntersection.Name = "buttonIntersection";
-            this.buttonIntersection.Size = new System.Drawing.Size(97, 50);
+            this.buttonIntersection.Size = new System.Drawing.Size(50, 50);
             this.buttonIntersection.TabIndex = 15;
-            this.buttonIntersection.Text = "Пересечение";
             this.buttonIntersection.UseVisualStyleBackColor = true;
             this.buttonIntersection.Click += new System.EventHandler(this.buttonIntersection_Click);
             // 
-            // buttonUnion
+            // buttonDivider
             // 
-            this.buttonUnion.Location = new System.Drawing.Point(1019, 30);
-            this.buttonUnion.Name = "buttonUnion";
-            this.buttonUnion.Size = new System.Drawing.Size(97, 50);
-            this.buttonUnion.TabIndex = 16;
-            this.buttonUnion.Text = "Объединение";
-            this.buttonUnion.UseVisualStyleBackColor = true;
-            this.buttonUnion.Click += new System.EventHandler(this.buttonUnion_Click);
+            this.buttonDivider.Image = global::VectorGraphicsEditor.Properties.Resources.Циркуль;
+            this.buttonDivider.Location = new System.Drawing.Point(578, 27);
+            this.buttonDivider.Name = "buttonDivider";
+            this.buttonDivider.Size = new System.Drawing.Size(50, 50);
+            this.buttonDivider.TabIndex = 14;
+            this.buttonDivider.UseVisualStyleBackColor = true;
+            this.buttonDivider.Click += new System.EventHandler(this.buttonDivider_Click);
+            // 
+            // buttonScaleLine
+            // 
+            this.buttonScaleLine.Image = global::VectorGraphicsEditor.Properties.Resources.Линейка;
+            this.buttonScaleLine.Location = new System.Drawing.Point(522, 27);
+            this.buttonScaleLine.Name = "buttonScaleLine";
+            this.buttonScaleLine.Size = new System.Drawing.Size(50, 50);
+            this.buttonScaleLine.TabIndex = 13;
+            this.buttonScaleLine.UseVisualStyleBackColor = true;
+            this.buttonScaleLine.Click += new System.EventHandler(this.buttonScaleLine_Click);
+            // 
+            // buttonCircle
+            // 
+            this.buttonCircle.Image = global::VectorGraphicsEditor.Properties.Resources.Круг;
+            this.buttonCircle.Location = new System.Drawing.Point(180, 27);
+            this.buttonCircle.Name = "buttonCircle";
+            this.buttonCircle.Size = new System.Drawing.Size(50, 50);
+            this.buttonCircle.TabIndex = 9;
+            this.buttonCircle.UseVisualStyleBackColor = true;
+            this.buttonCircle.Click += new System.EventHandler(this.buttonCircle_Click);
+            // 
+            // buttonEllipse
+            // 
+            this.buttonEllipse.Image = global::VectorGraphicsEditor.Properties.Resources.Элипс;
+            this.buttonEllipse.Location = new System.Drawing.Point(236, 27);
+            this.buttonEllipse.Name = "buttonEllipse";
+            this.buttonEllipse.Size = new System.Drawing.Size(50, 50);
+            this.buttonEllipse.TabIndex = 8;
+            this.buttonEllipse.UseVisualStyleBackColor = true;
+            this.buttonEllipse.Click += new System.EventHandler(this.buttonEllipse_Click);
+            // 
+            // buttonSelectFigure
+            // 
+            this.buttonSelectFigure.Image = global::VectorGraphicsEditor.Properties.Resources.Выбор;
+            this.buttonSelectFigure.Location = new System.Drawing.Point(292, 27);
+            this.buttonSelectFigure.Name = "buttonSelectFigure";
+            this.buttonSelectFigure.Size = new System.Drawing.Size(50, 50);
+            this.buttonSelectFigure.TabIndex = 7;
+            this.buttonSelectFigure.UseVisualStyleBackColor = true;
+            this.buttonSelectFigure.Click += new System.EventHandler(this.buttonSelectFigure_Click);
+            // 
+            // buttonTriangle
+            // 
+            this.buttonTriangle.Image = global::VectorGraphicsEditor.Properties.Resources.Треугольник;
+            this.buttonTriangle.Location = new System.Drawing.Point(124, 27);
+            this.buttonTriangle.Name = "buttonTriangle";
+            this.buttonTriangle.Size = new System.Drawing.Size(50, 50);
+            this.buttonTriangle.TabIndex = 4;
+            this.buttonTriangle.UseVisualStyleBackColor = true;
+            this.buttonTriangle.Click += new System.EventHandler(this.buttonTriangle_Click);
+            // 
+            // buttonRect
+            // 
+            this.buttonRect.Image = global::VectorGraphicsEditor.Properties.Resources.квадрат_второй;
+            this.buttonRect.Location = new System.Drawing.Point(68, 27);
+            this.buttonRect.Name = "buttonRect";
+            this.buttonRect.Size = new System.Drawing.Size(50, 50);
+            this.buttonRect.TabIndex = 2;
+            this.buttonRect.UseVisualStyleBackColor = true;
+            this.buttonRect.Click += new System.EventHandler(this.buttonRect_Click);
+            // 
+            // buttonLine
+            // 
+            this.buttonLine.Image = global::VectorGraphicsEditor.Properties.Resources.Линия;
+            this.buttonLine.Location = new System.Drawing.Point(12, 27);
+            this.buttonLine.Name = "buttonLine";
+            this.buttonLine.Size = new System.Drawing.Size(50, 50);
+            this.buttonLine.TabIndex = 1;
+            this.buttonLine.UseVisualStyleBackColor = true;
+            this.buttonLine.Click += new System.EventHandler(this.buttonLine_Click);
             // 
             // buttonStartMutant
             // 
@@ -332,12 +338,15 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+
+            this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.ClientSize = new System.Drawing.Size(1685, 822);
             this.Controls.Add(this.buttonMinus);
             this.Controls.Add(this.buttonDelete);
             this.Controls.Add(this.buttonMutantNext);
             this.Controls.Add(this.buttonSaveMutant);
             this.Controls.Add(this.buttonStartMutant);
+
             this.Controls.Add(this.buttonUnion);
             this.Controls.Add(this.buttonIntersection);
             this.Controls.Add(this.buttonDivider);

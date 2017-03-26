@@ -134,11 +134,13 @@ namespace VectorGraphicsEditor
 
         private void buttonRect_Click(object sender, EventArgs e)
         {
+            mode = Modes.Draw;
             selectedFigure = Figures.Quadrangle;
         }
 
         private void buttonLine_Click(object sender, EventArgs e)
         {
+            mode = Modes.Draw;
             selectedFigure = Figures.Line;
         }
 
@@ -686,6 +688,7 @@ namespace VectorGraphicsEditor
 
         private void buttonTriangle_Click(object sender, EventArgs e)
         {
+            mode = Modes.Draw;
             selectedFigure = Figures.Triangle;
         }
 
@@ -711,11 +714,13 @@ namespace VectorGraphicsEditor
 
         private void buttonEllipse_Click(object sender, EventArgs e)
         {
+            mode = Modes.Draw;
             selectedFigure = Figures.Ellipse;
         }
 
         private void buttonCircle_Click(object sender, EventArgs e)
         {
+            mode = Modes.Draw;
             selectedFigure = Figures.Circle;
         }
 
