@@ -43,22 +43,15 @@ namespace Interfaces
     {
         public Point Center { set; get; }
         public double Rad { set; get; }
-        public double A { get; set; }//длина полуоси
-        public double B { get; set; }
         public double BegRad { set; get; }
         public double EndRad { set; get; }
-        public double RotAngle { get; set; }
-        public EllipseArc(Point center, double a, double b, double begrad, double endrad, Point beg, Point end, double RotationAngle)
+        public EllipseArc(Point center,double r1, double r2, double rad, double beg, double end)
         {
             Name = "Arc";
             Center = center;
-            A = a;
-            B = b;
-            BegRad = begrad;
-            EndRad = endrad;
-            Beg = beg;
-            End = end;
-            RotAngle = RotationAngle;
+            Rad = rad;
+            BegRad = beg;
+            EndRad = end;
         }
     }
 
