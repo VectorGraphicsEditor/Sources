@@ -16,6 +16,8 @@ namespace VectorGraphicsEditor
         ICommand addCommand;
         ICommand removeCommand;
         ICommand pickCommand;
+        ICommand editCommand;
+        ICommand transformCommand;
 
         // Наименьший dpi 
         double minDpi = 1;
@@ -25,7 +27,8 @@ namespace VectorGraphicsEditor
             Quadrangle,
             Triangle,
             Circle,
-            Ellipse
+            Ellipse,
+            Mutant
         };
 
         // Режимы работы
@@ -37,34 +40,10 @@ namespace VectorGraphicsEditor
         };
 
         Modes mode = Modes.Draw;
-
-
-        // Временно
-        class LineTemp : ILineContainer
-        {
-            public IEnumerable<Interfaces.Point> Path
-            {
-                get
-                {
-                    return new List<Interfaces.Point>()
-                    {
-                        new Interfaces.Point(200,200),
-                        new Interfaces.Point(500,50),
-                        new Interfaces.Point(100,20)
-                    };
-                }
-            }
-        }
-
-        // Временно, пока не можем получать фигуры от логики
-        List<IEnumerable<ILineContainer>> listForDisplay = new List<IEnumerable<ILineContainer>>()
-        {
-            new List<ILineContainer>() {
-                new LineTemp()
-            }
-        };
-
+        
         private Interfaces.Point[] last3Points;
+        private List<Interfaces.Point> pointsMutant;
+        List<List<Segment>> listFragments = new List<List<Segment>>();
         private Interfaces.Color borderColor = new Interfaces.Color(0, 0, 0, 255);
         private Interfaces.Color fillColor = new Interfaces.Color(255, 255, 255, 255);
 
@@ -100,7 +79,9 @@ namespace VectorGraphicsEditor
             commands = new CommandsFactory(logic);
             addCommand = commands.Create("AddFigure", null);
             removeCommand = commands.Create("RemoveFigure", null);
+            editCommand = commands.Create("EditFigure", null);
             pickCommand = commands.Create("Pick", null);
+            transformCommand = commands.Create("Transform", null);
         }
 
         public OpenGL getOpenGL()
@@ -317,15 +298,14 @@ namespace VectorGraphicsEditor
             }
             gl.End();
         }
+
         void DrawCircle(OpenGL gl, Interfaces.Point centerPoint, Interfaces.Point borderPoint, int numSegments)
         {
             DrawContourCircle(gl, centerPoint, borderPoint, numSegments);
-
             DrawFillCircle(gl, centerPoint, borderPoint, numSegments);
         }
 
-
-        private void DrawPoints(OpenGL gl)
+        private void DrawPointsTriangle(OpenGL gl)
         {
             gl.PointSize(3);
             gl.Begin(OpenGL.GL_POINTS);
@@ -335,6 +315,27 @@ namespace VectorGraphicsEditor
             }
             gl.End();
             gl.PointSize(1);
+        }
+
+        private void DrawPointsMutant(OpenGL gl)
+        {
+            gl.PointSize(3);
+            gl.Begin(OpenGL.GL_POINTS);
+
+            foreach (var point in pointsMutant)
+            {
+                gl.Vertex(point.X, openGLControlView.Height - point.Y);
+            }
+            gl.End();
+            gl.PointSize(1);
+
+            foreach (var fragment in listFragments)
+            {
+                foreach (var line in fragment)
+                {
+                    DrawLine(gl, line.Beg, line.End, borderColor);
+                }
+            }
         }
 
         private void DrawLine(OpenGL gl, Interfaces.Point firstPoint, Interfaces.Point lastPoint, Interfaces.Color color)
@@ -349,7 +350,6 @@ namespace VectorGraphicsEditor
 
         private void DrawText(OpenGL gl, Interfaces.Point placeTextPoint, string text)
         {
-            // Необходимо для преобразования из 3D в 2D координаты окна для текста
             double[] modelView = new double[16];
             double[] projection = new double[16];
             int[] viewport = new int[4];
@@ -390,7 +390,7 @@ namespace VectorGraphicsEditor
                     DrawTriangle(gl, triangle, figure.FillColor);
                 }
 
-
+                // Обход по границам 
                 foreach (var border in triangulation.Item2)
                 {
                     Interfaces.Point firstPointBorder = null;
@@ -410,7 +410,6 @@ namespace VectorGraphicsEditor
                     }
                     DrawLine(gl, prevPointBorder, firstPointBorder, figure.LineColor);
                 }
-
             }
 
             // Циркуль
@@ -452,7 +451,7 @@ namespace VectorGraphicsEditor
                         }
                         else
                         {
-                            DrawPoints(gl);
+                            DrawPointsTriangle(gl);
                         }
                         break;
                     case Figures.Line:
@@ -473,6 +472,9 @@ namespace VectorGraphicsEditor
                             new Interfaces.Point(last3Points[2].X, last3Points[2].Y),
                             360
                             );
+                        break;
+                    case Figures.Mutant:
+                        DrawPointsMutant(gl);
                         break;
                 }
             }
@@ -495,40 +497,49 @@ namespace VectorGraphicsEditor
                     // тут к координатам точки прибавляю смещение полотна
                     AddNewLastPoint(new Interfaces.Point(e.X - canvasPositionX, e.Y - canvasPositionY));
 
-                    if (selectedFigure == Figures.Triangle)
+                    switch(selectedFigure)
                     {
-                        if (iPointTriangle > 2)
-                        {
-                            iPointTriangle = 1;
-                        }
-                        else if (iPointTriangle == 2)
-                        {
-                            iPointTriangle++;
-                            
-                            IFigure figure = Factory.Create(
-                                "Triangle",
-                                new Dictionary<string, object>()
-                                {
+                        case Figures.Triangle:
+                            if (iPointTriangle > 2)
+                            {
+                                iPointTriangle = 1;
+                            }
+                            else if (iPointTriangle == 2)
+                            {
+                                iPointTriangle++;
+
+                                IFigure figure = Factory.Create(
+                                    "Triangle",
+                                    new Dictionary<string, object>()
+                                    {
                                 { "Point1", last3Points[0] },
                                 { "Point2", last3Points[1] },
                                 { "Point3", last3Points[2] },
                                 { "BorderColor", borderColor},
                                 { "FillColor", fillColor}
-                                });
+                                    });
 
-                            addCommand.Execute(figure);
-                        }
-                        else
-                        {
-                            iPointTriangle++;
-                        }
+                                addCommand.Execute(figure);
+                            }
+                            else
+                            {
+                                iPointTriangle++;
+                            }
+                            break;
+
+                        case Figures.Mutant:
+                            pointsMutant.Add(new Interfaces.Point(e.X - canvasPositionX, e.Y - canvasPositionY));
+                            break;
+
+                        default:
+                            last3Points[0] = new Interfaces.Point(e.X - canvasPositionX, e.Y - canvasPositionY);
+                            last3Points[1] = new Interfaces.Point(e.X - canvasPositionX, e.Y - canvasPositionY);
+                            last3Points[2] = new Interfaces.Point(e.X - canvasPositionX, e.Y - canvasPositionY);
+                            break;
                     }
-                    else
-                    {
-                        last3Points[0] = new Interfaces.Point(e.X - canvasPositionX, e.Y - canvasPositionY);
-                        last3Points[1] = new Interfaces.Point(e.X - canvasPositionX, e.Y - canvasPositionY);
-                        last3Points[2] = new Interfaces.Point(e.X - canvasPositionX, e.Y - canvasPositionY);
-                    }
+
+                    
+                    
 
                     isMouseDown = true;
                     isStartDrag = true;
@@ -716,6 +727,7 @@ namespace VectorGraphicsEditor
                 borderColor = new Interfaces.Color(cd.Color.R, cd.Color.G, cd.Color.B, cd.Color.A);
                 button_choose_line_color.BackColor = cd.Color;
             }
+            isChangedOpenGLView = true;
         }
 
         private void buttonScaleLine_Click(object sender, EventArgs e)
@@ -754,6 +766,77 @@ namespace VectorGraphicsEditor
 
         }
 
+        private void buttonStartMutant_Click(object sender, EventArgs e)
+        {
+            pointsMutant = new List<Interfaces.Point>();
+
+            selectedFigure = Figures.Mutant;
+            pointsMutant.Clear();
+            listFragments.Clear();
+        }
+
+        private void buttonSaveMutant_Click(object sender, EventArgs e)
+        {
+            if (selectedFigure == Figures.Mutant)
+            {
+                NextFragmentMutant();
+
+                IFigure figure = new Mutant(
+                    listFragments,
+                    borderColor,
+                    fillColor,
+                    minDpi);
+
+                addCommand.Execute(figure);
+
+                pointsMutant.Clear();
+                listFragments.Clear();
+                isChangedOpenGLView = true;
+            }
+        }
+
+        void NextFragmentMutant()
+        {
+            if (pointsMutant.Count > 0)
+            {
+                List<Segment> segments = new List<Segment>();
+
+                Interfaces.Point firstPointBorder = null;
+                Interfaces.Point prevPointBorder = null;
+                bool isFirst = true;
+
+
+                foreach (var point in pointsMutant)
+                {
+                    if (isFirst)
+                    {
+                        firstPointBorder = point;
+                        isFirst = false;
+                        prevPointBorder = point;
+                        continue;
+                    }
+                    segments.Add(new Line(prevPointBorder, point));
+                    prevPointBorder = point;
+                }
+                segments.Add(new Line(prevPointBorder, firstPointBorder));
+
+                listFragments.Add(segments);
+                pointsMutant.Clear();
+            }
+        }
+
+        private void buttonMutantNext_Click(object sender, EventArgs e)
+        {
+            NextFragmentMutant();
+            isChangedOpenGLView = true;
+        }
+
+        private void buttonDelete_Click(object sender, EventArgs e)
+        {
+            removeCommand.Execute(null);
+            isChangedOpenGLView = true;
+        }
+
         private void button_choose_fill_color_Click(object sender, EventArgs e)
         {
             ColorDialog cd = new ColorDialog();
@@ -761,7 +844,13 @@ namespace VectorGraphicsEditor
             {
                 fillColor = new Interfaces.Color(cd.Color.R, cd.Color.G, cd.Color.B, cd.Color.A);
                 button_choose_fill_color.BackColor = cd.Color;
+
+                if (isModeSelectFigures)
+                {
+                    //editCommand.Execute();
+                }
             }
+            isChangedOpenGLView = true;
         }
 
         private void openGLControlView_SizeChanged(object sender, EventArgs e)

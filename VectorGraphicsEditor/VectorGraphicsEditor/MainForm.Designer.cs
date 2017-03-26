@@ -51,6 +51,11 @@
             this.buttonDivider = new System.Windows.Forms.Button();
             this.buttonIntersection = new System.Windows.Forms.Button();
             this.buttonUnion = new System.Windows.Forms.Button();
+            this.buttonStartMutant = new System.Windows.Forms.Button();
+            this.buttonSaveMutant = new System.Windows.Forms.Button();
+            this.buttonMutantNext = new System.Windows.Forms.Button();
+            this.buttonDelete = new System.Windows.Forms.Button();
+            this.buttonMinus = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.openGLControlView)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -68,7 +73,7 @@
             this.openGLControlView.OpenGLVersion = SharpGL.Version.OpenGLVersion.OpenGL1_1;
             this.openGLControlView.RenderContextType = SharpGL.RenderContextType.DIBSection;
             this.openGLControlView.RenderTrigger = SharpGL.RenderTrigger.TimerBased;
-            this.openGLControlView.Size = new System.Drawing.Size(1113, 602);
+            this.openGLControlView.Size = new System.Drawing.Size(1661, 728);
             this.openGLControlView.TabIndex = 0;
             this.openGLControlView.OpenGLInitialized += new System.EventHandler(this.openGLControlView_OpenGLInitialized);
             this.openGLControlView.OpenGLDraw += new SharpGL.RenderEventHandler(this.openGLControlView_OpenGLDraw);
@@ -85,7 +90,7 @@
             this.справкаToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1137, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1685, 24);
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -274,11 +279,65 @@
             this.buttonUnion.UseVisualStyleBackColor = true;
             this.buttonUnion.Click += new System.EventHandler(this.buttonUnion_Click);
             // 
+            // buttonStartMutant
+            // 
+            this.buttonStartMutant.Location = new System.Drawing.Point(1225, 30);
+            this.buttonStartMutant.Name = "buttonStartMutant";
+            this.buttonStartMutant.Size = new System.Drawing.Size(111, 24);
+            this.buttonStartMutant.TabIndex = 17;
+            this.buttonStartMutant.Text = "Мутант";
+            this.buttonStartMutant.UseVisualStyleBackColor = true;
+            this.buttonStartMutant.Click += new System.EventHandler(this.buttonStartMutant_Click);
+            // 
+            // buttonSaveMutant
+            // 
+            this.buttonSaveMutant.Location = new System.Drawing.Point(1225, 56);
+            this.buttonSaveMutant.Name = "buttonSaveMutant";
+            this.buttonSaveMutant.Size = new System.Drawing.Size(256, 24);
+            this.buttonSaveMutant.TabIndex = 18;
+            this.buttonSaveMutant.Text = "Сохранить мутант";
+            this.buttonSaveMutant.UseVisualStyleBackColor = true;
+            this.buttonSaveMutant.Click += new System.EventHandler(this.buttonSaveMutant_Click);
+            // 
+            // buttonMutantNext
+            // 
+            this.buttonMutantNext.Location = new System.Drawing.Point(1342, 30);
+            this.buttonMutantNext.Name = "buttonMutantNext";
+            this.buttonMutantNext.Size = new System.Drawing.Size(139, 24);
+            this.buttonMutantNext.TabIndex = 19;
+            this.buttonMutantNext.Text = "Следующий фрагмент";
+            this.buttonMutantNext.UseVisualStyleBackColor = true;
+            this.buttonMutantNext.Click += new System.EventHandler(this.buttonMutantNext_Click);
+            // 
+            // buttonDelete
+            // 
+            this.buttonDelete.Location = new System.Drawing.Point(1487, 30);
+            this.buttonDelete.Name = "buttonDelete";
+            this.buttonDelete.Size = new System.Drawing.Size(71, 24);
+            this.buttonDelete.TabIndex = 20;
+            this.buttonDelete.Text = "Удалить";
+            this.buttonDelete.UseVisualStyleBackColor = true;
+            this.buttonDelete.Click += new System.EventHandler(this.buttonDelete_Click);
+            // 
+            // buttonMinus
+            // 
+            this.buttonMinus.Location = new System.Drawing.Point(1122, 30);
+            this.buttonMinus.Name = "buttonMinus";
+            this.buttonMinus.Size = new System.Drawing.Size(97, 50);
+            this.buttonMinus.TabIndex = 21;
+            this.buttonMinus.Text = "Разность";
+            this.buttonMinus.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1137, 696);
+            this.ClientSize = new System.Drawing.Size(1685, 822);
+            this.Controls.Add(this.buttonMinus);
+            this.Controls.Add(this.buttonDelete);
+            this.Controls.Add(this.buttonMutantNext);
+            this.Controls.Add(this.buttonSaveMutant);
+            this.Controls.Add(this.buttonStartMutant);
             this.Controls.Add(this.buttonUnion);
             this.Controls.Add(this.buttonIntersection);
             this.Controls.Add(this.buttonDivider);
@@ -330,6 +389,11 @@
         private System.Windows.Forms.Button buttonDivider;
         private System.Windows.Forms.Button buttonIntersection;
         private System.Windows.Forms.Button buttonUnion;
+        private System.Windows.Forms.Button buttonStartMutant;
+        private System.Windows.Forms.Button buttonSaveMutant;
+        private System.Windows.Forms.Button buttonMutantNext;
+        private System.Windows.Forms.Button buttonDelete;
+        private System.Windows.Forms.Button buttonMinus;
     }
 }
 
