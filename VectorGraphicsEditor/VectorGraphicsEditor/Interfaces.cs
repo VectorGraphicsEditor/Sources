@@ -232,8 +232,8 @@ namespace NGeometry
 
 namespace IO
 {
-    using SVGLib;
     using Interfaces;
+    using SVGLib;
     //interface ISavePicture
     //{
     //    bool Save(string path, IEnumerable<IFigure> figures);
@@ -251,13 +251,11 @@ namespace IO
         public Color fill { get; protected set; }
         public Color stroke { get; protected set; }
         public int w { get; protected set; } // stroke width
+        public String name { get; protected set; }
         public abstract SvgBasicShape ToSVGLibShape(SvgDoc doc);
     }
 
     public static class SVGIO {
-        //static List<SVGShape> Import(string filename) {
-            
-        //}
 
         public static void export(List<SVGShape> shapes, string filename, int width, int height)
         {
@@ -275,28 +273,106 @@ namespace IO
 
         public static Tuple<List<SVGShape>, int, int> import(string filename)
         {
-            List<SVGShape> shapes = new List<SVGShape>() {new SVGEllipse(new Point(50.0, 50.0), 20.0, 10.0, 
-                new Color(100, 255, 56, 0),
-                new Color(0, 0, 0, 0),
-                2)};
 
+            var shapes = new List<SVGShape>();
             SvgDoc doc = new SvgDoc();
             doc.LoadFromFile(filename);
             SvgRoot root = doc.GetSvgRoot();
             int width, height = 1;
             Int32.TryParse(root.Width.ToString().Substring(0, root.Width.Length - 2), out width);
             Int32.TryParse(root.Height.ToString().Substring(0, root.Height.Length - 2), out height);
-            Console.WriteLine(width);
-            Console.WriteLine(height); 
-
             int i = 2;
             SvgElement el;
-            while ((el = doc.GetSvgElement(i)) != null) {
+            double x, y, r, rx, ry, rectw, recth;
+            int w;
+            while ((el = doc.GetSvgElement(i)) != null)
+            {
                 el = doc.GetSvgElement(i);
-                Console.WriteLine(el.getElementName());
+
+                el.GetAttribute("RX");
+
+                switch (el.getElementName())
+                {
+
+                    case "circle":
+
+                        Double.TryParse(el.GetAttributeStringValue(SvgAttribute._SvgAttribute.attrSpecific_CX).Substring(0, el.GetAttributeStringValue(SvgAttribute._SvgAttribute.attrSpecific_CX).Length - 2), out x);
+                        Double.TryParse(el.GetAttributeStringValue(SvgAttribute._SvgAttribute.attrSpecific_CY).Substring(0, el.GetAttributeStringValue(SvgAttribute._SvgAttribute.attrSpecific_CY).Length - 2), out y);
+                        Double.TryParse(el.GetAttributeStringValue(SvgAttribute._SvgAttribute.attrSpecific_R).Substring(0, el.GetAttributeStringValue(SvgAttribute._SvgAttribute.attrSpecific_R).Length - 2), out r);
+                        Int32.TryParse(el.GetAttributeStringValue(SvgAttribute._SvgAttribute.attrPaint_StrokeWidth).Substring(0, el.GetAttributeStringValue(SvgAttribute._SvgAttribute.attrPaint_StrokeWidth).Length - 2), out w);
+                        var colorf = el.GetAttributeColorValue(SvgAttribute._SvgAttribute.attrPaint_Fill);
+                        var colors = el.GetAttributeColorValue(SvgAttribute._SvgAttribute.attrPaint_Stroke);
+                        var circle = new SVGCircle(
+                            new Point(x, y), r,
+                            new Color(colorf.R, colorf.G, colorf.B, colorf.A),
+                            new Color(colors.R, colors.G, colors.B, colors.A),
+                            w
+                        );
+                        shapes.Add(circle);
+                        break;
+
+                    case "ellipse":
+
+                        Double.TryParse(el.GetAttributeStringValue(SvgAttribute._SvgAttribute.attrSpecific_CX).Substring(0, el.GetAttributeStringValue(SvgAttribute._SvgAttribute.attrSpecific_CX).Length - 2), out x);
+                        Double.TryParse(el.GetAttributeStringValue(SvgAttribute._SvgAttribute.attrSpecific_CY).Substring(0, el.GetAttributeStringValue(SvgAttribute._SvgAttribute.attrSpecific_CY).Length - 2), out y);
+                        Double.TryParse(el.GetAttributeStringValue(SvgAttribute._SvgAttribute.attrSpecific_RX).Substring(0, el.GetAttributeStringValue(SvgAttribute._SvgAttribute.attrSpecific_RX).Length - 2), out rx);
+                        Double.TryParse(el.GetAttributeStringValue(SvgAttribute._SvgAttribute.attrSpecific_RY).Substring(0, el.GetAttributeStringValue(SvgAttribute._SvgAttribute.attrSpecific_RY).Length - 2), out ry);
+                        Int32.TryParse(el.GetAttributeStringValue(SvgAttribute._SvgAttribute.attrPaint_StrokeWidth).Substring(0, el.GetAttributeStringValue(SvgAttribute._SvgAttribute.attrPaint_StrokeWidth).Length - 2), out w);
+                        colorf = el.GetAttributeColorValue(SvgAttribute._SvgAttribute.attrPaint_Fill);
+                        colors = el.GetAttributeColorValue(SvgAttribute._SvgAttribute.attrPaint_Stroke);
+                        var ellipse = new SVGEllipse(
+                            new Point(x, y), rx, ry,
+                            new Color(colorf.R, colorf.G, colorf.B, colorf.A),
+                            new Color(colors.R, colors.G, colors.B, colors.A),
+                            w
+                        );
+                        shapes.Add(ellipse);
+                        break;
+
+                    case "rect":
+
+                        Double.TryParse(el.GetAttributeStringValue(SvgAttribute._SvgAttribute.attrSpecific_Width).Substring(0, el.GetAttributeStringValue(SvgAttribute._SvgAttribute.attrSpecific_Width).Length - 2), out rectw);
+                        Double.TryParse(el.GetAttributeStringValue(SvgAttribute._SvgAttribute.attrSpecific_Height).Substring(0, el.GetAttributeStringValue(SvgAttribute._SvgAttribute.attrSpecific_Height).Length - 2), out recth);
+                        Double.TryParse(el.GetAttributeStringValue(SvgAttribute._SvgAttribute.attrSpecific_X).Substring(0, el.GetAttributeStringValue(SvgAttribute._SvgAttribute.attrSpecific_X).Length - 2), out x);
+                        Double.TryParse(el.GetAttributeStringValue(SvgAttribute._SvgAttribute.attrSpecific_Y).Substring(0, el.GetAttributeStringValue(SvgAttribute._SvgAttribute.attrSpecific_Y).Length - 2), out y);
+                        Int32.TryParse(el.GetAttributeStringValue(SvgAttribute._SvgAttribute.attrPaint_StrokeWidth).Substring(0, el.GetAttributeStringValue(SvgAttribute._SvgAttribute.attrPaint_StrokeWidth).Length - 2), out w);
+                        colorf = el.GetAttributeColorValue(SvgAttribute._SvgAttribute.attrPaint_Fill);
+                        colors = el.GetAttributeColorValue(SvgAttribute._SvgAttribute.attrPaint_Stroke);
+                        var rect = new SVGRect(
+                            x, y, rectw, recth,
+                            new Color(colorf.R, colorf.G, colorf.B, colorf.A),
+                            new Color(colors.R, colors.G, colors.B, colors.A),
+                            w
+                        );
+                        shapes.Add(rect);
+                        break;
+
+                    case "polygon":
+
+                        String pointsStr = "";
+                        var points = new List<Point>();
+                        pointsStr=el.GetAttributeStringValue(SvgAttribute._SvgAttribute.attrSpecific_Points);
+                        string[] value = pointsStr.Split(' ', ',');
+                        for (int k = 0; k<value.Length; k = k + 2)
+                        {
+                            if (value[k].Trim() != "" && value[k + 1].Trim() != "")
+                            points.Add(new Point(Convert.ToDouble(value[k]), Convert.ToDouble(value[k + 1])));
+                        };
+                        Int32.TryParse(el.GetAttributeStringValue(SvgAttribute._SvgAttribute.attrPaint_StrokeWidth).Substring(0, el.GetAttributeStringValue(SvgAttribute._SvgAttribute.attrPaint_StrokeWidth).Length - 2), out w);
+                        colorf = el.GetAttributeColorValue(SvgAttribute._SvgAttribute.attrPaint_Fill);
+                        colors = el.GetAttributeColorValue(SvgAttribute._SvgAttribute.attrPaint_Stroke);
+                        var polygon = new SVGPolygon(
+                            points,
+                            new Color(colorf.R, colorf.G, colorf.B, colorf.A),
+                            new Color(colors.R, colors.G, colors.B, colors.A),
+                            w
+                        );
+                        shapes.Add(polygon);
+                        break;
+                }
+
                 ++i;
             }
-            Console.WriteLine(i); 
 
             //foreach (var shape in shapes)
             //{

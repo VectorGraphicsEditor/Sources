@@ -14,6 +14,7 @@ namespace IO
         public double r { get; private set; }
         public SVGCircle(Point center_, double r_, Color fill_, Color stroke_, int w_ = 1)
         {
+            name = "circle";
             center = center_;
             r = r_;
             w = w_;
@@ -42,6 +43,7 @@ namespace IO
 
         public SVGEllipse(Point center_, double rx_, double ry_, Color fill_, Color stroke_, int w_ = 1)
         {
+            name = "ellipse";
             center = center_;
             rx = rx_;
             ry = ry_;
@@ -69,6 +71,7 @@ namespace IO
         public List<Point> points { get; private set; }
         public SVGPolygon(List<Point> points_, Color fill_, Color stroke_, int w_ = 1)
         {
+            name = "polygon";
             points = points_;
             w = w_;
             fill = fill_;
@@ -99,6 +102,7 @@ namespace IO
         public double height { get; private set; }
         public SVGRect(double rx_, double ry_, double width_, double height_, Color fill_, Color stroke_, int w_ = 1)
         {
+            name = "rect";
             width = width_;
             height = height_;
             rx = rx_;
@@ -127,6 +131,7 @@ namespace IO
         public List<Point> pathdata { get; private set; }
         public SVGPath(List<Point> pathdata_, Color fill_, Color stroke_, int w_ = 1)
         {
+            name = "path";
             pathdata = pathdata_;
             w = w_;
             fill = fill_;
