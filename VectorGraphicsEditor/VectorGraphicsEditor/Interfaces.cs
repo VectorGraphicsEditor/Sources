@@ -232,6 +232,7 @@ namespace NGeometry
 
 namespace IO
 {
+
     using SVGLib;
     using Interfaces;
     //interface ISavePicture
