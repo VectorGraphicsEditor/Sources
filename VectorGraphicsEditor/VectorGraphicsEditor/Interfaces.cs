@@ -174,7 +174,7 @@ namespace Logic
     public interface ILogicForGUI
     {
         IEnumerable<IFigure> Figures { get; }
-        Interfaces.Point ToScreen(Interfaces.Point xy);
+        List<int> CurientPickFigures { get; }
     }
 
     public interface ILogicForCommand
@@ -189,10 +189,17 @@ namespace Logic
 
         void addCurientFigure(Interfaces.Point dot, bool add);
 
+        void addCurientFigureWithIndex(int index, bool add);
+
         void moveIndexFigure(bool direction);
 
         void moveCurientIndex(bool direction);
 
+
+        void editColor(Interfaces.Color newcolor);
+
+        void editBorderColor(Interfaces.Color newcolor);
+      
         int GetStackIndex();
 
         int GetStackCount();
@@ -200,8 +207,6 @@ namespace Logic
         void SetPreviousStackState();
 
         void SetNextStackState();
-
-        
     }
 }
 
