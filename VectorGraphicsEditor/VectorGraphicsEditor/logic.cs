@@ -36,6 +36,13 @@ namespace Logic
             }
         }
 
+        List<int> ILogicForGUI.CurientPickFigures
+        {
+            get
+            {
+                return CurientFigures;
+            }
+        }
 
         // выделение фигуры мышкой добавляет в список выделенных фигур. если add - true. При этом можно 
         // начать заново выделять, если add - false
@@ -83,6 +90,30 @@ namespace Logic
                 {
                     CurientFigures.Clear();
                 }
+            }
+        }
+
+        void ILogicForCommand.addCurientFigureWithIndex(int index, bool add)
+        {
+            //если данной фигуры нет
+            if (CurientFigures.IndexOf(index) < 0)
+            {
+                //если надо добавить
+                if (add)
+                {
+                    CurientFigures.Add(index);
+                }
+                // если не надо добавлять
+                else
+                {
+                    CurientFigures.Clear();
+                    CurientFigures.Add(index);
+                }
+            }
+            // если она есть, то ее надо удалить из списка
+            else
+            {
+                CurientFigures.Remove(index);
             }
         }
 
@@ -155,13 +186,27 @@ namespace Logic
         {
             StackSituation.AddCommand(Figures, CurientFigures);
             Figures.removeFigures(CurientFigures);
-        }
-        
-        Interfaces.Point ILogicForGUI.ToScreen(Interfaces.Point xy)
-        {
-            throw new NotImplementedException();
+            CurientFigures.Clear();
         }
 
+        void ILogicForCommand.editColor(Interfaces.Color newcolor)
+        {
+            foreach (int index in CurientFigures)
+            {
+                // ВОТ ТУТ Я ВООБЩЕ НЕ УВЕРЕН
+                Figures.getFigure(index).FillColor = newcolor;
+            }
+        }
+
+        void ILogicForCommand.editBorderColor(Interfaces.Color newcolor)
+        {
+            foreach (int index in CurientFigures)
+            {
+                // ВОТ ТУТ Я ВООБЩЕ НЕ УВЕРЕН
+                Figures.getFigure(index).LineColor = newcolor;
+            }
+        }
+        
         // Количество фигур
         int ILogicForCommand.CountFigures 
         { 

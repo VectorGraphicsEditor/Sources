@@ -19,12 +19,14 @@ namespace VectorGraphicsEditor
             prototypes = new Dictionary<string, ICommand>();
             prototypes["AddFigure"] = new AddFigure(Logic);
             prototypes["RemoveFigure"] = new RemoveFigure(Logic);
-            prototypes["EditFigure"] = new EditFigure(Logic);
+            prototypes["EditColor"] = new EditColor(Logic);
             prototypes["Transform"] = new Transform(Logic);
             prototypes["Union"] = new Union(Logic);
             prototypes["Intersection"] = new Intersection(Logic);
             prototypes["Difference"] = new Difference(Logic);
             prototypes["Pick"] = new Pick(Logic);
+            //for nikita - korito
+            prototypes["PickFromList"] = new PickFromList(Logic);
             prototypes["MoveIndex"] = new MoveIndex(Logic);
             prototypes["MoveLayer"] = new MoveLayer(Logic);
             prototypes["Save"] = new Save(Logic);
@@ -114,34 +116,46 @@ namespace VectorGraphicsEditor
     }
 
 
-    //изменение выделенной фигуры, если выделенно больше фигур, то их изменить будет нельзя.
-    //ну мне так кажется
-    class EditFigure:ICommand
+    //изменение выделенной цвета выделенной фигуры.
+    // принимает цвет и bool: если значение bool true, то изменяет заливку
+    // если значение false, то изменяет контур.
+    class EditColor:ICommand
     {
         ILogicForCommand Logic;
-        public EditFigure(ILogicForGUI Log)
+        public EditColor(ILogicForGUI Log)
         {
             Logic = (ILogicForCommand)Log;
         }
 
-        public EditFigure(ILogicForCommand Log)
+        public EditColor(ILogicForCommand Log)
         {
             Logic = Log;
         }
 
         ICommand ICommand.Create(Dictionary<string, object> parms)
         {
-            return new EditFigure(Logic);
+            return new EditColor(Logic);
         }
 
         bool ICommand.CanExecute(object x)
         {
-            return true;
+            if (Logic.CountCurientFigures > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         void ICommand.Execute(object x)
         {
-
+            Tuple<Interfaces.Color, bool> buf = (Tuple<Interfaces.Color, bool>)x;
+            if (buf.Item2)
+                Logic.editColor(buf.Item1);
+            else
+                Logic.editBorderColor(buf.Item1);
         }
     }
 
@@ -275,7 +289,9 @@ namespace VectorGraphicsEditor
     }
 
     //выделение фигуры. предусматривает просто выделение и выделение нескольких
-    class Pick:ICommand
+    // если выделить уже выделенное, но под ней есть фигура, то выделется та, что под ней
+    // если там нет ничего, то ничего не произойдет.
+    class Pick : ICommand
     {
         ILogicForCommand Logic;
         public Pick(ILogicForGUI Log)
@@ -299,9 +315,41 @@ namespace VectorGraphicsEditor
 
         void ICommand.Execute(object x)
         {
-            //ееей рукожопость
             Tuple<Interfaces.Point, bool> buf = (Tuple<Interfaces.Point, bool>)x;
             Logic.addCurientFigure(buf.Item1, buf.Item2);
+        }
+
+    }
+        //выделение фигуры в списке фигур
+        // Так хочет Никита. предусматривает просто выделение и выделение нескольких фигур
+        // если выбрать уже выбранную фигуру, то тогда она перестанет быть выделенной
+    class PickFromList:ICommand
+    {
+        ILogicForCommand Logic;
+        public PickFromList(ILogicForGUI Log)
+        {
+            Logic = (ILogicForCommand)Log;
+        }
+
+        public PickFromList(ILogicForCommand Log)
+        {
+            Logic = Log;
+        }
+
+        ICommand ICommand.Create(Dictionary<string, object> parms)
+        {
+            return new Pick(Logic);
+        }
+        bool ICommand.CanExecute(object x)
+        {
+            return true;
+        }
+
+
+        void ICommand.Execute(object x)
+        {
+            Tuple<int, bool> buf = (Tuple<int, bool>)x;
+            Logic.addCurientFigureWithIndex(buf.Item1, buf.Item2);
         }
     }
 
