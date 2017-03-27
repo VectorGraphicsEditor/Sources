@@ -71,7 +71,9 @@ namespace VectorGraphicsEditor
         }
         bool ICommand.CanExecute(object x)
         {
-            return true;
+            if (Logic.GetStackIndex() != 0)
+                return true;
+            return false;
         }
 
         void ICommand.Execute(object x)
@@ -540,7 +542,7 @@ namespace VectorGraphicsEditor
 
         void ICommand.Execute(object x)
         {
-
+            Logic.SetPreviousStackState();
         }
     }
 
@@ -569,7 +571,7 @@ namespace VectorGraphicsEditor
 
         void ICommand.Execute(object x)
         {
-
+            Logic.SetNextStackState();
         }
     }
 
