@@ -16,7 +16,6 @@ namespace VectorGraphicsEditor
         ICommand addCommand;
         ICommand removeCommand;
         ICommand pickCommand;
-        ICommand editCommand;
         ICommand transformCommand;
 
         // Наименьший dpi 
@@ -79,7 +78,6 @@ namespace VectorGraphicsEditor
             commands = new CommandsFactory(logic);
             addCommand = commands.Create("AddFigure", null);
             removeCommand = commands.Create("RemoveFigure", null);
-            editCommand = commands.Create("EditFigure", null);
             pickCommand = commands.Create("Pick", null);
             transformCommand = commands.Create("Transform", null);
         }

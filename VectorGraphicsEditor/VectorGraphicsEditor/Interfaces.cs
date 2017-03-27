@@ -207,6 +207,13 @@ namespace Logic
         void SetPreviousStackState();
 
         void SetNextStackState();
+
+        void PutIntoBuffer();
+
+        int BufferSize
+        { get; }
+
+        void PushBuffer();
     }
 }
 
@@ -225,6 +232,7 @@ namespace NGeometry
 
 namespace IO
 {
+    using SVGLib;
     using Interfaces;
     //interface ISavePicture
     //{
