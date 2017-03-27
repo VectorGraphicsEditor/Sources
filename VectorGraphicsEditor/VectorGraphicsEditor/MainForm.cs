@@ -893,7 +893,7 @@ namespace VectorGraphicsEditor
 
         private void buttonDelete_Click(object sender, EventArgs e)
         {
-            if (redoCommand.CanExecute(null))
+            if (removeCommand.CanExecute(null))
             {
                 removeCommand.Execute(null);
             }
