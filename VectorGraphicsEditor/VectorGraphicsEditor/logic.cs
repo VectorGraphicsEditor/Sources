@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Interfaces;
+using VectorGraphicsEditor;
 
 namespace Logic
 {
@@ -15,12 +16,14 @@ namespace Logic
         private Container Figures;
         //Список индексов на фигуры, которые мы обрабатываем. По умолчанию последняя созданная фигура
         private List<int> CurientFigures;
-
+        //Стек состояний
+        private Stack StackSituation;
 
         public logic()
         {
             Figures = new Container();
             CurientFigures = new List<int>();
+            StackSituation = new Stack();
         }
 
 
@@ -160,6 +163,7 @@ namespace Logic
         // перемещение фигур относительно "z координаты". у нас же типа слои.
         void ILogicForCommand.moveIndexFigure(bool direction)
         {
+            StackSituation.AddCommand(Figures, CurientFigures);
             if (direction)
             {
                 Figures.swap(CurientFigures[0], CurientFigures[0] + 1);
@@ -172,13 +176,15 @@ namespace Logic
 
         //Добавление новой фигуры
         void ILogicForCommand.addFigure(IFigure fig)
-        { 
+        {
+           StackSituation.AddCommand(Figures, CurientFigures);
            Figures.addNewFigure(fig);
         }
         
         //Удаление выбранных фигур
         void ILogicForCommand.removeFigures()
         {
+            StackSituation.AddCommand(Figures, CurientFigures);
             Figures.removeFigures(CurientFigures);
             CurientFigures.Clear();
         }
@@ -227,6 +233,33 @@ namespace Logic
             {
                 return CurientFigures[0];
             }
+        }
+
+        //Возвращает актуальный индекс стека состояний
+        int ILogicForCommand.GetStackIndex()
+        {
+            return StackSituation.GetIndex();
+        }
+        //Возвращает размер стека состояний
+        int ILogicForCommand.GetStackCount()
+        {
+            return StackSituation.Size();
+        }
+        //Откатывает состояние контейнера фигур и списока индексов обрабатываемых фигур 
+        //До предыдущего состояния
+        void ILogicForCommand.SetPreviousStackState()
+        {
+            StackSituation.StepBack();
+            Figures = StackSituation.GetState(StackSituation.GetIndex()).Item1;
+            CurientFigures = StackSituation.GetState(StackSituation.GetIndex()).Item2;
+        }
+        //Устонавливает состояние контейнера фигур и списока индексов обрабатываемых фигур 
+        //До предыдущего состояния
+        void ILogicForCommand.SetNextStackState()
+        {
+            StackSituation.StepForward();
+            Figures = StackSituation.GetState(StackSituation.GetIndex()).Item1;
+            CurientFigures = StackSituation.GetState(StackSituation.GetIndex()).Item2;
         }
     }
 }

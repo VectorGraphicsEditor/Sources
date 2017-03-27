@@ -195,9 +195,18 @@ namespace Logic
 
         void moveCurientIndex(bool direction);
 
+
         void editColor(Interfaces.Color newcolor);
 
         void editBorderColor(Interfaces.Color newcolor);
+      
+        int GetStackIndex();
+
+        int GetStackCount();
+
+        void SetPreviousStackState();
+
+        void SetNextStackState();
     }
 }
 
