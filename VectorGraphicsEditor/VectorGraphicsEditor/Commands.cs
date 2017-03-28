@@ -473,7 +473,7 @@ namespace VectorGraphicsEditor
 
         void ICommand.Execute(object x)
         {
-
+            Logic.save((string)x);
         }
     }
 
@@ -502,7 +502,7 @@ namespace VectorGraphicsEditor
 
         void ICommand.Execute(object x)
         {
-
+            Logic.load((string)x);
         }
     }
 
