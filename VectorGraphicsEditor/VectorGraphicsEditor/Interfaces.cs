@@ -133,11 +133,8 @@ namespace Interfaces
             C = c;
         }
     }
-    public interface ITransformation
-    {
-        Point TransformPoint(Point p);
-    }
-    public interface IFigure
+    
+        public interface IFigure
     {
         /* заметим, что Paths хранит отрезки и дуги, так что может хранить несколько кривых,
          * а Lines - точки, так что для представления разных кривых понадобится массив контейнеров точек.*/
@@ -162,11 +159,14 @@ namespace Interfaces
         Color LineColor { get; set; }
         bool Is1D { get; }
         IFigure Clone(Dictionary<string, object> parms); // создать такую же фигуру с такими же параметрами
-        IFigure Transform(ITransformation transform);
+        //IFigure Transform(ITransformation transform);
+        //IFigure Transform(Point newRightUpCorner);
         /*Трансформация возвращает новую фигуру, трансформированную. однако очевидно что после этого
           фигура может сменить свой тип.*/
     }
+
 }
+
 
 namespace Logic
 {
@@ -232,8 +232,8 @@ namespace NGeometry
 
 namespace IO
 {
-    using Interfaces;
     using SVGLib;
+    using Interfaces;
     //interface ISavePicture
     //{
     //    bool Save(string path, IEnumerable<IFigure> figures);
@@ -252,10 +252,15 @@ namespace IO
         public Color stroke { get; protected set; }
         public int w { get; protected set; } // stroke width
         public String name { get; protected set; }
+
         public abstract SvgBasicShape ToSVGLibShape(SvgDoc doc);
     }
 
     public static class SVGIO {
+
+        //static List<SVGShape> Import(string filename) {
+            
+        //}
 
         public static void export(List<SVGShape> shapes, string filename, int width, int height)
         {
@@ -275,12 +280,14 @@ namespace IO
         {
 
             var shapes = new List<SVGShape>();
+
             SvgDoc doc = new SvgDoc();
             doc.LoadFromFile(filename);
             SvgRoot root = doc.GetSvgRoot();
             int width, height = 1;
             Int32.TryParse(root.Width.ToString().Substring(0, root.Width.Length - 2), out width);
             Int32.TryParse(root.Height.ToString().Substring(0, root.Height.Length - 2), out height);
+
             int i = 2;
             SvgElement el;
             double x, y, r, rx, ry, rectw, recth;
@@ -373,6 +380,7 @@ namespace IO
 
                 ++i;
             }
+
 
             //foreach (var shape in shapes)
             //{

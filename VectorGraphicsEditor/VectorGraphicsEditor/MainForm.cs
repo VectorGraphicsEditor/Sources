@@ -16,7 +16,20 @@ namespace VectorGraphicsEditor
         ICommand addCommand;
         ICommand removeCommand;
         ICommand pickCommand;
+        ICommand editCommand;
         ICommand transformCommand;
+
+        ICommand unionCommand;
+        ICommand intersectionCommand;
+        ICommand diffCommand;
+        ICommand copyCommand;
+        ICommand pasteCommand;
+        ICommand undoCommand;
+        ICommand redoCommand;
+        ICommand saveCommand;
+        ICommand loadCommand;
+        ICommand saveSettingsCommand;
+        ICommand loadSettingsCommand;
 
         // Наименьший dpi 
         double minDpi = 1;
@@ -61,6 +74,8 @@ namespace VectorGraphicsEditor
 
         private Figures selectedFigure = Figures.Line;
 
+        private int quantitySegments = 360;
+
         public MainForm()
         {
      
@@ -78,8 +93,22 @@ namespace VectorGraphicsEditor
             commands = new CommandsFactory(logic);
             addCommand = commands.Create("AddFigure", null);
             removeCommand = commands.Create("RemoveFigure", null);
+            editCommand = commands.Create("EditColor", null);
             pickCommand = commands.Create("Pick", null);
             transformCommand = commands.Create("Transform", null);
+
+            unionCommand = commands.Create("Union", null);
+            intersectionCommand = commands.Create("Intersection", null);
+            diffCommand = commands.Create("Difference", null);
+            copyCommand = commands.Create("Copy", null);
+            pasteCommand = commands.Create("Paste", null);
+            undoCommand = commands.Create("UnDo", null);
+            redoCommand = commands.Create("ReDo", null);
+
+            saveCommand = commands.Create("Save", null);
+            loadCommand = commands.Create("Load", null);
+            saveSettingsCommand = commands.Create("SaveSettings", null);
+            loadSettingsCommand = commands.Create("LoadSettings", null);
         }
 
         public OpenGL getOpenGL()
@@ -215,10 +244,10 @@ namespace VectorGraphicsEditor
             double x = 1;
             double y = 0;
 
-            gl.Color(borderColor.R / 255.0f, borderColor.G / 255.0f, borderColor.B / 255.0f, borderColor.A / 255.0f);
             gl.Begin(OpenGL.GL_LINE_LOOP);
             for (int ii = 0; ii < numSegments; ii++)
             {
+                gl.Color(borderColor.R / 255.0f, borderColor.G / 255.0f, borderColor.B / 255.0f, borderColor.A / 255.0f);
                 // Радиус и отступ
                 gl.Vertex(x * r.X + centerPoint.X, openGLControlView.Height - (y * r.Y + centerPoint.Y));
 
@@ -233,10 +262,10 @@ namespace VectorGraphicsEditor
             x = 1;
             y = 0;
 
-            gl.Color(fillColor.R / 255.0f, fillColor.G / 255.0f, fillColor.B / 255.0f, fillColor.A / 255.0f);
             gl.Begin(OpenGL.GL_POLYGON);
             for (int ii = 0; ii < numSegments; ii++)
             {
+                gl.Color(fillColor.R / 255.0f, fillColor.G / 255.0f, fillColor.B / 255.0f, fillColor.A / 255.0f);
                 // Радиус и отступ
                 gl.Vertex(x * r.X + centerPoint.X, openGLControlView.Height - (y * r.Y + centerPoint.Y));
 
@@ -470,7 +499,7 @@ namespace VectorGraphicsEditor
                         DrawCircle(gl,
                             new Interfaces.Point(last3Points[1].X, last3Points[1].Y),
                             new Interfaces.Point(last3Points[2].X, last3Points[2].Y),
-                            360
+                            quantitySegments
                             );
                         break;
                     case Figures.Mutant:
@@ -636,44 +665,72 @@ namespace VectorGraphicsEditor
                         //);
                         break;
                     case Figures.Quadrangle:
-
-                        IFigure figure =
-                            Factory.Create(
-                            "Rectangle",
-                            new Dictionary<string, object>()
-                            {
+                        {
+                            IFigure figure =
+                                Factory.Create(
+                                "Rectangle",
+                                new Dictionary<string, object>()
+                                {
                             { "DownLeft", new Interfaces.Point(last3Points[1].X, last3Points[2].Y)  },
                             { "UpRight", new Interfaces.Point(last3Points[2].X, last3Points[1].Y) },
                             { "BorderColor", borderColor},
                             { "FillColor", fillColor}
-                            });
-                        addCommand.Execute(figure);
+                                });
+                            addCommand.Execute(figure);
+                        }
                         break;
 
                     case Figures.Circle:
+                        {
+                            Interfaces.Point centerPoint = new Interfaces.Point(last3Points[1].X, last3Points[1].Y);
+                            Interfaces.Point borderPoint = new Interfaces.Point(last3Points[2].X, last3Points[2].Y);
 
-                        //containerFigures.addNewFigure(
-                        //    Factory.Create(
-                        //    "Circle",
-                        //    new Dictionary<string, object>()
-                        //    {
-                        //        { "Point1", last3Points[1] },
-                        //        { "Point2", last3Points[2] }
-                        //    })
-                        //);
+                            double radius = GetDistance(centerPoint, borderPoint);
+
+                            double a = radius;
+                            double b = radius;
+
+
+                            Interfaces.Point begPoint = new Interfaces.Point(centerPoint.X + radius, centerPoint.Y);
+                            Interfaces.Point endPoint = new Interfaces.Point(centerPoint.X - radius, centerPoint.Y);
+                            
+                            List<List<Segment>> fragments = new List<List<Segment>>();
+                            List<Segment> segments = new List<Segment>();
+                            segments.Add(new EllipseArc(centerPoint, a, b, 0, Math.PI, begPoint, endPoint, 0));
+                            segments.Add(new EllipseArc(centerPoint, a, b, 0, Math.PI, endPoint, begPoint, 0));
+
+                            fragments.Add(segments);
+
+                            IFigure figure = new Mutant(fragments, borderColor, fillColor, 1);
+                            addCommand.Execute(figure);
+                        }
                         break;
 
                     case Figures.Ellipse:
 
-                        //containerFigures.addNewFigure(
-                        //    Factory.Create(
-                        //    "Ellipse",
-                        //    new Dictionary<string, object>()
-                        //    {
-                        //        { "Point1", last3Points[1] },
-                        //        { "Point2", last3Points[2] }
-                        //    })
-                        //);
+                        {
+                            
+                            Interfaces.Point centerPoint = new Interfaces.Point(last3Points[1].X + (last3Points[2].X - last3Points[1].X) / 2.0, last3Points[1].Y + (last3Points[2].Y - last3Points[1].Y) / 2.0);
+                            
+                            double radius = GetDistance(last3Points[1], last3Points[2]) /2.0;
+
+                            double a = Math.Abs(centerPoint.X - last3Points[1].X);
+                            double b = Math.Abs(centerPoint.Y - last3Points[1].Y);
+
+
+                            Interfaces.Point begPoint = new Interfaces.Point(centerPoint.X + a, centerPoint.Y);
+                            Interfaces.Point endPoint = new Interfaces.Point(centerPoint.X - a, centerPoint.Y);
+
+                            List<List<Segment>> fragments = new List<List<Segment>>();
+                            List<Segment> segments = new List<Segment>();
+                            segments.Add(new EllipseArc(centerPoint, a, b, 0, Math.PI, begPoint, endPoint, 0));
+                            segments.Add(new EllipseArc(centerPoint, a, b, 0, Math.PI, endPoint, begPoint, 0));
+
+                            fragments.Add(segments);
+
+                            IFigure figure = new Mutant(fragments, borderColor, fillColor, 1);
+                            addCommand.Execute(figure);
+                        }
                         break;
                 }
                 isStartDrag = false;
@@ -836,7 +893,10 @@ namespace VectorGraphicsEditor
 
         private void buttonDelete_Click(object sender, EventArgs e)
         {
-            removeCommand.Execute(null);
+            if (removeCommand.CanExecute(null))
+            {
+                removeCommand.Execute(null);
+            }
             isChangedOpenGLView = true;
         }
 

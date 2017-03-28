@@ -63,6 +63,26 @@ namespace VectorGraphicsEditor.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Next {
+            get {
+                object obj = ResourceManager.GetObject("Next", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Save {
+            get {
+                object obj = ResourceManager.GetObject("Save", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Выбор {
             get {
                 object obj = ResourceManager.GetObject("Выбор", resourceCulture);
@@ -113,6 +133,16 @@ namespace VectorGraphicsEditor.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Мутант {
+            get {
+                object obj = ResourceManager.GetObject("Мутант", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Объединение {
             get {
                 object obj = ResourceManager.GetObject("Объединение", resourceCulture);
@@ -126,6 +156,16 @@ namespace VectorGraphicsEditor.Properties {
         internal static System.Drawing.Bitmap Пересечение {
             get {
                 object obj = ResourceManager.GetObject("Пересечение", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Разность {
+            get {
+                object obj = ResourceManager.GetObject("Разность", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
