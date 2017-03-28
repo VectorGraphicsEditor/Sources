@@ -17,22 +17,26 @@ namespace Logic
 
         public Stack()
         {
-            index = 0;
+            index = 1;
             st = new List<Tuple<Container, List<int>>>();
+            st.Add(new Tuple<Container, List<int>>(new Container(), new List<int>()));
         }
         public void AddCommand(Container x, List<int> y)
         {
-            st.RemoveRange(index, st.Count()-index);
-            st.Add(new Tuple<Container, List<int>>(x, y));
-            index ++; 
+            st.RemoveRange(index, st.Count - index);
+            List<int> newy = new List<int>(y);
+            Container newx = x.Clone();
+            st.Add(new Tuple<Container, List<int>>(newx, newy));
+            index++;
+
         }
         public void StepForward()
         {
-            index ++;
+            index++;
         }
         public void StepBack()
         {
-            index --;
+            index--;
         }
         public int Size()
         {

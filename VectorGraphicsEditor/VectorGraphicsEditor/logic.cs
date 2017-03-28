@@ -206,7 +206,7 @@ namespace Logic
         // перемещение фигур относительно "z координаты". у нас же типа слои.
         void ILogicForCommand.moveIndexFigure(bool direction)
         {
-            StackSituation.AddCommand(Figures, CurientFigures);
+            
             if (direction)
             {
                 Figures.swap(CurientFigures[0], CurientFigures[0] + 1);
@@ -217,21 +217,22 @@ namespace Logic
                 Figures.swap(CurientFigures[0] - 1, CurientFigures[0]);
                 CurientFigures[0] -= 1;
             }
+            StackSituation.AddCommand(Figures, CurientFigures);
         }
 
         //Добавление новой фигуры
         void ILogicForCommand.addFigure(IFigure fig)
         {
-           StackSituation.AddCommand(Figures, CurientFigures);
            Figures.addNewFigure(fig);
+           StackSituation.AddCommand(Figures, CurientFigures);
         }
         
         //Удаление выбранных фигур
         void ILogicForCommand.removeFigures()
         {
-            StackSituation.AddCommand(Figures, CurientFigures);
             Figures.removeFigures(CurientFigures);
             CurientFigures.Clear();
+            StackSituation.AddCommand(Figures, CurientFigures);
         }
 
         void ILogicForCommand.editColor(Interfaces.Color newcolor)
@@ -304,7 +305,7 @@ namespace Logic
                     SVGRect fig = (SVGRect)item;
                     Interfaces.Point downleft = new Interfaces.Point(fig.rx - fig.width / 2.0, fig.ry - fig.height / 2.0);
                     Interfaces.Point upright = new Interfaces.Point(fig.rx + fig.width / 2.0, fig.ry + fig.height / 2.0);
-                    Figures.addNewFigure(new VectorGraphicsEditor.Rectangle(downleft, upright, fig.stroke, fig.fill)
+                    Figures.addNewFigure(new VectorGraphicsEditor.Rectangle(downleft, upright, fig.stroke, fig.fill));
                 }
                 if (item is SVGPolygon)
                 {
