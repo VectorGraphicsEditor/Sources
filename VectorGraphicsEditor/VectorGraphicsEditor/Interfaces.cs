@@ -291,7 +291,7 @@ namespace IO
         }
 
         public static Tuple<List<SVGShape>, int, int> import(string filename)
-
+        {
             var shapes = new List<SVGShape>();
 
             SvgDoc doc = new SvgDoc();

@@ -35,22 +35,21 @@
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.открытьToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.сохранитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.правкаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.копироватьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.впередToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.назадToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.справкаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.button_choose_line_color = new System.Windows.Forms.Button();
             this.button_choose_fill_color = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-
             this.buttonUnion = new System.Windows.Forms.Button();
             this.buttonStartMutant = new System.Windows.Forms.Button();
             this.buttonSaveMutant = new System.Windows.Forms.Button();
             this.buttonMutantNext = new System.Windows.Forms.Button();
-
             this.buttonDelete = new System.Windows.Forms.Button();
-            this.buttonSaveMutant = new System.Windows.Forms.Button();
-            this.buttonMinus = new System.Windows.Forms.Button();
-
             this.buttonIntersection = new System.Windows.Forms.Button();
             this.buttonDivider = new System.Windows.Forms.Button();
             this.buttonScaleLine = new System.Windows.Forms.Button();
@@ -60,23 +59,14 @@
             this.buttonTriangle = new System.Windows.Forms.Button();
             this.buttonRect = new System.Windows.Forms.Button();
             this.buttonLine = new System.Windows.Forms.Button();
-
             this.listViewLayers = new System.Windows.Forms.ListView();
             this.buttonUpLayer = new System.Windows.Forms.Button();
             this.buttonDownLayer = new System.Windows.Forms.Button();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-
-
-            this.правкаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.копироватьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.впередToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.назадToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-
+            this.buttonMinus = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.openGLControlView)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -94,9 +84,7 @@
             this.openGLControlView.OpenGLVersion = SharpGL.Version.OpenGLVersion.OpenGL1_1;
             this.openGLControlView.RenderContextType = SharpGL.RenderContextType.DIBSection;
             this.openGLControlView.RenderTrigger = SharpGL.RenderTrigger.TimerBased;
-
-            this.openGLControlView.Size = new System.Drawing.Size(1564, 728);
-
+            this.openGLControlView.Size = new System.Drawing.Size(1416, 728);
             this.openGLControlView.TabIndex = 0;
             this.openGLControlView.OpenGLInitialized += new System.EventHandler(this.openGLControlView_OpenGLInitialized);
             this.openGLControlView.OpenGLDraw += new SharpGL.RenderEventHandler(this.openGLControlView_OpenGLDraw);
@@ -115,7 +103,7 @@
             this.справкаToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1588, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1685, 24);
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -131,12 +119,10 @@
             // 
             // openToolStripMenuItem
             // 
-
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.openToolStripMenuItem.Text = "Создать";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.открытьToolStripMenuItem_Click);
-
             // 
             // открытьToolStripMenuItem1
             // 
@@ -151,6 +137,37 @@
             this.сохранитьToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.сохранитьToolStripMenuItem.Text = "Сохранить";
             this.сохранитьToolStripMenuItem.Click += new System.EventHandler(this.сохранитьToolStripMenuItem_Click);
+            // 
+            // правкаToolStripMenuItem
+            // 
+            this.правкаToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.копироватьToolStripMenuItem,
+            this.впередToolStripMenuItem,
+            this.назадToolStripMenuItem});
+            this.правкаToolStripMenuItem.Name = "правкаToolStripMenuItem";
+            this.правкаToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
+            this.правкаToolStripMenuItem.Text = "Правка";
+            // 
+            // копироватьToolStripMenuItem
+            // 
+            this.копироватьToolStripMenuItem.Name = "копироватьToolStripMenuItem";
+            this.копироватьToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.копироватьToolStripMenuItem.Text = "Копировать";
+            this.копироватьToolStripMenuItem.Click += new System.EventHandler(this.копироватьToolStripMenuItem_Click);
+            // 
+            // впередToolStripMenuItem
+            // 
+            this.впередToolStripMenuItem.Name = "впередToolStripMenuItem";
+            this.впередToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.впередToolStripMenuItem.Text = "Вперед";
+            this.впередToolStripMenuItem.Click += new System.EventHandler(this.впередToolStripMenuItem_Click);
+            // 
+            // назадToolStripMenuItem
+            // 
+            this.назадToolStripMenuItem.Name = "назадToolStripMenuItem";
+            this.назадToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.назадToolStripMenuItem.Text = "Назад";
+            this.назадToolStripMenuItem.Click += new System.EventHandler(this.назадToolStripMenuItem_Click);
             // 
             // справкаToolStripMenuItem
             // 
@@ -206,55 +223,6 @@
             this.label1.TabIndex = 12;
             this.label1.Text = "Цвет заливки";
             // 
-            // buttonDelete
-            // 
-            this.buttonDelete.Location = new System.Drawing.Point(1487, 30);
-            this.buttonDelete.Name = "buttonDelete";
-            this.buttonDelete.Size = new System.Drawing.Size(71, 24);
-            this.buttonDelete.TabIndex = 20;
-            this.buttonDelete.Text = "Удалить";
-            this.buttonDelete.UseVisualStyleBackColor = true;
-            this.buttonDelete.Click += new System.EventHandler(this.buttonDelete_Click);
-            // 
-            // buttonSaveMutant
-            // 
-            this.buttonSaveMutant.Image = global::VectorGraphicsEditor.Properties.Resources.Save;
-            this.buttonSaveMutant.Location = new System.Drawing.Point(858, 53);
-            this.buttonSaveMutant.Name = "buttonSaveMutant";
-            this.buttonSaveMutant.Size = new System.Drawing.Size(60, 24);
-            this.buttonSaveMutant.TabIndex = 18;
-            this.buttonSaveMutant.UseVisualStyleBackColor = true;
-            this.buttonSaveMutant.Click += new System.EventHandler(this.buttonSaveMutant_Click);
-            // 
-            // buttonMinus
-            // 
-            this.buttonMinus.Image = global::VectorGraphicsEditor.Properties.Resources.Разность;
-            this.buttonMinus.Location = new System.Drawing.Point(746, 27);
-            this.buttonMinus.Name = "buttonMinus";
-            this.buttonMinus.Size = new System.Drawing.Size(50, 50);
-            this.buttonMinus.TabIndex = 21;
-            this.buttonMinus.UseVisualStyleBackColor = true;
-            // 
-            // buttonMutantNext
-            // 
-            this.buttonMutantNext.Image = ((System.Drawing.Image)(resources.GetObject("buttonMutantNext.Image")));
-            this.buttonMutantNext.Location = new System.Drawing.Point(858, 27);
-            this.buttonMutantNext.Name = "buttonMutantNext";
-            this.buttonMutantNext.Size = new System.Drawing.Size(60, 24);
-            this.buttonMutantNext.TabIndex = 19;
-            this.buttonMutantNext.UseVisualStyleBackColor = true;
-            this.buttonMutantNext.Click += new System.EventHandler(this.buttonMutantNext_Click);
-            // 
-            // buttonStartMutant
-            // 
-            this.buttonStartMutant.Image = global::VectorGraphicsEditor.Properties.Resources.Мутант;
-            this.buttonStartMutant.Location = new System.Drawing.Point(802, 27);
-            this.buttonStartMutant.Name = "buttonStartMutant";
-            this.buttonStartMutant.Size = new System.Drawing.Size(50, 50);
-            this.buttonStartMutant.TabIndex = 17;
-            this.buttonStartMutant.UseVisualStyleBackColor = true;
-            this.buttonStartMutant.Click += new System.EventHandler(this.buttonStartMutant_Click);
-            // 
             // buttonUnion
             // 
             this.buttonUnion.Image = global::VectorGraphicsEditor.Properties.Resources.Объединение;
@@ -267,52 +235,43 @@
             // 
             // buttonStartMutant
             // 
-            this.buttonStartMutant.Location = new System.Drawing.Point(109, 12);
+            this.buttonStartMutant.Image = global::VectorGraphicsEditor.Properties.Resources.Мутант;
+            this.buttonStartMutant.Location = new System.Drawing.Point(802, 26);
             this.buttonStartMutant.Name = "buttonStartMutant";
-            this.buttonStartMutant.Size = new System.Drawing.Size(111, 24);
+            this.buttonStartMutant.Size = new System.Drawing.Size(50, 50);
             this.buttonStartMutant.TabIndex = 17;
-            this.buttonStartMutant.Text = "Мутант";
             this.buttonStartMutant.UseVisualStyleBackColor = true;
             this.buttonStartMutant.Click += new System.EventHandler(this.buttonStartMutant_Click);
             // 
             // buttonSaveMutant
             // 
-            this.buttonSaveMutant.Location = new System.Drawing.Point(108, 38);
+            this.buttonSaveMutant.Image = global::VectorGraphicsEditor.Properties.Resources.Save;
+            this.buttonSaveMutant.Location = new System.Drawing.Point(858, 53);
             this.buttonSaveMutant.Name = "buttonSaveMutant";
-            this.buttonSaveMutant.Size = new System.Drawing.Size(256, 24);
+            this.buttonSaveMutant.Size = new System.Drawing.Size(60, 24);
             this.buttonSaveMutant.TabIndex = 18;
-            this.buttonSaveMutant.Text = "Сохранить мутант";
             this.buttonSaveMutant.UseVisualStyleBackColor = true;
             this.buttonSaveMutant.Click += new System.EventHandler(this.buttonSaveMutant_Click);
             // 
             // buttonMutantNext
             // 
-            this.buttonMutantNext.Location = new System.Drawing.Point(225, 12);
+            this.buttonMutantNext.Image = ((System.Drawing.Image)(resources.GetObject("buttonMutantNext.Image")));
+            this.buttonMutantNext.Location = new System.Drawing.Point(858, 27);
             this.buttonMutantNext.Name = "buttonMutantNext";
-            this.buttonMutantNext.Size = new System.Drawing.Size(139, 24);
+            this.buttonMutantNext.Size = new System.Drawing.Size(60, 24);
             this.buttonMutantNext.TabIndex = 19;
-            this.buttonMutantNext.Text = "Следующий фрагмент";
             this.buttonMutantNext.UseVisualStyleBackColor = true;
             this.buttonMutantNext.Click += new System.EventHandler(this.buttonMutantNext_Click);
             // 
             // buttonDelete
             // 
-            this.buttonDelete.Location = new System.Drawing.Point(370, 12);
+            this.buttonDelete.Location = new System.Drawing.Point(924, 26);
             this.buttonDelete.Name = "buttonDelete";
-            this.buttonDelete.Size = new System.Drawing.Size(71, 24);
+            this.buttonDelete.Size = new System.Drawing.Size(50, 50);
             this.buttonDelete.TabIndex = 20;
             this.buttonDelete.Text = "Удалить";
             this.buttonDelete.UseVisualStyleBackColor = true;
             this.buttonDelete.Click += new System.EventHandler(this.buttonDelete_Click);
-            // 
-            // buttonMinus
-            // 
-            this.buttonMinus.Location = new System.Drawing.Point(6, 12);
-            this.buttonMinus.Name = "buttonMinus";
-            this.buttonMinus.Size = new System.Drawing.Size(97, 50);
-            this.buttonMinus.TabIndex = 21;
-            this.buttonMinus.Text = "Разность";
-            this.buttonMinus.UseVisualStyleBackColor = true;
             // 
             // buttonIntersection
             // 
@@ -404,7 +363,6 @@
             this.buttonLine.UseVisualStyleBackColor = true;
             this.buttonLine.Click += new System.EventHandler(this.buttonLine_Click);
             // 
-
             // listViewLayers
             // 
             this.listViewLayers.HideSelection = false;
@@ -438,20 +396,6 @@
             this.buttonDownLayer.UseVisualStyleBackColor = true;
             this.buttonDownLayer.Click += new System.EventHandler(this.buttobDownLayer_Click);
             // 
-            // groupBox2
-            // 
-            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox2.Controls.Add(this.buttonMinus);
-            this.groupBox2.Controls.Add(this.buttonStartMutant);
-            this.groupBox2.Controls.Add(this.buttonSaveMutant);
-            this.groupBox2.Controls.Add(this.buttonMutantNext);
-            this.groupBox2.Controls.Add(this.buttonDelete);
-            this.groupBox2.Location = new System.Drawing.Point(1227, 8);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(446, 68);
-            this.groupBox2.TabIndex = 25;
-            this.groupBox2.TabStop = false;
-            // 
             // groupBox3
             // 
             this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -464,57 +408,28 @@
             this.groupBox3.Size = new System.Drawing.Size(239, 728);
             this.groupBox3.TabIndex = 26;
             this.groupBox3.TabStop = false;
-
-
-            // правкаToolStripMenuItem
             // 
-            this.правкаToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.копироватьToolStripMenuItem,
-            this.впередToolStripMenuItem,
-            this.назадToolStripMenuItem});
-            this.правкаToolStripMenuItem.Name = "правкаToolStripMenuItem";
-            this.правкаToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
-            this.правкаToolStripMenuItem.Text = "Правка";
+            // buttonMinus
             // 
-            // копироватьToolStripMenuItem
+            this.buttonMinus.Image = global::VectorGraphicsEditor.Properties.Resources.Разность;
+            this.buttonMinus.Location = new System.Drawing.Point(746, 26);
+            this.buttonMinus.Name = "buttonMinus";
+            this.buttonMinus.Size = new System.Drawing.Size(50, 50);
+            this.buttonMinus.TabIndex = 21;
+            this.buttonMinus.UseVisualStyleBackColor = true;
             // 
-            this.копироватьToolStripMenuItem.Name = "копироватьToolStripMenuItem";
-            this.копироватьToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.копироватьToolStripMenuItem.Text = "Копировать";
-            this.копироватьToolStripMenuItem.Click += new System.EventHandler(this.копироватьToolStripMenuItem_Click);
-            // 
-            // впередToolStripMenuItem
-            // 
-            this.впередToolStripMenuItem.Name = "впередToolStripMenuItem";
-            this.впередToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.впередToolStripMenuItem.Text = "Вперед";
-            this.впередToolStripMenuItem.Click += new System.EventHandler(this.впередToolStripMenuItem_Click);
-            // 
-            // назадToolStripMenuItem
-            // 
-            this.назадToolStripMenuItem.Name = "назадToolStripMenuItem";
-            this.назадToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.назадToolStripMenuItem.Text = "Назад";
-            this.назадToolStripMenuItem.Click += new System.EventHandler(this.назадToolStripMenuItem_Click);
-
-            // 
-
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-
             this.ClientSize = new System.Drawing.Size(1685, 822);
             this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.groupBox2);
-
             this.Controls.Add(this.buttonMinus);
             this.Controls.Add(this.buttonDelete);
             this.Controls.Add(this.buttonMutantNext);
             this.Controls.Add(this.buttonSaveMutant);
             this.Controls.Add(this.buttonStartMutant);
-
             this.Controls.Add(this.buttonUnion);
             this.Controls.Add(this.buttonIntersection);
             this.Controls.Add(this.buttonDivider);
@@ -540,7 +455,6 @@
             this.menuStrip1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -575,19 +489,17 @@
         private System.Windows.Forms.Button buttonSaveMutant;
         private System.Windows.Forms.Button buttonMutantNext;
         private System.Windows.Forms.Button buttonDelete;
-        private System.Windows.Forms.Button buttonMinus;
 
         private System.Windows.Forms.ListView listViewLayers;
         private System.Windows.Forms.Button buttonUpLayer;
         private System.Windows.Forms.Button buttonDownLayer;
-        private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox3;
 
         private System.Windows.Forms.ToolStripMenuItem правкаToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem копироватьToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem впередToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem назадToolStripMenuItem;
-
+        private System.Windows.Forms.Button buttonMinus;
     }
 }
 
