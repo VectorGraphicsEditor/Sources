@@ -158,6 +158,7 @@ namespace Interfaces
         Color FillColor { get; set; }
         Color LineColor { get; set; }
         bool Is1D { get; }
+        IFigure Clone();
         IFigure Clone(Dictionary<string, object> parms); // создать такую же фигуру с такими же параметрами
         //IFigure Transform(ITransformation transform);
         //IFigure Transform(Point newRightUpCorner);
@@ -197,6 +198,9 @@ namespace Logic
 
         void moveCurientIndex(bool direction);
 
+        void save(string filename);
+
+        void load(string filename);
 
         void editColor(Interfaces.Color newcolor);
 

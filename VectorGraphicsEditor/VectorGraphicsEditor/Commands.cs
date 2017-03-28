@@ -533,7 +533,7 @@ namespace VectorGraphicsEditor
 
         void ICommand.Execute(object x)
         {
-
+            Logic.save((string)x);
         }
     }
 
@@ -562,7 +562,7 @@ namespace VectorGraphicsEditor
 
         void ICommand.Execute(object x)
         {
-
+            Logic.load((string)x);
         }
     }
 
@@ -645,7 +645,10 @@ namespace VectorGraphicsEditor
         }
         bool ICommand.CanExecute(object x)
         {
-            return true;
+            if (Logic.GetStackIndex() > 0)
+                return true;
+            else
+                return false;
         }
 
         void ICommand.Execute(object x)
@@ -674,7 +677,10 @@ namespace VectorGraphicsEditor
         }
         bool ICommand.CanExecute(object x)
         {
-            return true;
+            if (Logic.GetStackIndex() + 1 < Logic.GetStackCount())
+                return true;
+            else
+                return false;
         }
 
         void ICommand.Execute(object x)

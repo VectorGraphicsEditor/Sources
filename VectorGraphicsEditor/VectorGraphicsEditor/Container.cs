@@ -61,6 +61,11 @@ namespace Logic
             }
         }
 
+        public void clear()
+        {
+            FiguresList.Clear();
+        }
+
         // в шарпах нет реализации swap или я не умею в гугл?
         // ну в общем мы меняем местами в списке положение элементов
         // может этого нельзя делать?
@@ -71,5 +76,14 @@ namespace Logic
             FiguresList[secondindex] = buf;
         }
 
+        public Container Clone()
+        {
+            Container buf = new Container();
+            for (int i = 0; i < Count; i++)
+            {
+                buf.addNewFigure(FiguresList[i].Clone());
+            }
+            return buf;
+        }
     }
 }
