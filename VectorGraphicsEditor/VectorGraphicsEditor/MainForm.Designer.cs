@@ -45,11 +45,16 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.buttonUnion = new System.Windows.Forms.Button();
-            this.buttonStartMutant = new System.Windows.Forms.Button();
-            this.buttonSaveMutant = new System.Windows.Forms.Button();
-            this.buttonMutantNext = new System.Windows.Forms.Button();
+            this.listViewLayers = new System.Windows.Forms.ListView();
+            this.buttonDownLayer = new System.Windows.Forms.Button();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.buttonUpLayer = new System.Windows.Forms.Button();
+            this.buttonMinus = new System.Windows.Forms.Button();
             this.buttonDelete = new System.Windows.Forms.Button();
+            this.buttonMutantNext = new System.Windows.Forms.Button();
+            this.buttonSaveMutant = new System.Windows.Forms.Button();
+            this.buttonStartMutant = new System.Windows.Forms.Button();
+            this.buttonUnion = new System.Windows.Forms.Button();
             this.buttonIntersection = new System.Windows.Forms.Button();
             this.buttonDivider = new System.Windows.Forms.Button();
             this.buttonScaleLine = new System.Windows.Forms.Button();
@@ -59,11 +64,6 @@
             this.buttonTriangle = new System.Windows.Forms.Button();
             this.buttonRect = new System.Windows.Forms.Button();
             this.buttonLine = new System.Windows.Forms.Button();
-            this.listViewLayers = new System.Windows.Forms.ListView();
-            this.buttonUpLayer = new System.Windows.Forms.Button();
-            this.buttonDownLayer = new System.Windows.Forms.Button();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.buttonMinus = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.openGLControlView)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -223,35 +223,70 @@
             this.label1.TabIndex = 12;
             this.label1.Text = "Цвет заливки";
             // 
-            // buttonUnion
+            // listViewLayers
             // 
-            this.buttonUnion.Image = global::VectorGraphicsEditor.Properties.Resources.Объединение;
-            this.buttonUnion.Location = new System.Drawing.Point(690, 27);
-            this.buttonUnion.Name = "buttonUnion";
-            this.buttonUnion.Size = new System.Drawing.Size(50, 50);
-            this.buttonUnion.TabIndex = 16;
-            this.buttonUnion.UseVisualStyleBackColor = true;
-            this.buttonUnion.Click += new System.EventHandler(this.buttonUnion_Click);
+            this.listViewLayers.HideSelection = false;
+            this.listViewLayers.Location = new System.Drawing.Point(47, 19);
+            this.listViewLayers.Name = "listViewLayers";
+            this.listViewLayers.Size = new System.Drawing.Size(186, 703);
+            this.listViewLayers.TabIndex = 22;
+            this.listViewLayers.UseCompatibleStateImageBehavior = false;
+            this.listViewLayers.View = System.Windows.Forms.View.List;
+            this.listViewLayers.SelectedIndexChanged += new System.EventHandler(this.listViewLayers_SelectedIndexChanged);
             // 
-            // buttonStartMutant
+            // buttonDownLayer
             // 
-            this.buttonStartMutant.Image = global::VectorGraphicsEditor.Properties.Resources.Мутант;
-            this.buttonStartMutant.Location = new System.Drawing.Point(802, 26);
-            this.buttonStartMutant.Name = "buttonStartMutant";
-            this.buttonStartMutant.Size = new System.Drawing.Size(50, 50);
-            this.buttonStartMutant.TabIndex = 17;
-            this.buttonStartMutant.UseVisualStyleBackColor = true;
-            this.buttonStartMutant.Click += new System.EventHandler(this.buttonStartMutant_Click);
+            this.buttonDownLayer.Enabled = false;
+            this.buttonDownLayer.Image = global::VectorGraphicsEditor.Properties.Resources.Вниз;
+            this.buttonDownLayer.Location = new System.Drawing.Point(0, 72);
+            this.buttonDownLayer.Name = "buttonDownLayer";
+            this.buttonDownLayer.Size = new System.Drawing.Size(46, 47);
+            this.buttonDownLayer.TabIndex = 24;
+            this.buttonDownLayer.UseVisualStyleBackColor = true;
+            this.buttonDownLayer.Click += new System.EventHandler(this.buttobDownLayer_Click);
             // 
-            // buttonSaveMutant
+            // groupBox3
             // 
-            this.buttonSaveMutant.Image = global::VectorGraphicsEditor.Properties.Resources.Save;
-            this.buttonSaveMutant.Location = new System.Drawing.Point(858, 53);
-            this.buttonSaveMutant.Name = "buttonSaveMutant";
-            this.buttonSaveMutant.Size = new System.Drawing.Size(60, 24);
-            this.buttonSaveMutant.TabIndex = 18;
-            this.buttonSaveMutant.UseVisualStyleBackColor = true;
-            this.buttonSaveMutant.Click += new System.EventHandler(this.buttonSaveMutant_Click);
+            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox3.Controls.Add(this.listViewLayers);
+            this.groupBox3.Controls.Add(this.buttonUpLayer);
+            this.groupBox3.Controls.Add(this.buttonDownLayer);
+            this.groupBox3.Location = new System.Drawing.Point(1434, 82);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(239, 728);
+            this.groupBox3.TabIndex = 26;
+            this.groupBox3.TabStop = false;
+            // 
+            // buttonUpLayer
+            // 
+            this.buttonUpLayer.Enabled = false;
+            this.buttonUpLayer.Image = global::VectorGraphicsEditor.Properties.Resources.Вверх;
+            this.buttonUpLayer.Location = new System.Drawing.Point(0, 19);
+            this.buttonUpLayer.Name = "buttonUpLayer";
+            this.buttonUpLayer.Size = new System.Drawing.Size(46, 47);
+            this.buttonUpLayer.TabIndex = 23;
+            this.buttonUpLayer.UseVisualStyleBackColor = true;
+            this.buttonUpLayer.Click += new System.EventHandler(this.buttonUpLayer_Click);
+            // 
+            // buttonMinus
+            // 
+            this.buttonMinus.Image = global::VectorGraphicsEditor.Properties.Resources.Разность;
+            this.buttonMinus.Location = new System.Drawing.Point(746, 26);
+            this.buttonMinus.Name = "buttonMinus";
+            this.buttonMinus.Size = new System.Drawing.Size(50, 50);
+            this.buttonMinus.TabIndex = 21;
+            this.buttonMinus.UseVisualStyleBackColor = true;
+            // 
+            // buttonDelete
+            // 
+            this.buttonDelete.Image = global::VectorGraphicsEditor.Properties.Resources.Удалить;
+            this.buttonDelete.Location = new System.Drawing.Point(924, 27);
+            this.buttonDelete.Name = "buttonDelete";
+            this.buttonDelete.Size = new System.Drawing.Size(50, 50);
+            this.buttonDelete.TabIndex = 20;
+            this.buttonDelete.UseVisualStyleBackColor = true;
+            this.buttonDelete.Click += new System.EventHandler(this.buttonDelete_Click);
             // 
             // buttonMutantNext
             // 
@@ -263,15 +298,35 @@
             this.buttonMutantNext.UseVisualStyleBackColor = true;
             this.buttonMutantNext.Click += new System.EventHandler(this.buttonMutantNext_Click);
             // 
-            // buttonDelete
+            // buttonSaveMutant
             // 
-            this.buttonDelete.Location = new System.Drawing.Point(924, 26);
-            this.buttonDelete.Name = "buttonDelete";
-            this.buttonDelete.Size = new System.Drawing.Size(50, 50);
-            this.buttonDelete.TabIndex = 20;
-            this.buttonDelete.Text = "Удалить";
-            this.buttonDelete.UseVisualStyleBackColor = true;
-            this.buttonDelete.Click += new System.EventHandler(this.buttonDelete_Click);
+            this.buttonSaveMutant.Image = global::VectorGraphicsEditor.Properties.Resources.Save;
+            this.buttonSaveMutant.Location = new System.Drawing.Point(858, 53);
+            this.buttonSaveMutant.Name = "buttonSaveMutant";
+            this.buttonSaveMutant.Size = new System.Drawing.Size(60, 24);
+            this.buttonSaveMutant.TabIndex = 18;
+            this.buttonSaveMutant.UseVisualStyleBackColor = true;
+            this.buttonSaveMutant.Click += new System.EventHandler(this.buttonSaveMutant_Click);
+            // 
+            // buttonStartMutant
+            // 
+            this.buttonStartMutant.Image = global::VectorGraphicsEditor.Properties.Resources.Мутант;
+            this.buttonStartMutant.Location = new System.Drawing.Point(802, 26);
+            this.buttonStartMutant.Name = "buttonStartMutant";
+            this.buttonStartMutant.Size = new System.Drawing.Size(50, 50);
+            this.buttonStartMutant.TabIndex = 17;
+            this.buttonStartMutant.UseVisualStyleBackColor = true;
+            this.buttonStartMutant.Click += new System.EventHandler(this.buttonStartMutant_Click);
+            // 
+            // buttonUnion
+            // 
+            this.buttonUnion.Image = global::VectorGraphicsEditor.Properties.Resources.Объединение;
+            this.buttonUnion.Location = new System.Drawing.Point(690, 27);
+            this.buttonUnion.Name = "buttonUnion";
+            this.buttonUnion.Size = new System.Drawing.Size(50, 50);
+            this.buttonUnion.TabIndex = 16;
+            this.buttonUnion.UseVisualStyleBackColor = true;
+            this.buttonUnion.Click += new System.EventHandler(this.buttonUnion_Click);
             // 
             // buttonIntersection
             // 
@@ -362,61 +417,6 @@
             this.buttonLine.TabIndex = 1;
             this.buttonLine.UseVisualStyleBackColor = true;
             this.buttonLine.Click += new System.EventHandler(this.buttonLine_Click);
-            // 
-            // listViewLayers
-            // 
-            this.listViewLayers.HideSelection = false;
-            this.listViewLayers.Location = new System.Drawing.Point(47, 19);
-            this.listViewLayers.Name = "listViewLayers";
-            this.listViewLayers.Size = new System.Drawing.Size(186, 703);
-            this.listViewLayers.TabIndex = 22;
-            this.listViewLayers.UseCompatibleStateImageBehavior = false;
-            this.listViewLayers.View = System.Windows.Forms.View.List;
-            this.listViewLayers.SelectedIndexChanged += new System.EventHandler(this.listViewLayers_SelectedIndexChanged);
-            // 
-            // buttonUpLayer
-            // 
-            this.buttonUpLayer.Enabled = false;
-            this.buttonUpLayer.Location = new System.Drawing.Point(0, 19);
-            this.buttonUpLayer.Name = "buttonUpLayer";
-            this.buttonUpLayer.Size = new System.Drawing.Size(46, 47);
-            this.buttonUpLayer.TabIndex = 23;
-            this.buttonUpLayer.Text = "Вверх";
-            this.buttonUpLayer.UseVisualStyleBackColor = true;
-            this.buttonUpLayer.Click += new System.EventHandler(this.buttonUpLayer_Click);
-            // 
-            // buttonDownLayer
-            // 
-            this.buttonDownLayer.Enabled = false;
-            this.buttonDownLayer.Location = new System.Drawing.Point(0, 72);
-            this.buttonDownLayer.Name = "buttonDownLayer";
-            this.buttonDownLayer.Size = new System.Drawing.Size(46, 47);
-            this.buttonDownLayer.TabIndex = 24;
-            this.buttonDownLayer.Text = "Вниз";
-            this.buttonDownLayer.UseVisualStyleBackColor = true;
-            this.buttonDownLayer.Click += new System.EventHandler(this.buttobDownLayer_Click);
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox3.Controls.Add(this.listViewLayers);
-            this.groupBox3.Controls.Add(this.buttonUpLayer);
-            this.groupBox3.Controls.Add(this.buttonDownLayer);
-            this.groupBox3.Location = new System.Drawing.Point(1434, 82);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(239, 728);
-            this.groupBox3.TabIndex = 26;
-            this.groupBox3.TabStop = false;
-            // 
-            // buttonMinus
-            // 
-            this.buttonMinus.Image = global::VectorGraphicsEditor.Properties.Resources.Разность;
-            this.buttonMinus.Location = new System.Drawing.Point(746, 26);
-            this.buttonMinus.Name = "buttonMinus";
-            this.buttonMinus.Size = new System.Drawing.Size(50, 50);
-            this.buttonMinus.TabIndex = 21;
-            this.buttonMinus.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 

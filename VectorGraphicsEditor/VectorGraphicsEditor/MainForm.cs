@@ -422,6 +422,24 @@ namespace VectorGraphicsEditor
             gl.GetInteger(OpenGL.GL_VIEWPORT, viewport);
 
             gl.Project(placeTextPoint.X, placeTextPoint.Y, 0, modelView, projection, viewport, tx, ty, tz);
+            gl.DrawText(Convert.ToInt32(tx[0]), Convert.ToInt32(ty[0]), 0.0f, 0.0f, 0.0f, "Arial", 12, text);
+        }
+
+
+        private void DrawStaticText(OpenGL gl, Interfaces.Point placeTextPoint, string text)
+        {
+            double[] modelView = new double[16];
+            double[] projection = new double[16];
+            int[] viewport = new int[4];
+            double[] tx = new double[1];
+            double[] ty = new double[1];
+            double[] tz = new double[1];
+
+            gl.GetDouble(OpenGL.GL_MODELVIEW_MATRIX, modelView);
+            gl.GetDouble(OpenGL.GL_PROJECTION_MATRIX, projection);
+            gl.GetInteger(OpenGL.GL_VIEWPORT, viewport);
+
+            gl.Project(placeTextPoint.X, placeTextPoint.Y, 0, modelView, projection, viewport, tx, ty, tz);
             gl.DrawText(Convert.ToInt32(tx[0]) - canvasPositionX, Convert.ToInt32(ty[0] + canvasPositionY), 0.0f, 0.0f, 0.0f, "Arial", 12, text);
         }
 
@@ -440,8 +458,8 @@ namespace VectorGraphicsEditor
             List<IFigure> figures2 = (List<IFigure>) logic.Figures;
 
             // убрать позже
-            DrawText(gl, new Interfaces.Point(50, 50), figures2.Count.ToString());
-            DrawText(gl, new Interfaces.Point(100, 50), ctrlPressed.ToString());
+            DrawStaticText(gl, new Interfaces.Point(50, 50), figures2.Count.ToString());
+            DrawStaticText(gl, new Interfaces.Point(100, 50), ctrlPressed.ToString());
 
             int i = 0;
             foreach (var figure in figures)
@@ -490,8 +508,12 @@ namespace VectorGraphicsEditor
                 Interfaces.Point centerPoint = new Interfaces.Point(last3Points[1].X, last3Points[1].Y);
                 Interfaces.Point borderPoint = new Interfaces.Point(last3Points[2].X, last3Points[2].Y);
 
-                DrawContourCircle(gl, centerPoint, borderPoint, 360);
-                DrawText(gl, centerPoint, string.Format("{0:0.000}", GetDistance(centerPoint, borderPoint)));
+                DrawContourCircle(gl, centerPoint, borderPoint, quantitySegments);
+                //Interfaces.Point h = new Interfaces.Point(centerPoint);
+                //h.X = h.X;
+                //h.Y = h.Y - canvasPositionY;
+
+                DrawText(gl, h, string.Format("{0:0.000}", GetDistance(centerPoint, borderPoint)));
             }
             // Линейка
             else if(mode == Modes.Scale)

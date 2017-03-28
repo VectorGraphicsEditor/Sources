@@ -83,6 +83,26 @@ namespace VectorGraphicsEditor.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Вверх {
+            get {
+                object obj = ResourceManager.GetObject("Вверх", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Вниз {
+            get {
+                object obj = ResourceManager.GetObject("Вниз", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Выбор {
             get {
                 object obj = ResourceManager.GetObject("Выбор", resourceCulture);
@@ -176,6 +196,16 @@ namespace VectorGraphicsEditor.Properties {
         internal static System.Drawing.Bitmap Треугольник {
             get {
                 object obj = ResourceManager.GetObject("Треугольник", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Удалить {
+            get {
+                object obj = ResourceManager.GetObject("Удалить", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
