@@ -133,11 +133,8 @@ namespace Interfaces
             C = c;
         }
     }
-    public interface ITransformation
-    {
-        Point TransformPoint(Point p);
-    }
-    public interface IFigure
+    
+        public interface IFigure
     {
         /* заметим, что Paths хранит отрезки и дуги, так что может хранить несколько кривых,
          * а Lines - точки, так что для представления разных кривых понадобится массив контейнеров точек.*/
@@ -162,11 +159,14 @@ namespace Interfaces
         Color LineColor { get; set; }
         bool Is1D { get; }
         IFigure Clone(Dictionary<string, object> parms); // создать такую же фигуру с такими же параметрами
-        IFigure Transform(ITransformation transform);
+        //IFigure Transform(ITransformation transform);
+        //IFigure Transform(Point newRightUpCorner);
         /*Трансформация возвращает новую фигуру, трансформированную. однако очевидно что после этого
           фигура может сменить свой тип.*/
     }
+
 }
+
 
 namespace Logic
 {
