@@ -19,6 +19,8 @@ namespace Logic
         //Стек состояний
         private Stack StackSituation;
 
+        private List<IFigure> FiguresBuffer;
+
         public logic()
         {
             Figures = new Container();
@@ -266,7 +268,7 @@ namespace Logic
         {
             FiguresBuffer = new List<IFigure>(CurientFigures.Count);
             foreach (var i in CurientFigures)
-                FiguresBuffer.Add(Figures.getFigure(i).Clone());
+                FiguresBuffer.Add(Figures.getFigure(i).Clone(null));
         }
 
         int ILogicForCommand.BufferSize
@@ -278,7 +280,7 @@ namespace Logic
         {
             foreach (var f in FiguresBuffer)
             {
-                Figures.addNewFigure(f.Clone());
+                Figures.addNewFigure(f.Clone(null));
             }
         }
     }

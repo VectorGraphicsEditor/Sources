@@ -37,7 +37,15 @@ namespace test_editor
         public abstract void FillPaths();
         public abstract Tuple<IEnumerable<trTriangle>, IEnumerable<ILineContainer>> NewTriangulation(double eps);
         public abstract IFigure Clone(Dictionary<string, object> parms);
-        public abstract IFigure Transform(ITransformation transform);
+        //public abstract IFigure Transform(ITransformation transform);
+        public IFigure Clone()
+        {
+            return Clone(Parameters);
+            /*var serial = JsonConvert.SerializeObject(this);
+            var a = JsonConvert.DeserializeObject(serial);
+            return (this.type)a;*/
+
+        }
     }
 }
 

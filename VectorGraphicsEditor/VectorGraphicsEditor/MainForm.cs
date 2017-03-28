@@ -100,10 +100,10 @@ namespace VectorGraphicsEditor
             unionCommand = commands.Create("Union", null);
             intersectionCommand = commands.Create("Intersection", null);
             diffCommand = commands.Create("Difference", null);
-            copyCommand = commands.Create("Copy", null);
-            pasteCommand = commands.Create("Paste", null);
             undoCommand = commands.Create("UnDo", null);
             redoCommand = commands.Create("ReDo", null);
+            copyCommand = commands.Create("Copy", null);
+            pasteCommand = commands.Create("Paste", null);
 
             saveCommand = commands.Create("Save", null);
             loadCommand = commands.Create("Load", null);
@@ -759,12 +759,44 @@ namespace VectorGraphicsEditor
 
         private void открытьToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            //logic.executeCommand("open");
+            if (loadCommand.CanExecute(null))
+            {
+                OpenFileDialog openFileDialog1 = new OpenFileDialog();
+
+                openFileDialog1.InitialDirectory = "c:\\";
+                openFileDialog1.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+                openFileDialog1.FilterIndex = 2;
+                openFileDialog1.RestoreDirectory = true;
+
+                if (openFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        loadCommand.Execute(openFileDialog1.FileName);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error: Could not read file from disk. Original error: " + ex.Message);
+                    }
+                }
+            }
         }
 
         private void сохранитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //logic.executeCommand("save");
+            if (saveCommand.CanExecute(null))
+            {
+                SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+
+                saveFileDialog1.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+                saveFileDialog1.FilterIndex = 2;
+                saveFileDialog1.RestoreDirectory = true;
+
+                if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    saveCommand.Execute(saveFileDialog1.FileName);
+                }
+            }
         }
 
         private void buttonEllipse_Click(object sender, EventArgs e)
@@ -786,6 +818,12 @@ namespace VectorGraphicsEditor
             {
                 borderColor = new Interfaces.Color(cd.Color.R, cd.Color.G, cd.Color.B, cd.Color.A);
                 button_choose_line_color.BackColor = cd.Color;
+
+
+                if (editCommand.CanExecute(null))
+                {
+                    editCommand.Execute(new Tuple<Interfaces.Color, bool>(borderColor, false));
+                }
             }
             isChangedOpenGLView = true;
         }
@@ -900,6 +938,33 @@ namespace VectorGraphicsEditor
             isChangedOpenGLView = true;
         }
 
+        private void копироватьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (copyCommand.CanExecute(null))
+            {
+                copyCommand.Execute(null);
+                isChangedOpenGLView = true;
+            }
+        }
+
+        private void впередToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(redoCommand.CanExecute(null))
+            {
+                redoCommand.Execute(null);
+                isChangedOpenGLView = true;
+            }
+        }
+
+        private void назадToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (undoCommand.CanExecute(null))
+            {
+                undoCommand.Execute(null);
+                isChangedOpenGLView = true;
+            }
+        }
+
         private void button_choose_fill_color_Click(object sender, EventArgs e)
         {
             ColorDialog cd = new ColorDialog();
@@ -910,7 +975,10 @@ namespace VectorGraphicsEditor
 
                 if (isModeSelectFigures)
                 {
-                    //editCommand.Execute();
+                    if (editCommand.CanExecute(null))
+                    {
+                        editCommand.Execute(new Tuple<Interfaces.Color, bool>(fillColor, true));
+                    }
                 }
             }
             isChangedOpenGLView = true;

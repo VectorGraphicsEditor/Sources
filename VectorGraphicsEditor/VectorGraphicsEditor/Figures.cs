@@ -41,6 +41,11 @@ namespace VectorGraphicsEditor
                 new trTriangle(_figureBorder[0], _figureBorder[1], _figureBorder[2]),
                 new trTriangle(_figureBorder[2], _figureBorder[3], _figureBorder[0])
             };
+            Parameters = new Dictionary<string, object>();
+            Parameters.Add("DownLeft", DownLeft);
+            Parameters.Add("UpRight", UpRight);
+            Parameters.Add("BorderColor", BorderColor);
+            Parameters.Add("FillColor", FillColor);
 
         }
 
@@ -52,11 +57,12 @@ namespace VectorGraphicsEditor
 
         public override Color LineColor { get; set; }
 
-        public override Dictionary<string, object> Parameters { get; set; }
+        public override Dictionary<string, object> Parameters{get; set;}
 
         public override IPath Paths { get; }
 
         public override string type { get; }
+
 
         public override IFigure Clone(Dictionary<string, object> parms)
         {
@@ -82,10 +88,7 @@ namespace VectorGraphicsEditor
                 (_triangles, ToReturn);
         }
 
-        public override IFigure Transform(ITransformation transform)
-        {
-            throw new NotImplementedException();
-        }
+
     }
 
     public class Triangle : Figure
@@ -110,6 +113,12 @@ namespace VectorGraphicsEditor
                 {
                     new trTriangle(_figureBorder[0], _figureBorder[1], _figureBorder[2]),
                 };
+            Parameters = new Dictionary<string, object>();
+            Parameters.Add("Point1", Point1);
+            Parameters.Add("Point2", Point2);
+            Parameters.Add("Point3", Point3);
+            Parameters.Add("BorderColor", BorderColor);
+            Parameters.Add("FillColor", FillColor);
 
         }
         public override string type { get; }
@@ -150,10 +159,7 @@ namespace VectorGraphicsEditor
                             (Color)parms["FillColor"]);
         }
 
-        public override IFigure Transform(ITransformation transform)
-        {
-            throw new NotImplementedException();
-        }
+
     }
 
     public class Mutant : Figure
@@ -178,8 +184,7 @@ namespace VectorGraphicsEditor
             foreach (List<Segment> border in path)
             {
                 List<Point> toAdd = new List<Point>();
-                int count = border.Count;
-                int i = 0;
+
                 foreach (Segment segment in border)
                 {
 
@@ -194,8 +199,7 @@ namespace VectorGraphicsEditor
                         toAdd.AddRange(ArcPointsConverter(segment, Epsilon));
 
                     }
-                    if (i == count - 1)
-                        toAdd.Add(segment.End);
+
                 }
 
                 _onlyPoints.Add(toAdd);
@@ -203,7 +207,12 @@ namespace VectorGraphicsEditor
             #endregion 
             ConvexHull();
             CreateTriangulation();
-
+            Parameters = new Dictionary<string, object>()
+            { { "path", path },
+                { "BorderColor", BorderColor },
+                { "FillColor", FillColor },
+                { "Epsilon", Epsilon },
+                {"NewRightUpCorner", null } };
         }
         private IEnumerable<Point> ArcPointsConverter(Segment segment, double eps)
         {
@@ -254,7 +263,7 @@ namespace VectorGraphicsEditor
 
 
 
-
+        
         #region интерфейса реализация
         public override bool Colored { get; set; }
 
@@ -264,24 +273,13 @@ namespace VectorGraphicsEditor
 
         public override Color LineColor { get; set; }
 
-        public override Dictionary<string, object> Parameters
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public override Dictionary<string, object> Parameters { get; set; }
 
         public override IPath Paths
         {
             get
             {
-                throw new NotImplementedException();
+                return null;
             }
         }
 
@@ -290,14 +288,47 @@ namespace VectorGraphicsEditor
         public override IFigure Clone(Dictionary<string, object> parms)
         {
 
-            List<List<Segment>> NewPath = MakeNewMutant(path, parms["NewLeftDownCorner"], parms["NewRightUpCorner"]);
             double eps = (double)parms["Epsilon"];
-            return new Mutant(NewPath, this.LineColor, this.FillColor, eps);
-        }
+            //создадим новую фигуру с учетом изменившегося нового правого угла
+            if (parms["NewRightUpCorner"] == null)
+                return new Mutant(this.path, this.LineColor, this.FillColor, eps);
+            else
+            {
+                List<List<Segment>> NewPath = MakeNewMutant(path, parms["NewRightUpCorner"]);
 
-        private List<List<Segment>> MakeNewMutant(List<List<Segment>> path, object v1, object v2)
+                return new Mutant(NewPath, this.LineColor, this.FillColor, eps);
+            }
+
+        }
+        
+        private List<List<Segment>> MakeNewMutant(List<List<Segment>> path,  object v1)
         {
-            throw new NotImplementedException();
+            //найдем очерчивающий квадрат
+            double y_down, x_left, y_up, x_right;
+            y_up = _convexHull[0].Y; x_right = _convexHull[0].X;
+            y_down = _convexHull[0].Y; x_left = _convexHull[0].X;
+            foreach (Point elem in _convexHull)
+            {
+                if (elem.X < x_left) x_left = elem.X;
+                if (elem.Y < y_down) y_down = elem.Y;
+                if (elem.X > x_right) x_right = elem.X;
+                if (elem.Y > y_up) y_up = elem.Y;
+            }
+            Point newRightUp = (Point)v1;
+            double coeffY = newRightUp.Y / y_up;
+            double coeffX = newRightUp.X / y_up;
+
+            foreach (List<Segment>list in path)
+            {
+                foreach (Segment segm in list)
+                {
+                    segm.Beg.X = (segm.Beg.X - x_left) * coeffY + x_left;
+                    segm.Beg.Y = (segm.Beg.Y - y_down) * coeffY + y_down;
+                    segm.End.X = (segm.End.X - x_left) * coeffY + x_left;
+                    segm.End.Y = (segm.End.Y - y_down) * coeffY + y_down;
+                }
+            }
+            return path;
         }
 
         public override void FillPaths()
@@ -307,7 +338,7 @@ namespace VectorGraphicsEditor
 
         public override Tuple<IEnumerable<trTriangle>, IEnumerable<ILineContainer>> NewTriangulation(double eps)
         {
-            this.CreateTriangulation();//пока только для фигур без кривых линий!!!
+            this.CreateTriangulation();
             List<ILineContainer> toReturn = new List<ILineContainer>();
 
             foreach (List<Point> border in this._onlyPoints)
@@ -321,10 +352,6 @@ namespace VectorGraphicsEditor
 
         }
 
-        public override IFigure Transform(ITransformation transform)
-        {
-            throw new NotImplementedException();
-        }
     }
     #endregion
 }
@@ -457,10 +484,7 @@ namespace VectorGraphicsEditor
             throw new NotImplementedException();
         }
 
-        public override IFigure Transform(ITransformation transform)
-        {
-            throw new NotImplementedException();
-        }
+
         #endregion
     }
 
