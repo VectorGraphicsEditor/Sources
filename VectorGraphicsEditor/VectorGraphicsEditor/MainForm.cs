@@ -16,7 +16,7 @@ namespace VectorGraphicsEditor
         ICommand addCommand;
         ICommand removeCommand;
         ICommand pickCommand;
-        //ICommand editCommand;
+        ICommand editCommand;
         ICommand transformCommand;
         ICommand moveLayerCommand;
         ICommand pickFromListCommand;
