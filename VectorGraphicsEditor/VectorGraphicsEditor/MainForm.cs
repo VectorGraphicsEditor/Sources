@@ -1166,7 +1166,7 @@ namespace VectorGraphicsEditor
                 fillColor = new Interfaces.Color(cd.Color.R, cd.Color.G, cd.Color.B, cd.Color.A);
                 button_choose_fill_color.BackColor = cd.Color;
 
-                if (isModeSelectFigures)
+                if (true)
                 {
                     if (editCommand.CanExecute(null))
                     {
