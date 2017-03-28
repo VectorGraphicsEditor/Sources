@@ -297,8 +297,16 @@ namespace test_editor
 
             else
             {
+                List<Point> _CopyFigureBody = new List<Point>();
+                foreach(Point elem in _figureBorder)
+                {
+                    if (elem != null)
+                        _CopyFigureBody.Add(elem);
+
+                }
+                _CopyFigureBody= _CopyFigureBody.OrderByDescending(pt => pt.X).ThenBy(pt => pt.Y).ToList();
                 Point A = point;
-                Point B = new Point(_convexHull[0].X + 1, A.Y);
+                Point B = new Point(_CopyFigureBody[0].X + 1, A.Y);
                 Point C = new Point();
                 Point D = new Point();
 

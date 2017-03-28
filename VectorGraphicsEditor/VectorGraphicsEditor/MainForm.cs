@@ -16,8 +16,14 @@ namespace VectorGraphicsEditor
         ICommand addCommand;
         ICommand removeCommand;
         ICommand pickCommand;
-        ICommand editCommand;
+        //ICommand editCommand;
         ICommand transformCommand;
+        ICommand moveLayerCommand;
+        ICommand pickFromListCommand;
+        ICommand clearCurrentCommand;
+        ICommand getIndexCommand;
+
+        bool ctrlPressed = false;
 
         ICommand unionCommand;
         ICommand intersectionCommand;
@@ -74,7 +80,22 @@ namespace VectorGraphicsEditor
 
         private Figures selectedFigure = Figures.Line;
 
+
+        // чтобы последняя нарисованная фигура, не перекрывала всё и вся
+        // 
+        private bool readyToDrawTempFigure = true;
+
+        // используется для вывода в списке справа
+        private int countTriangles = 1;
+        private int countRectangles = 1;
+        private int countCircles = 1;
+        private int countElipses = 1;
+        private int countLines = 1;
+
+        private bool changedLayerOrder = false;
+
         private int quantitySegments = 360;
+
 
         public MainForm()
         {
@@ -93,6 +114,12 @@ namespace VectorGraphicsEditor
             commands = new CommandsFactory(logic);
             addCommand = commands.Create("AddFigure", null);
             removeCommand = commands.Create("RemoveFigure", null);
+
+            moveLayerCommand = commands.Create("MoveLayer", null);
+            pickFromListCommand = commands.Create("PickFromList", null);
+            clearCurrentCommand = commands.Create("ClearList", null);
+            getIndexCommand = commands.Create("GetIndexFromPick", null);
+
             editCommand = commands.Create("EditColor", null);
             pickCommand = commands.Create("Pick", null);
             transformCommand = commands.Create("Transform", null);
@@ -109,6 +136,7 @@ namespace VectorGraphicsEditor
             loadCommand = commands.Create("Load", null);
             saveSettingsCommand = commands.Create("SaveSettings", null);
             loadSettingsCommand = commands.Create("LoadSettings", null);
+
         }
 
         public OpenGL getOpenGL()
@@ -161,12 +189,14 @@ namespace VectorGraphicsEditor
 
         private void buttonRect_Click(object sender, EventArgs e)
         {
+            isModeSelectFigures = false;
             mode = Modes.Draw;
             selectedFigure = Figures.Quadrangle;
         }
 
         private void buttonLine_Click(object sender, EventArgs e)
         {
+            isModeSelectFigures = false;
             mode = Modes.Draw;
             selectedFigure = Figures.Line;
         }
@@ -400,14 +430,19 @@ namespace VectorGraphicsEditor
             int contextWidth = openGLControlView.Width;
             int contextHeight = openGLControlView.Height;
             preGL2D(gl, openGLControlView.Width, openGLControlView.Height);
-            
+
             Graphics graphics = this.CreateGraphics();
 
             // Берем наименьший dpi 
             minDpi = Math.Min(graphics.DpiX, graphics.DpiY);
-            
             IEnumerable<IFigure> figures = logic.Figures;
+            List<IFigure> figures2 = (List<IFigure>) logic.Figures;
 
+            // убрать позже
+            DrawText(gl, new Interfaces.Point(50, 50), figures2.Count.ToString());
+            DrawText(gl, new Interfaces.Point(100, 50), ctrlPressed.ToString());
+
+            int i = 0;
             foreach (var figure in figures)
             {
                 Tuple<IEnumerable<trTriangle>, IEnumerable<ILineContainer>> triangulation;
@@ -420,6 +455,11 @@ namespace VectorGraphicsEditor
                 }
 
                 // Обход по границам 
+
+                // если выделено
+                if (logic.CurientPickFigures.Contains(i))
+                    gl.LineWidth(10.0f);
+
                 foreach (var border in triangulation.Item2)
                 {
                     Interfaces.Point firstPointBorder = null;
@@ -439,6 +479,8 @@ namespace VectorGraphicsEditor
                     }
                     DrawLine(gl, prevPointBorder, firstPointBorder, figure.LineColor);
                 }
+                gl.LineWidth(1.0f);
+                ++i;
             }
 
             // Циркуль
@@ -459,7 +501,7 @@ namespace VectorGraphicsEditor
                 DrawLine(gl, aPoint, bPoint, new Interfaces.Color(0,0,0,255));
                 DrawText(gl, new Interfaces.Point(aPoint.X + (bPoint.X - aPoint.X) / 2.0f, aPoint.Y + (bPoint.Y - aPoint.Y) / 2.0f - 10), string.Format("{0:0.000}", GetDistance(aPoint, bPoint)));
             }
-            else
+            else if(readyToDrawTempFigure)
             {
                 switch (selectedFigure)
                 {
@@ -519,16 +561,32 @@ namespace VectorGraphicsEditor
             {
                 if (isModeSelectFigures)
                 {
-                    pickCommand.Execute(Tuple.Create(new Interfaces.Point(e.X - canvasPositionX, e.Y - canvasPositionY), true));
+                    int index = -2;
+                    index = logic.GetIndexByPoint(new Interfaces.Point(e.X - canvasPositionX, e.Y - canvasPositionY));
+                    if (!ctrlPressed)
+                        listViewLayers.SelectedItems.Clear();
+
+                    if (index != -1)
+                    {
+                        if (ctrlPressed)
+                            if (logic.CurientPickFigures.Contains(index))
+                                listViewLayers.Items[index].Selected = false;
+                            else
+                                listViewLayers.Items[index].Selected = true;
+                        else
+                            listViewLayers.Items[index].Selected = true;
+                    }
+                    isChangedOpenGLView = true;
                 }
                 else
                 {
                     // тут к координатам точки прибавляю смещение полотна
                     AddNewLastPoint(new Interfaces.Point(e.X - canvasPositionX, e.Y - canvasPositionY));
-
-                    switch(selectedFigure)
+                    readyToDrawTempFigure = true;
+                    switch (selectedFigure)
                     {
                         case Figures.Triangle:
+                            readyToDrawTempFigure = true;
                             if (iPointTriangle > 2)
                             {
                                 iPointTriangle = 1;
@@ -547,6 +605,11 @@ namespace VectorGraphicsEditor
                                 { "BorderColor", borderColor},
                                 { "FillColor", fillColor}
                                     });
+                                listViewLayers.Items.Add("Triangle " + countTriangles.ToString());
+                                countTriangles++;
+                                // пока не дорисовали ещё точек - мы не будем отрисовывать 
+                                // временную фигуру
+                                readyToDrawTempFigure = false;
 
                                 addCommand.Execute(figure);
                             }
@@ -646,6 +709,9 @@ namespace VectorGraphicsEditor
 
         private void openGLControlView_MouseUp(object sender, MouseEventArgs e)
         {
+            if (isModeSelectFigures)
+                return;
+            else
             if (e.Button == MouseButtons.Left)
             {
                 isMouseDown = false;
@@ -675,9 +741,17 @@ namespace VectorGraphicsEditor
                             { "UpRight", new Interfaces.Point(last3Points[2].X, last3Points[1].Y) },
                             { "BorderColor", borderColor},
                             { "FillColor", fillColor}
-                                });
-                            addCommand.Execute(figure);
+
+                            });
+                        listViewLayers.Items.Add("Rectangle " + countRectangles.ToString());
+                        countRectangles++;
+                        // пока не дорисовали ещё точек - мы не будем отрисовывать 
+                        // временную фигуру
+                        readyToDrawTempFigure = false;
+                        addCommand.Execute(figure);
+
                         }
+
                         break;
 
                     case Figures.Circle:
@@ -743,6 +817,7 @@ namespace VectorGraphicsEditor
 
         private void buttonTriangle_Click(object sender, EventArgs e)
         {
+            isModeSelectFigures = false;
             mode = Modes.Draw;
             selectedFigure = Figures.Triangle;
         }
@@ -801,18 +876,21 @@ namespace VectorGraphicsEditor
 
         private void buttonEllipse_Click(object sender, EventArgs e)
         {
+            isModeSelectFigures = false;
             mode = Modes.Draw;
             selectedFigure = Figures.Ellipse;
         }
 
         private void buttonCircle_Click(object sender, EventArgs e)
         {
+            isModeSelectFigures = false;
             mode = Modes.Draw;
             selectedFigure = Figures.Circle;
         }
 
         private void button_choose_line_color_Click(object sender, EventArgs e)
         {
+            isModeSelectFigures = false;
             ColorDialog cd = new ColorDialog();
             if (cd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
@@ -830,6 +908,7 @@ namespace VectorGraphicsEditor
 
         private void buttonScaleLine_Click(object sender, EventArgs e)
         {
+            isModeSelectFigures = false;
             selectedFigure = Figures.Line;
             if (mode != Modes.Scale)
             {
@@ -843,6 +922,7 @@ namespace VectorGraphicsEditor
 
         private void buttonDivider_Click(object sender, EventArgs e)
         {
+            isModeSelectFigures = false;
             selectedFigure = Figures.Line;
             if (mode != Modes.Divider)
             {
@@ -866,6 +946,7 @@ namespace VectorGraphicsEditor
 
         private void buttonStartMutant_Click(object sender, EventArgs e)
         {
+            isModeSelectFigures = false;
             pointsMutant = new List<Interfaces.Point>();
 
             selectedFigure = Figures.Mutant;
@@ -875,6 +956,7 @@ namespace VectorGraphicsEditor
 
         private void buttonSaveMutant_Click(object sender, EventArgs e)
         {
+            isModeSelectFigures = false;
             if (selectedFigure == Figures.Mutant)
             {
                 NextFragmentMutant();
@@ -895,6 +977,7 @@ namespace VectorGraphicsEditor
 
         void NextFragmentMutant()
         {
+            isModeSelectFigures = false;
             if (pointsMutant.Count > 0)
             {
                 List<Segment> segments = new List<Segment>();
@@ -925,6 +1008,7 @@ namespace VectorGraphicsEditor
 
         private void buttonMutantNext_Click(object sender, EventArgs e)
         {
+            isModeSelectFigures = false;
             NextFragmentMutant();
             isChangedOpenGLView = true;
         }
@@ -934,9 +1018,73 @@ namespace VectorGraphicsEditor
             if (removeCommand.CanExecute(null))
             {
                 removeCommand.Execute(null);
+                foreach (ListViewItem item in listViewLayers.SelectedItems)
+                    item.Remove(); 
+            }
+            isChangedOpenGLView = true;
+        }       
+
+        private void listViewLayers_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            clearCurrentCommand.Execute(null);
+            foreach (int item in listViewLayers.SelectedIndices)
+                pickFromListCommand.Execute(new Tuple<int, bool>(item, ctrlPressed));
+
+            if (listViewLayers.SelectedItems.Count == 1)
+            {
+                buttonDownLayer.Enabled = true;
+                buttonUpLayer.Enabled = true;
+            }
+            else
+            {
+                buttonDownLayer.Enabled = false;
+                buttonUpLayer.Enabled = false;
             }
             isChangedOpenGLView = true;
         }
+
+        private void buttonUpLayer_Click(object sender, EventArgs e)
+        {
+            if (moveLayerCommand.CanExecute(false))
+                moveLayerCommand.Execute(false);
+            listViewLayers.Focus();
+            var item = listViewLayers.SelectedItems[0];
+            var index = listViewLayers.SelectedIndices[0];
+            listViewLayers.Items.Remove(item);
+            listViewLayers.Items.Insert(index - 1, item);
+            listViewLayers.Items[index - 1].Selected = true;
+            isChangedOpenGLView = true;
+        }
+
+        private void buttobDownLayer_Click(object sender, EventArgs e)
+        {
+            if (moveLayerCommand.CanExecute(true))
+                moveLayerCommand.Execute(true);
+            listViewLayers.Focus();
+            var item = listViewLayers.SelectedItems[0];
+            var index = listViewLayers.SelectedIndices[0];
+            listViewLayers.Items.Remove(item);
+            listViewLayers.Items.Insert(index + 1, item);
+            listViewLayers.Items[index + 1].Selected = true;
+            isChangedOpenGLView = true;
+        }
+
+        private void MainForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control)
+                ctrlPressed = true;
+            // убрать
+            DrawAll();
+        }
+
+        private void MainForm_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyData == Keys.ControlKey)
+                ctrlPressed = false;
+            // убрать
+            DrawAll();
+        }
+          
 
         private void копироватьToolStripMenuItem_Click(object sender, EventArgs e)
         {

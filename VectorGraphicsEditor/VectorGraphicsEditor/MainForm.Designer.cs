@@ -41,12 +41,16 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+
+            this.buttonUnion = new System.Windows.Forms.Button();
+            this.buttonStartMutant = new System.Windows.Forms.Button();
+            this.buttonSaveMutant = new System.Windows.Forms.Button();
+            this.buttonMutantNext = new System.Windows.Forms.Button();
+
             this.buttonDelete = new System.Windows.Forms.Button();
             this.buttonSaveMutant = new System.Windows.Forms.Button();
             this.buttonMinus = new System.Windows.Forms.Button();
-            this.buttonMutantNext = new System.Windows.Forms.Button();
-            this.buttonStartMutant = new System.Windows.Forms.Button();
-            this.buttonUnion = new System.Windows.Forms.Button();
+
             this.buttonIntersection = new System.Windows.Forms.Button();
             this.buttonDivider = new System.Windows.Forms.Button();
             this.buttonScaleLine = new System.Windows.Forms.Button();
@@ -57,6 +61,13 @@
             this.buttonRect = new System.Windows.Forms.Button();
             this.buttonLine = new System.Windows.Forms.Button();
 
+            this.listViewLayers = new System.Windows.Forms.ListView();
+            this.buttonUpLayer = new System.Windows.Forms.Button();
+            this.buttonDownLayer = new System.Windows.Forms.Button();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+
+
             this.правкаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.копироватьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.впередToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -65,6 +76,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.openGLControlView)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // openGLControlView
@@ -81,7 +94,9 @@
             this.openGLControlView.OpenGLVersion = SharpGL.Version.OpenGLVersion.OpenGL1_1;
             this.openGLControlView.RenderContextType = SharpGL.RenderContextType.DIBSection;
             this.openGLControlView.RenderTrigger = SharpGL.RenderTrigger.TimerBased;
+
             this.openGLControlView.Size = new System.Drawing.Size(1564, 728);
+
             this.openGLControlView.TabIndex = 0;
             this.openGLControlView.OpenGLInitialized += new System.EventHandler(this.openGLControlView_OpenGLInitialized);
             this.openGLControlView.OpenGLDraw += new SharpGL.RenderEventHandler(this.openGLControlView_OpenGLDraw);
@@ -250,6 +265,55 @@
             this.buttonUnion.UseVisualStyleBackColor = true;
             this.buttonUnion.Click += new System.EventHandler(this.buttonUnion_Click);
             // 
+            // buttonStartMutant
+            // 
+            this.buttonStartMutant.Location = new System.Drawing.Point(109, 12);
+            this.buttonStartMutant.Name = "buttonStartMutant";
+            this.buttonStartMutant.Size = new System.Drawing.Size(111, 24);
+            this.buttonStartMutant.TabIndex = 17;
+            this.buttonStartMutant.Text = "Мутант";
+            this.buttonStartMutant.UseVisualStyleBackColor = true;
+            this.buttonStartMutant.Click += new System.EventHandler(this.buttonStartMutant_Click);
+            // 
+            // buttonSaveMutant
+            // 
+            this.buttonSaveMutant.Location = new System.Drawing.Point(108, 38);
+            this.buttonSaveMutant.Name = "buttonSaveMutant";
+            this.buttonSaveMutant.Size = new System.Drawing.Size(256, 24);
+            this.buttonSaveMutant.TabIndex = 18;
+            this.buttonSaveMutant.Text = "Сохранить мутант";
+            this.buttonSaveMutant.UseVisualStyleBackColor = true;
+            this.buttonSaveMutant.Click += new System.EventHandler(this.buttonSaveMutant_Click);
+            // 
+            // buttonMutantNext
+            // 
+            this.buttonMutantNext.Location = new System.Drawing.Point(225, 12);
+            this.buttonMutantNext.Name = "buttonMutantNext";
+            this.buttonMutantNext.Size = new System.Drawing.Size(139, 24);
+            this.buttonMutantNext.TabIndex = 19;
+            this.buttonMutantNext.Text = "Следующий фрагмент";
+            this.buttonMutantNext.UseVisualStyleBackColor = true;
+            this.buttonMutantNext.Click += new System.EventHandler(this.buttonMutantNext_Click);
+            // 
+            // buttonDelete
+            // 
+            this.buttonDelete.Location = new System.Drawing.Point(370, 12);
+            this.buttonDelete.Name = "buttonDelete";
+            this.buttonDelete.Size = new System.Drawing.Size(71, 24);
+            this.buttonDelete.TabIndex = 20;
+            this.buttonDelete.Text = "Удалить";
+            this.buttonDelete.UseVisualStyleBackColor = true;
+            this.buttonDelete.Click += new System.EventHandler(this.buttonDelete_Click);
+            // 
+            // buttonMinus
+            // 
+            this.buttonMinus.Location = new System.Drawing.Point(6, 12);
+            this.buttonMinus.Name = "buttonMinus";
+            this.buttonMinus.Size = new System.Drawing.Size(97, 50);
+            this.buttonMinus.TabIndex = 21;
+            this.buttonMinus.Text = "Разность";
+            this.buttonMinus.UseVisualStyleBackColor = true;
+            // 
             // buttonIntersection
             // 
             this.buttonIntersection.Image = global::VectorGraphicsEditor.Properties.Resources.Пересечение;
@@ -341,6 +405,67 @@
             this.buttonLine.Click += new System.EventHandler(this.buttonLine_Click);
             // 
 
+            // listViewLayers
+            // 
+            this.listViewLayers.HideSelection = false;
+            this.listViewLayers.Location = new System.Drawing.Point(47, 19);
+            this.listViewLayers.Name = "listViewLayers";
+            this.listViewLayers.Size = new System.Drawing.Size(186, 703);
+            this.listViewLayers.TabIndex = 22;
+            this.listViewLayers.UseCompatibleStateImageBehavior = false;
+            this.listViewLayers.View = System.Windows.Forms.View.List;
+            this.listViewLayers.SelectedIndexChanged += new System.EventHandler(this.listViewLayers_SelectedIndexChanged);
+            // 
+            // buttonUpLayer
+            // 
+            this.buttonUpLayer.Enabled = false;
+            this.buttonUpLayer.Location = new System.Drawing.Point(0, 19);
+            this.buttonUpLayer.Name = "buttonUpLayer";
+            this.buttonUpLayer.Size = new System.Drawing.Size(46, 47);
+            this.buttonUpLayer.TabIndex = 23;
+            this.buttonUpLayer.Text = "Вверх";
+            this.buttonUpLayer.UseVisualStyleBackColor = true;
+            this.buttonUpLayer.Click += new System.EventHandler(this.buttonUpLayer_Click);
+            // 
+            // buttonDownLayer
+            // 
+            this.buttonDownLayer.Enabled = false;
+            this.buttonDownLayer.Location = new System.Drawing.Point(0, 72);
+            this.buttonDownLayer.Name = "buttonDownLayer";
+            this.buttonDownLayer.Size = new System.Drawing.Size(46, 47);
+            this.buttonDownLayer.TabIndex = 24;
+            this.buttonDownLayer.Text = "Вниз";
+            this.buttonDownLayer.UseVisualStyleBackColor = true;
+            this.buttonDownLayer.Click += new System.EventHandler(this.buttobDownLayer_Click);
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.buttonMinus);
+            this.groupBox2.Controls.Add(this.buttonStartMutant);
+            this.groupBox2.Controls.Add(this.buttonSaveMutant);
+            this.groupBox2.Controls.Add(this.buttonMutantNext);
+            this.groupBox2.Controls.Add(this.buttonDelete);
+            this.groupBox2.Location = new System.Drawing.Point(1227, 8);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(446, 68);
+            this.groupBox2.TabIndex = 25;
+            this.groupBox2.TabStop = false;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox3.Controls.Add(this.listViewLayers);
+            this.groupBox3.Controls.Add(this.buttonUpLayer);
+            this.groupBox3.Controls.Add(this.buttonDownLayer);
+            this.groupBox3.Location = new System.Drawing.Point(1434, 82);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(239, 728);
+            this.groupBox3.TabIndex = 26;
+            this.groupBox3.TabStop = false;
+
+
             // правкаToolStripMenuItem
             // 
             this.правкаToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -371,6 +496,7 @@
             this.назадToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.назадToolStripMenuItem.Text = "Назад";
             this.назадToolStripMenuItem.Click += new System.EventHandler(this.назадToolStripMenuItem_Click);
+
             // 
 
             // MainForm
@@ -378,12 +504,17 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.ClientSize = new System.Drawing.Size(1588, 822);
+
+            this.ClientSize = new System.Drawing.Size(1685, 822);
+            this.Controls.Add(this.groupBox3);
+            this.Controls.Add(this.groupBox2);
+
             this.Controls.Add(this.buttonMinus);
             this.Controls.Add(this.buttonDelete);
             this.Controls.Add(this.buttonMutantNext);
             this.Controls.Add(this.buttonSaveMutant);
             this.Controls.Add(this.buttonStartMutant);
+
             this.Controls.Add(this.buttonUnion);
             this.Controls.Add(this.buttonIntersection);
             this.Controls.Add(this.buttonDivider);
@@ -398,14 +529,19 @@
             this.Controls.Add(this.openGLControlView);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.Text = "Графический редактор";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyUp);
             ((System.ComponentModel.ISupportInitialize)(this.openGLControlView)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -440,10 +576,18 @@
         private System.Windows.Forms.Button buttonMutantNext;
         private System.Windows.Forms.Button buttonDelete;
         private System.Windows.Forms.Button buttonMinus;
+
+        private System.Windows.Forms.ListView listViewLayers;
+        private System.Windows.Forms.Button buttonUpLayer;
+        private System.Windows.Forms.Button buttonDownLayer;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox groupBox3;
+
         private System.Windows.Forms.ToolStripMenuItem правкаToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem копироватьToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem впередToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem назадToolStripMenuItem;
+
     }
 }
 

@@ -175,6 +175,8 @@ namespace Logic
     {
         IEnumerable<IFigure> Figures { get; }
         List<int> CurientPickFigures { get; }
+
+        int GetIndexByPoint(Interfaces.Point a);
     }
 
     public interface ILogicForCommand
@@ -208,12 +210,18 @@ namespace Logic
 
         void SetNextStackState();
 
+
+        void ClearCurrentFigures();
+
+        void GetIndexFromPick(Point a, int index);
+
         void PutIntoBuffer();
 
         int BufferSize
         { get; }
 
         void PushBuffer();
+
     }
 }
 
@@ -232,8 +240,10 @@ namespace NGeometry
 
 namespace IO
 {
-    using SVGLib;
+
     using Interfaces;
+    using SVGLib;
+
     //interface ISavePicture
     //{
     //    bool Save(string path, IEnumerable<IFigure> figures);
@@ -251,6 +261,7 @@ namespace IO
         public Color fill { get; protected set; }
         public Color stroke { get; protected set; }
         public int w { get; protected set; } // stroke width
+
         public String name { get; protected set; }
 
         public abstract SvgBasicShape ToSVGLibShape(SvgDoc doc);
@@ -277,7 +288,6 @@ namespace IO
         }
 
         public static Tuple<List<SVGShape>, int, int> import(string filename)
-        {
 
             var shapes = new List<SVGShape>();
 

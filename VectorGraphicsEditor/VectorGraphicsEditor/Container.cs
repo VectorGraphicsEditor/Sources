@@ -50,7 +50,7 @@ namespace Logic
             if (index.Count > 0)
             {
                 index.Sort();
-                for (int i = index[index.Count - 1]; i >= 0; i--)
+                for (int i = index.Count - 1; i >= 0; i--)
                     FiguresList.RemoveAt(index[i]);
                 return FiguresList.Count;
             }
