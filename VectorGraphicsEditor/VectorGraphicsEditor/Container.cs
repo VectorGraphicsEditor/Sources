@@ -76,5 +76,14 @@ namespace Logic
             FiguresList[secondindex] = buf;
         }
 
+        public Container Clone()
+        {
+            Container buf = new Container();
+            for (int i = 0; i < Count; i++)
+            {
+                buf.addNewFigure(FiguresList[i].Clone());
+            }
+            return buf;
+        }
     }
 }
