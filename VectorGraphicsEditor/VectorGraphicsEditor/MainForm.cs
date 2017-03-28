@@ -513,7 +513,7 @@ namespace VectorGraphicsEditor
                 //h.X = h.X;
                 //h.Y = h.Y - canvasPositionY;
 
-                DrawText(gl, h, string.Format("{0:0.000}", GetDistance(centerPoint, borderPoint)));
+                DrawText(gl, centerPoint, string.Format("{0:0.000}", GetDistance(centerPoint, borderPoint)));
             }
             // Линейка
             else if(mode == Modes.Scale)
