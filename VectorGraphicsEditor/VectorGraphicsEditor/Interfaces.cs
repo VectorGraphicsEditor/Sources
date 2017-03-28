@@ -197,6 +197,9 @@ namespace Logic
 
         void moveCurientIndex(bool direction);
 
+        void save(string filename);
+
+        void load(string filename);
 
         void editColor(Interfaces.Color newcolor);
 

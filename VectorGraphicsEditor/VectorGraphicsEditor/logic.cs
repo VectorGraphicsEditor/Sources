@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Interfaces;
 using VectorGraphicsEditor;
+using IO;
 
 namespace Logic
 {
@@ -250,7 +251,118 @@ namespace Logic
                 Figures.getFigure(index).LineColor = newcolor;
             }
         }
-        
+
+
+        void ILogicForCommand.save(string filename)
+        {
+            List<SVGShape> ShapeList = new List<SVGShape>();
+            IFigure buf;
+            for (int i = 0; i < Figures.Count; i++)
+            {
+                buf = Figures.getFigure(i);
+                Tuple<IEnumerable<trTriangle>, IEnumerable<ILineContainer>> triangulation;
+                triangulation = buf.NewTriangulation(1.0);
+                if (buf is VectorGraphicsEditor.Rectangle)
+                {
+                    List<Interfaces.Point> points = (List<Interfaces.Point>)triangulation.Item2;
+                    Interfaces.Point min = findMinPoint(points);
+                    Interfaces.Point max = findMaxPoint(points);
+                    double xh, yh;
+                    xh = (max.X - min.X);
+                    yh = (max.Y - min.Y);
+                    ShapeList.Add(new SVGRect(min.X + xh / 2.0, min.Y + yh / 2.0, xh, yh, buf.FillColor, buf.LineColor));
+                }
+                if (buf is VectorGraphicsEditor.Triangle)
+                {
+                    ShapeList.Add(new SVGPolygon((List<Interfaces.Point>)triangulation.Item2, buf.FillColor, buf.LineColor));
+                }
+                if (buf is VectorGraphicsEditor.Mutant)
+                {
+                    ShapeList.Add(new SVGPolygon((List<Interfaces.Point>)triangulation.Item2, buf.FillColor, buf.LineColor));
+                }
+            }
+            SVGIO.export(ShapeList, filename, 800, 600);
+        }
+
+        void ILogicForCommand.load(string filename)
+        {
+            Tuple<List<SVGShape>, int, int> fromfile = SVGIO.import(filename);
+            Figures.clear();
+            CurientFigures.Clear();
+            foreach (SVGShape item in fromfile.Item1)
+            {
+                if (item is SVGCircle)
+                {
+
+                }
+                if (item is SVGEllipse)
+                {
+
+                }
+                if (item is SVGRect)
+                {
+                    SVGRect fig = (SVGRect)item;
+                    Interfaces.Point downleft = new Interfaces.Point(fig.rx - fig.width / 2.0, fig.ry - fig.height / 2.0);
+                    Interfaces.Point upright = new Interfaces.Point(fig.rx + fig.width / 2.0, fig.ry + fig.height / 2.0);
+                    Figures.addNewFigure(new VectorGraphicsEditor.Rectangle(downleft, upright, fig.stroke, fig.fill)
+                }
+                if (item is SVGPolygon)
+                {
+                    SVGPolygon fig = (SVGPolygon)item;
+                    if (fig.points.Count == 3)
+                    {
+                        Figures.addNewFigure(new VectorGraphicsEditor.Triangle(fig.points[0], fig.points[1], fig.points[2], fig.stroke, fig.fill));
+                    }
+                    else
+                    {
+                        List<List<Segment>> list = new List<List<Segment>>();
+                        list.Add(PointToSegment(fig.points));
+                        Figures.addNewFigure(new VectorGraphicsEditor.Mutant(list, fig.stroke, fig.fill, 1.0));
+                    }
+                }
+                if (item is SVGPath)
+                {
+
+                }
+            }
+        }
+
+        Interfaces.Point findMaxPoint(List<Interfaces.Point> list)
+        {
+            Interfaces.Point max = list[0];
+            foreach (Interfaces.Point item in list)
+            {
+                if (max.X <= item.X || max.Y <= item.Y)
+                    max = item;
+            }
+            return max;
+        }
+
+        Interfaces.Point findMinPoint(List<Interfaces.Point> list)
+        {
+            Interfaces.Point min = list[0];
+            foreach (Interfaces.Point item in list)
+            {
+                if (min.X > item.X || min.Y > item.Y)
+                    min = item;
+            }
+            return min;
+        }
+
+        List<Segment> PointToSegment(List<Interfaces.Point> dots)
+        {
+            List<Segment> res = new List<Segment>();
+            Line buf;
+            for (int i = 0; i < dots.Count - 1; i++)
+            {
+                buf = new Line(dots[i], dots[i + 1]);
+                res.Add(buf);
+            }
+            buf = new Line(dots[dots.Count - 1], dots[0]);
+            res.Add(buf);
+            return res;
+        }
+
         // Количество фигур
         int ILogicForCommand.CountFigures 
         { 
