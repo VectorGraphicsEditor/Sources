@@ -36,9 +36,12 @@ namespace IO_Tests
 
             var rect = new SVGRect(50.0, 20.0, 50.0, 20.0, new Color(100, 255, 56, 0), new Color(0, 0, 0, 0), 2);
 
-            SVGIO.export(new List<SVGShape>(){ polygon, ellipse, circle, rect, path }, "Z:\\Sources\\VectorGraphicsEditor\\IO Tests\\output\\mix.svg", 1000, 1001);
+            //SVGIO.export(new List<SVGShape>(){ polygon, ellipse, circle, rect, path }, "Z:\\Sources\\VectorGraphicsEditor\\IO Tests\\output\\mix.svg", 1000, 1001);
 
-           // SVGIO.import("Z:\\Sources\\VectorGraphicsEditor\\IO Tests\\output\\Freesample.svg");
+            var res = SVGIO.import("E:\\Sources\\VectorGraphicsEditor\\IO Tests\\output\\mix.svg");
+
+           Console.WriteLine(res.Item1[0].w);
+          
         }
     }
 }

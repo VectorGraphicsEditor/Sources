@@ -19,6 +19,8 @@ namespace Logic
         //Стек состояний
         private Stack StackSituation;
 
+        private List<IFigure> FiguresBuffer;
+
         public logic()
         {
             Figures = new Container();
@@ -302,6 +304,26 @@ namespace Logic
             StackSituation.StepForward();
             Figures = StackSituation.GetState(StackSituation.GetIndex()).Item1;
             CurientFigures = StackSituation.GetState(StackSituation.GetIndex()).Item2;
+        }
+
+        void ILogicForCommand.PutIntoBuffer()
+        {
+            FiguresBuffer = new List<IFigure>(CurientFigures.Count);
+            foreach (var i in CurientFigures)
+                FiguresBuffer.Add(Figures.getFigure(i).Clone(null));
+        }
+
+        int ILogicForCommand.BufferSize
+        {
+            get { return (FiguresBuffer != null) ? FiguresBuffer.Count : 0; }
+        }
+
+        void ILogicForCommand.PushBuffer()
+        {
+            foreach (var f in FiguresBuffer)
+            {
+                Figures.addNewFigure(f.Clone(null));
+            }
         }
     }
 }

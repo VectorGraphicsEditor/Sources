@@ -703,12 +703,12 @@ namespace VectorGraphicsEditor
         }
         bool ICommand.CanExecute(object x)
         {
-            return true;
+            return (Logic.CountCurientFigures != 0);
         }
 
         void ICommand.Execute(object x)
         {
-
+            Logic.PutIntoBuffer();
         }
     }
 
@@ -733,12 +733,12 @@ namespace VectorGraphicsEditor
         }
         bool ICommand.CanExecute(object x)
         {
-            return true;
+            return (Logic.BufferSize != 0);
         }
 
         void ICommand.Execute(object x)
         {
-
+            Logic.PushBuffer();
         }
     }
 
