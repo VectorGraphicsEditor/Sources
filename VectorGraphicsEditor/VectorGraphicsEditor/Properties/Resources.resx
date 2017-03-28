@@ -118,8 +118,8 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Круг" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Круг.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Пересечение" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Пересечение.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Объединение" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Объединение.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -127,14 +127,17 @@
   <data name="квадрат_второй" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\квадрат_второй.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Пересечение" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Пересечение.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Круг" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Круг.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Мутант" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Мутант.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Save" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Save.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Циркуль" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Циркуль.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Вверх" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Вверх.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Выбор" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Выбор.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -157,7 +160,13 @@
   <data name="Разность" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Разность.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Save" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Save.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Удалить" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Удалить.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Мутант" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Мутант.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Вниз" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Вниз.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
