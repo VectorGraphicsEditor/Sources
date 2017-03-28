@@ -91,6 +91,7 @@ namespace VectorGraphicsEditor
         private int countCircles = 1;
         private int countElipses = 1;
         private int countLines = 1;
+        private int countMutants = 1;
 
         private bool changedLayerOrder = false;
 
@@ -421,7 +422,7 @@ namespace VectorGraphicsEditor
             gl.GetInteger(OpenGL.GL_VIEWPORT, viewport);
 
             gl.Project(placeTextPoint.X, placeTextPoint.Y, 0, modelView, projection, viewport, tx, ty, tz);
-            gl.DrawText(Convert.ToInt32(tx[0]), openGLControlView.Height - Convert.ToInt32(ty[0]), 0.0f, 0.0f, 0.0f, "Arial", 12, text);
+            gl.DrawText(Convert.ToInt32(tx[0]) - canvasPositionX, Convert.ToInt32(ty[0] + canvasPositionY), 0.0f, 0.0f, 0.0f, "Arial", 12, text);
         }
 
         private void DrawAll()
@@ -638,7 +639,7 @@ namespace VectorGraphicsEditor
                     isChangedOpenGLView = true;
                 }
             }
-            if (e.Button == MouseButtons.Middle)
+            if (e.Button == MouseButtons.Right)
             {//Тут будем зажимать колёсико
                 isMiddleButton = true;
                 prevLocationX = e.X;
@@ -665,7 +666,7 @@ namespace VectorGraphicsEditor
                 }
                 isStartDrag = false;
             }
-            if (e.Button == MouseButtons.Middle)
+            if (e.Button == MouseButtons.Right)
             {//Тут будет двигаться полотно при зажатом колёсике
                 canvasPositionX -= e.Location.X - prevLocationX;
                 canvasPositionY -= e.Location.Y - prevLocationY;
@@ -777,6 +778,11 @@ namespace VectorGraphicsEditor
 
                             IFigure figure = new Mutant(fragments, borderColor, fillColor, 1);
                             addCommand.Execute(figure);
+                            listViewLayers.Items.Add("Circle " + countCircles.ToString());
+                            countCircles++;
+                            // пока не дорисовали ещё точек - мы не будем отрисовывать 
+                            // временную фигуру
+                            readyToDrawTempFigure = false;
                         }
                         break;
 
@@ -804,12 +810,17 @@ namespace VectorGraphicsEditor
 
                             IFigure figure = new Mutant(fragments, borderColor, fillColor, 1);
                             addCommand.Execute(figure);
+                            listViewLayers.Items.Add("Elipse " + countElipses.ToString());
+                            countElipses++;
+                            // пока не дорисовали ещё точек - мы не будем отрисовывать 
+                            // временную фигуру
+                            readyToDrawTempFigure = false;
                         }
                         break;
                 }
                 isStartDrag = false;
             }
-            if (e.Button == MouseButtons.Middle)
+            if (e.Button == MouseButtons.Right)
             {
                 isMiddleButton = false;
             }
@@ -969,6 +980,12 @@ namespace VectorGraphicsEditor
 
                 addCommand.Execute(figure);
 
+                listViewLayers.Items.Add("Mutant " + countMutants.ToString());
+                countMutants++;
+                // пока не дорисовали ещё точек - мы не будем отрисовывать 
+                // временную фигуру
+                readyToDrawTempFigure = false;
+
                 pointsMutant.Clear();
                 listFragments.Clear();
                 isChangedOpenGLView = true;
@@ -1032,8 +1049,14 @@ namespace VectorGraphicsEditor
 
             if (listViewLayers.SelectedItems.Count == 1)
             {
-                buttonDownLayer.Enabled = true;
-                buttonUpLayer.Enabled = true;
+                if(listViewLayers.SelectedIndices[0] == 0)
+                    buttonUpLayer.Enabled = false;
+                else
+                    buttonUpLayer.Enabled = true;
+                if (listViewLayers.SelectedIndices[0] == listViewLayers.Items.Count - 1)
+                    buttonDownLayer.Enabled = false;
+                else
+                    buttonDownLayer.Enabled = true;
             }
             else
             {
