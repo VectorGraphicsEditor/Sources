@@ -44,6 +44,20 @@ namespace Logic
             }
         }
 
+        int ILogicForGUI.GetIndexByPoint(Interfaces.Point a)
+        {
+            bool find = false;
+            int index;
+            for (index = Figures.Count - 1; index >= 0; index--)
+            {
+                //Проверяем лежит ли данная точка в этой фигуре
+                find = Figures.getFigure(index).IsPointInner(a);
+                if (find)
+                    return index;
+            }
+            return -1;
+        }
+
         // выделение фигуры мышкой добавляет в список выделенных фигур. если add - true. При этом можно 
         // начать заново выделять, если add - false
         void ILogicForCommand.addCurientFigure(Interfaces.Point dot, bool add)
@@ -117,6 +131,32 @@ namespace Logic
             }
         }
 
+        void ILogicForCommand.ClearCurrentFigures()
+        {
+            CurientFigures.Clear();
+        }
+
+
+        void ILogicForCommand.GetIndexFromPick(Interfaces.Point a, int myIndex)
+        {
+            bool find = false;
+            int index;
+            for (index = Figures.Count - 1; index >= 0; index--)
+            {
+                //Проверяем лежит ли данная точка в этой фигуре
+                find = Figures.getFigure(index).IsPointInner(a);
+                if (find)
+                    break;
+                if (index == 0)
+                {
+                    myIndex = -1;
+                    return;
+                }
+            }
+            myIndex = index;
+        }
+    
+
         // Передвижение индекса: если выделена одна фигура, то мы перемещаемся по элементам начиная с
         // того на котором мы находимся, если там нет выделенных фигур, то шагаем от начала списка или
         // от конца. Предусмотренно циклическое передвижение. не знаю зачем)
@@ -167,10 +207,12 @@ namespace Logic
             if (direction)
             {
                 Figures.swap(CurientFigures[0], CurientFigures[0] + 1);
+                CurientFigures[0] += 1;
             }
             else
             {
                 Figures.swap(CurientFigures[0] - 1, CurientFigures[0]);
+                CurientFigures[0] -= 1;
             }
         }
 

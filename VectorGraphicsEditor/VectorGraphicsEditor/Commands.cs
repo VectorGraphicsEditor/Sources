@@ -38,6 +38,8 @@ namespace VectorGraphicsEditor
             prototypes["Copy"] = new Copy(Logic);
             prototypes["Paste"] = new Paste(Logic);
             prototypes["AddPrototipe"] = new AddPrototipe(Logic);
+            prototypes["ClearList"] = new ClearList(Logic);
+            prototypes["GetIndexFromPick"] = new GetIndexFromPick(Logic);
         }
         public ICommand Create(string type, Dictionary<string, object> parms)
         {
@@ -338,7 +340,7 @@ namespace VectorGraphicsEditor
 
         ICommand ICommand.Create(Dictionary<string, object> parms)
         {
-            return new Pick(Logic);
+            return new PickFromList(Logic);
         }
         bool ICommand.CanExecute(object x)
         {
@@ -353,6 +355,64 @@ namespace VectorGraphicsEditor
         }
     }
 
+    class GetIndexFromPick : ICommand
+    {
+        ILogicForCommand Logic;
+        public GetIndexFromPick(ILogicForGUI Log)
+        {
+            Logic = (ILogicForCommand)Log;
+        }
+
+        public GetIndexFromPick(ILogicForCommand Log)
+        {
+            Logic = Log;
+        }
+
+        ICommand ICommand.Create(Dictionary<string, object> parms)
+        {
+            return new GetIndexFromPick(Logic);
+        }
+        bool ICommand.CanExecute(object x)
+        {
+            return true;
+        }
+
+
+        void ICommand.Execute(object x)
+        {
+            Tuple<Interfaces.Point, int> buf = (Tuple<Interfaces.Point, int>) x;
+            Logic.GetIndexFromPick(buf.Item1, buf.Item2);
+        }
+    }
+
+    class ClearList : ICommand
+    {
+        ILogicForCommand Logic;
+        public ClearList(ILogicForGUI Log)
+        {
+            Logic = (ILogicForCommand)Log;
+        }
+
+        public ClearList(ILogicForCommand Log)
+        {
+            Logic = Log;
+        }
+
+        ICommand ICommand.Create(Dictionary<string, object> parms)
+        {
+            return new ClearList(Logic);
+        }
+        bool ICommand.CanExecute(object x)
+        {
+            return true;
+        }
+
+
+        void ICommand.Execute(object x)
+        {
+            Logic.ClearCurrentFigures();
+        }
+    }
 
     class MoveIndex : ICommand
     {

@@ -175,6 +175,8 @@ namespace Logic
     {
         IEnumerable<IFigure> Figures { get; }
         List<int> CurientPickFigures { get; }
+
+        int GetIndexByPoint(Interfaces.Point a);
     }
 
     public interface ILogicForCommand
@@ -207,6 +209,10 @@ namespace Logic
         void SetPreviousStackState();
 
         void SetNextStackState();
+
+        void ClearCurrentFigures();
+
+        void GetIndexFromPick(Point a, int index);
     }
 }
 
@@ -226,6 +232,8 @@ namespace NGeometry
 namespace IO
 {
     using Interfaces;
+    using SVGLib;
+
     //interface ISavePicture
     //{
     //    bool Save(string path, IEnumerable<IFigure> figures);
